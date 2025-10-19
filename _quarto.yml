@@ -1,0 +1,24 @@
+
+project:
+  type: default
+  output-dir: output/2025
+
+format:
+  html:
+    toc: true
+    number-sections: false
+    df-print: paged
+  pdf:
+    toc: false
+    number-sections: false
+    geometry: margin=1in
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+filters: []
+
+website:
+  title: "Reportes CCHH — Cohorte 2025"

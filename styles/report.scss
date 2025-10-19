@@ -1,0 +1,9 @@
+
+/* Estilos mínimos para PDF/HTML */
+:root {
+  --accent: #004c6d;
+}
+h1, h2, h3 { color: var(--accent); }
+.figure-caption, .table-caption { font-style: italic; }
+.small { font-size: 0.9rem; }
+.footnote { font-size: 0.8rem; color: #555; }

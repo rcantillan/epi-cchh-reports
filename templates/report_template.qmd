@@ -1,0 +1,105 @@
+
+---
+title: "Reporte CCHH — {{< meta programa >}} (Cohorte {{< meta cohorte >}})"
+author: "Equipo CCHH"
+format:
+  pdf:
+    toc: false
+    include-in-header: 
+      text: |
+        \usepackage{setspace}
+        \setstretch{1.05}
+  html:
+    toc: true
+    theme: default
+    css: ../styles/report.scss
+params:
+  cohorte: !expr 2025
+  facultad: "Facultad X"
+  programa: "Programa Y"
+  fecha_corte: "2025-04-09"
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+# Cargar librerías y objetos
+source("R/00_utils.R")
+source("R/03_figures.R")
+source("R/02_derive_indicators.R")
+
+# Asumimos que 01_load_data.R fue corrido antes y existen:
+# PROGRAMAS, NIVELES, CEFR, DESGLOSE
+cohorte  <- params$cohorte
+facultad <- params$facultad
+programa <- params$programa
+```
+
+## 1. Presentación
+
+Este informe resume el desempeño de la cohorte **`r cohorte`** en **`r programa`** ( `r facultad` ).
+Incluye resultados agregados para la Universidad, la Facultad y el Programa, con el detalle por prueba
+(**Comprensión de Lectura**, **Escritura Académica**, **Matemática**) y **Inglés (CEFR)**.
+
+_Fecha de corte:_ `r params$fecha_corte`.
+
+## 2. Resultados Universidad (síntesis)
+
+> Placeholder: agregar tabla/figuras de referencia a nivel UAH si se proveen en `PROGRAMAS` con `facultad == "UAH"`
+> o en un objeto separado agregado por fuera del programa.
+
+## 3. Resultados Facultad (síntesis)
+
+> Placeholder: incluir agregaciones por `facultad == r facultad` si están disponibles.
+
+## 4. Resultados Programa
+
+### Cobertura y n de estudiantes
+
+```{r}
+prog_row <- PROGRAMAS |> 
+  dplyr::filter(cohorte == !!cohorte, facultad == !!facultad, programa == !!programa)
+
+if (nrow(prog_row) == 0) {
+  cat("**Atención:** no se encontró el programa en PROGRAMAS (ver 01_load_data.R).")
+} else {
+  prog_row |> 
+    dplyr::select(n_total, starts_with("n_rindio_"), starts_with("cobertura_")) |> 
+    knitr::kable()
+}
+```
+
+### Niveles de desempeño (Lectura / Escritura / Matemática)
+
+```{r}
+df_levels <- levels_stacked(NIVELES, cohorte, facultad, programa)
+if (nrow(df_levels) > 0) {
+  plot_niveles(df_levels)
+} else {
+  cat("No hay datos de niveles para este programa.")
+}
+```
+
+### Detalle por Dimensión/Eje/Indicador
+
+> Placeholder: construir tablas/figuras desde `DESGLOSE` según la taxonomía de cada prueba.
+
+### Inglés (CEFR)
+
+```{r}
+df_cefr <- cefr_stacked(CEFR, cohorte, facultad, programa)
+if (nrow(df_cefr) > 0) {
+  plot_cefr(df_cefr)
+} else {
+  cat("No hay datos de CEFR para este programa.")
+}
+```
+
+## 5. Palabras de cierre
+
+- Los resultados deben interpretarse considerando la **cobertura efectiva** en cada prueba.
+- Cuando el número de estudiantes es **pequeño (n<10)**, las distribuciones tienen mayor incertidumbre.
+- Este reporte es **parametrizable** y puede replicarse por programa/facultad/cohorte.
