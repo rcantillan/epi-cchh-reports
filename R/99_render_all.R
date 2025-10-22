@@ -53,6 +53,8 @@ render_catalog_entry <- function(row,
 
 walk(seq_len(nrow(catalogo)), function(i) {
   render_catalog_entry(catalogo[i, , drop = FALSE])
+walk(seq_len(nrow(catalogo)), function(i) {
+  render_catalog_entry(catalogo[i, , drop = FALSE])
 # Helpers --------------------------------------------------------------------
 
 safe_value <- function(x, fallback = "sin_dato") {

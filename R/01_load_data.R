@@ -395,7 +395,8 @@ summarise_niveles <- function(dat) {
 summarise_cefr <- function(dat) {
   if (!"categoria_global" %in% names(dat)) return(cefr_df[0, ])
   vals <- dat$categoria_global
-  matches <- stringr::str_detect(vals, stringr::regex("^(a1|a2|a2\+|b1)$", ignore_case = TRUE))
+  vals_lower <- stringr::str_to_lower(vals)
+  matches <- vals_lower %in% c("a1", "a2", "a2+", "b1")
   if (!any(matches, na.rm = TRUE)) return(cefr_df[0, ])
   tmp <- dat[matches, , drop = FALSE]
   if (nrow(tmp) == 0) return(cefr_df[0, ])
