@@ -50,6 +50,27 @@ epi-cchh-reports/
 Cada reporte utiliza `templates/report_template.qmd` con `params:` (cohorte, facultad, programa, fecha_corte).
 El script `R/99_render_all.R` itera por todas las combinaciones detectadas en `data/processed/`.
 
+## Render manual de un programa
+Si solo necesitas probar un reporte puntual, puedes reutilizar los metadatos detectados en `PROGRAMAS` para definir los parámetros de Quarto sin escribirlos a mano.
+
+```r
+source("R/01_load_data.R")
+source("R/98_render_helpers.R")
+
+params <- program_params(programa = "Psicología")
+
+quarto::quarto_render(
+  input = "templates/report_template.qmd",
+  execute_params = c(
+    params,
+    list(fecha_corte = Sys.Date())
+  ),
+  output_file = "output/prueba_psicologia.html"
+)
+```
+
+Si prefieres trabajar con variables sueltas, `use_program_params(programa = "Psicología")` crea `cohorte`, `facultad` y `programa` en tu entorno actual antes de llamar a `quarto::quarto_render()`, evitando errores como `objeto 'cohorte' no encontrado`.
+
 ## Notas
 - Se enmascaran conteos muy pequeños (e.g., `< 5`). 
 - Cuando n<10, se inserta una nota de cautela para las distribuciones.
