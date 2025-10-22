@@ -395,7 +395,8 @@ summarise_niveles <- function(dat) {
 summarise_cefr <- function(dat) {
   if (!"categoria_global" %in% names(dat)) return(cefr_df[0, ])
   vals <- dat$categoria_global
-  matches <- stringr::str_detect(vals, stringr::regex("^(a1|a2|a2\+|b1)$", ignore_case = TRUE))
+  vals_lower <- stringr::str_to_lower(vals)
+  matches <- vals_lower %in% c("a1", "a2", "a2+", "b1")
   if (!any(matches, na.rm = TRUE)) return(cefr_df[0, ])
   tmp <- dat[matches, , drop = FALSE]
   if (nrow(tmp) == 0) return(cefr_df[0, ])
@@ -485,6 +486,20 @@ parse_one_file <- function(path) {
   dat <- parse_resultados_individuales_v2(path)
   if (nrow(dat) == 0) {
     warning(glue::glue("Archivo {meta$source_file} no produjo filas tras el parseo."))
+  }
+
+  if ("cohorte" %in% names(dat) && is.na(meta$cohorte)) {
+    meta$cohorte <- suppressWarnings(as.integer(first_non_na(dat$cohorte)))
+  }
+
+  fac_col <- first_existing_col(dat, c("facultad", "unidad", "unidad_academica", "facultad_programa"))
+  if (!is.na(fac_col) && (is.na(meta$facultad) || !nzchar(meta$facultad))) {
+    meta$facultad <- first_non_na(dat[[fac_col]])
+  }
+
+  prog_col <- first_existing_col(dat, c("programa", "carrera", "plan", "plan_estudio"))
+  if (!is.na(prog_col) && (is.na(meta$programa) || !nzchar(meta$programa))) {
+    meta$programa <- first_non_na(dat[[prog_col]])
   }
 
   dat <- dat %>%
