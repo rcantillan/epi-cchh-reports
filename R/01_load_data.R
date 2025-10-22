@@ -487,6 +487,20 @@ parse_one_file <- function(path) {
     warning(glue::glue("Archivo {meta$source_file} no produjo filas tras el parseo."))
   }
 
+  if ("cohorte" %in% names(dat) && is.na(meta$cohorte)) {
+    meta$cohorte <- suppressWarnings(as.integer(first_non_na(dat$cohorte)))
+  }
+
+  fac_col <- first_existing_col(dat, c("facultad", "unidad", "unidad_academica", "facultad_programa"))
+  if (!is.na(fac_col) && (is.na(meta$facultad) || !nzchar(meta$facultad))) {
+    meta$facultad <- first_non_na(dat[[fac_col]])
+  }
+
+  prog_col <- first_existing_col(dat, c("programa", "carrera", "plan", "plan_estudio"))
+  if (!is.na(prog_col) && (is.na(meta$programa) || !nzchar(meta$programa))) {
+    meta$programa <- first_non_na(dat[[prog_col]])
+  }
+
   dat <- dat %>%
     mutate(
       cohorte = meta$cohorte,

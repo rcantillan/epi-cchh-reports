@@ -30,6 +30,7 @@ execute:
 source("R/00_utils.R")
 source("R/03_figures.R")
 source("R/02_derive_indicators.R")
+source("R/04_tables.R")
 
 # Asumimos que 01_load_data.R fue corrido antes y existen:
 # PROGRAMAS, NIVELES, CEFR, DESGLOSE
@@ -60,15 +61,18 @@ _Fecha de corte:_ `r params$fecha_corte`.
 ### Cobertura y n de estudiantes
 
 ```{r}
-prog_row <- PROGRAMAS |> 
-  dplyr::filter(cohorte == !!cohorte, facultad == !!facultad, programa == !!programa)
+tabla_cobertura <- table_programa_cobertura(PROGRAMAS, cohorte, facultad, programa)
 
-if (nrow(prog_row) == 0) {
+if (is.null(tabla_cobertura)) {
   cat("**Atención:** no se encontró el programa en PROGRAMAS (ver 01_load_data.R).")
 } else {
-  prog_row |> 
-    dplyr::select(n_total, starts_with("n_rindio_"), starts_with("cobertura_")) |> 
-    knitr::kable()
+  tabla_cobertura
+
+  prog_row <- program_row(PROGRAMAS, cohorte, facultad, programa)
+  nota_cautela <- build_caution_note(dplyr::first(prog_row$n_total))
+  if (!is.null(nota_cautela)) {
+    cat("\n\n> ", nota_cautela)
+  }
 }
 ```
 
@@ -85,7 +89,14 @@ if (nrow(df_levels) > 0) {
 
 ### Detalle por Dimensión/Eje/Indicador
 
-> Placeholder: construir tablas/figuras desde `DESGLOSE` según la taxonomía de cada prueba.
+```{r}
+tabla_desglose <- table_programa_desglose(DESGLOSE, cohorte, facultad, programa)
+if (is.null(tabla_desglose)) {
+  cat("No hay datos de desglose para este programa.")
+} else {
+  tabla_desglose
+}
+```
 
 ### Inglés (CEFR)
 
