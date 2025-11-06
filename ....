@@ -1,0 +1,200 @@
+---
+title: "Informe CCHH – Psicología (Cohorte 2025)"
+author: "EPI"
+format:
+  html:
+    toc: true
+    number-sections: false
+    df-print: paged
+  pdf:
+    toc: true
+fontsize: 11pt
+params:
+  programa: "Psicología"
+  cohorte: 2025
+  path_xlsx: "data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+  out_dir: "output/2025/psicologia"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup}
+# Paquetes
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(tidyverse, readr, janitor, gt, glue, lubridate)
+
+# Asegurar carpetas de salida
+dir.create(params$out_dir, recursive = TRUE, showWarnings = FALSE)
+
+# ---- Cargar parser ----
+# Opción A: si guardaste la función en R/parse_resultados_individuales_v2.R
+# source("R/parse_resultados_individuales_v2.R")
+
+# Opción B: pegar aquí la función (recomendado: mantener en R/)
+````
+
+# 1. Resumen ejecutivo
+
+```{r load-and-kpis}
+dat <- parse_resultados_individuales_v2(params$path_xlsx)
+
+# Diagnóstico mínimo
+n_total      <- nrow(dat)
+n_id_na      <- sum(is.na(dat$id_estudiante))
+n_rindio_1   <- sum(dat$rindio %in% 1, na.rm = TRUE)
+n_rindio_0   <- sum(dat$rindio %in% 0, na.rm = TRUE)
+n_rindio_na  <- sum(is.na(dat$rindio))
+pct_rindio   <- round(100 * n_rindio_1 / n_total, 1)
+
+kpis <- tibble::tibble(
+  Indicador = c("Programa","Cohorte","N estudiantes","Rindieron","No rindieron","Rendición (%, sobre total)"),
+  Valor     = c(params$programa, params$cohorte, n_total, n_rindio_1, n_rindio_0, glue("{pct_rindio}%"))
+)
+
+kpis %>%
+  gt() %>%
+  tab_header(title = md("**Resumen**")) %>%
+  fmt_number(columns = where(is.numeric), decimals = 0)
+```
+
+# 2. Resultados por competencias
+
+```{r competencias}
+# Selección de columnas de competencias
+comp_cols <- c("comp_11","comp_12","comp_32a","comp_32b","comp_32c","comp_41","comp_42")
+comp_cols <- intersect(names(dat), comp_cols)
+
+# Tabla descriptiva
+desc_comp <- dat %>%
+  select(all_of(comp_cols)) %>%
+  pivot_longer(everything(), names_to = "competencia", values_to = "puntaje") %>%
+  summarise(
+    n = sum(!is.na(puntaje)),
+    media = mean(puntaje, na.rm = TRUE),
+    sd = sd(puntaje, na.rm = TRUE),
+    p10 = quantile(puntaje, 0.10, na.rm = TRUE),
+    p50 = quantile(puntaje, 0.50, na.rm = TRUE),
+    p90 = quantile(puntaje, 0.90, na.rm = TRUE),
+    .by = competencia
+  )
+
+desc_comp %>%
+  gt(rowname_col = "competencia") %>%
+  fmt_number(columns = -competencia, decimals = 2) %>%
+  tab_header(title = md("**Distribución por competencia**"))
+```
+
+```{r fig-competencias, fig.cap="Distribución de puntajes por competencia"}
+dat %>%
+  select(all_of(comp_cols)) %>%
+  pivot_longer(everything(), names_to = "competencia", values_to = "puntaje") %>%
+  ggplot(aes(x = puntaje)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~ competencia, scales = "free_y") +
+  labs(x = "Puntaje", y = "Frecuencia")
+```
+
+# 3. Puntaje total y categorías
+
+```{r total-cat}
+has_total <- "puntaje_total" %in% names(dat)
+has_cat   <- "categoria_global" %in% names(dat)
+
+if (has_total) {
+  p_total <- dat %>%
+    ggplot(aes(x = puntaje_total)) +
+    geom_histogram(binwidth = 1) +
+    labs(title = "Distribución puntaje total", x = "Puntaje total", y = "Frecuencia")
+  print(p_total)
+}
+
+if (has_cat) {
+  tab_cat <- dat %>%
+    mutate(categoria_global = fct_lump_n(as.factor(categoria_global), n = 10, other_level = "Otras")) %>%
+    count(categoria_global, name = "n") %>%
+    mutate(pct = 100*n/sum(n))
+
+  tab_cat %>%
+    arrange(desc(n)) %>%
+    gt() %>%
+    fmt_number(columns = c(n, pct), decimals = 1) %>%
+    tab_header(title = md("**Categorías globales**"))
+}
+```
+
+# 4. Rendición y justificación (si aplica)
+
+```{r no-rendidos}
+if ("justificacion_no_rendicion" %in% names(dat)) {
+  nr <- dat %>%
+    filter(coalesce(rindio, 0L) == 0L) %>%
+    count(justificacion_no_rendicion, name = "n") %>%
+    mutate(pct = 100*n/sum(n)) %>%
+    arrange(desc(n))
+
+  if (nrow(nr)) {
+    nr %>% gt() %>%
+      fmt_number(columns = pct, decimals = 1) %>%
+      tab_header(title = md("**No rindieron: justificación**"))
+  }
+}
+```
+
+# 5. Anexos (control de calidad)
+
+```{r qc}
+qc <- tibble::tibble(
+  variable = names(dat),
+  na = sapply(dat, function(x) sum(is.na(x))),
+  n   = nrow(dat)
+) %>%
+  mutate(pct_na = round(100*na/n, 1)) %>%
+  arrange(desc(pct_na))
+
+qc %>%
+  gt() %>%
+  fmt_number(columns = c(na, n, pct_na), decimals = 1) %>%
+  tab_header(title = md("**Control de calidad: NAs por variable**"))
+```
+
+# 6. Exportables
+
+```{r export}
+# Guardar CSVs útiles
+readr::write_csv(desc_comp, file.path(params$out_dir, "resumen_competencias.csv"))
+if (has_cat) readr::write_csv(tab_cat, file.path(params$out_dir, "categorias_globales.csv"))
+if (has_total) readr::write_csv(dat %>% select(id_estudiante, puntaje_total), file.path(params$out_dir, "puntajes_individuales.csv"))
+```
+
+````
+
+### Cómo renderizar
+Desde la raíz del proyecto:
+```bash
+quarto render reports/psicologia.qmd -P path_xlsx="data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+````
+
+El HTML/PDF quedará en `output/2025/psicologia/` junto con CSVs auxiliares.
+
+---
+
+## Integración mínima al pipeline
+
+* Guarda tu función en `R/parse_resultados_individuales_v2.R`.
+* Crea un **wrapper** `R/01_load_data.R` que devuelva una lista con `data` y `diag`.
+* En `R/99_render_all.R`, llama:
+
+```r
+targets <- tibble::tribble(
+  ~programa,      ~qmd,                     ~xlsx,
+  "Psicología",   "reports/psicologia.qmd", "data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+)
+purrr::pwalk(targets, \(programa, qmd, xlsx){
+  cmd <- glue::glue('quarto render {qmd} -P path_xlsx="{xlsx}" -P programa="{programa}"')
+  system(cmd)
+})
+```
+
+Si quieres, lo afino para que siga exactamente tu estilo (paleta, logos, notas de resguardo, umbrales de supresión, etc.). Para la revisión completa del repo necesito acceso real al git remoto (el link actual no está accesible públicamente). 

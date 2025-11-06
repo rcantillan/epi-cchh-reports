@@ -1,0 +1,80 @@
+/* ===========================
+   styles.css — HTML report (Inconsolata + barra de marca)
+   =========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;900&display=swap');
+
+:root{
+  --brand:#0a6d7c;
+  --brand-dark:#0a4e58;
+  --brand-accent:#19b5c6;
+  --text:#11222b;
+}
+
+html, body {
+  font-family: "Inconsolata", ui-monospace, "SFMono-Regular",
+               Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+/* Encabezados */
+h1,h2,h3,h4,h5,h6{
+  color: var(--brand-dark);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  margin: 0.35em 0 0.15em 0;
+}
+h1{ font-size: 2.0rem; }
+h2{ font-size: 1.6rem; }
+h3{ font-size: 1.3rem; }
+
+/* Enlaces */
+a{ color: var(--brand); text-decoration: none; }
+a:hover{ color: var(--brand-accent); text-decoration: underline; }
+
+/* Tabla gt más compacta */
+.gt_table { font-size: 0.95rem; }
+
+/* -------- Barra superior con logo -------- */
+.brand-header{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  margin: -1.2rem -1.2rem 1.2rem -1.2rem; /* compensa padding del body de Quarto */
+  padding: 0.6rem 1.2rem;
+}
+.brand-wrap{
+  display: flex; align-items: center; gap: 14px;
+}
+.brand-logo{
+  height: 42px; width: auto; display: block;
+}
+.brand-title-main{
+  font-weight: 900; color: var(--brand-dark); font-size: 1.15rem; line-height: 1.1;
+}
+.brand-title-sub{
+  color: var(--brand); font-weight: 700; font-size: 0.95rem; line-height: 1;
+}
+
+/* Margen superior del contenido para no “pegarse” al header */
+.quarto-title-block { margin-top: 0.6rem; }
+
+/* Gráficos */
+.figure { margin: 1.0rem 0; }
+
+/* Código plegado */
+details.code-fold {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: .4rem .6rem;
+}
+
+/* Responsivo */
+@media (max-width: 820px){
+  .brand-title-main{ font-size: 1.0rem; }
+  .brand-title-sub{ font-size: 0.9rem; }
+}

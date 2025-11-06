@@ -1,0 +1,548 @@
+---
+title: ""
+subtitle: ""
+author: ""
+params:
+  archivo:
+    value: "/home/rober/Documentos/epi-cchh-reports/data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+    label: "Archivo Excel (Resultados Individuales)"
+format:
+  html:
+    toc: true
+    number-sections: false
+    df-print: paged
+    theme: styles/report.scss
+    title-block-banner: false
+    code-fold: true
+    code-tools: true
+    smooth-scroll: true
+    include-after-body: _footer.html
+execute:
+  freeze: auto
+  echo: true
+---
+
+![](assets/img/logo-uah-open.png){.brand-logo}
+
+<p class="brand-title">
+  <span class="brand-title-main">Análisis EPI</span>
+  <span class="brand-title-sub">Resultados Individuales (EPI) — reporte exploratorio</span>
+</p>
+
+Roberto Cantillan Carrasco
+
+::: {.callout-note}
+# **Instrucciones**
+Este informe carga **un único archivo Excel** (ruta en `params$archivo`), lo parsea con un lector robusto y presenta métricas, tablas y visualizaciones **Plotly**.
+:::
+
+```{r setup, include=FALSE}
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  tidyverse, readxl, janitor, readr, forcats,
+  plotly, htmlwidgets, scales, htmltools, glue
+)
+
+# Paleta UAH
+brand_main   <- "#0a6d7c"
+brand_dark   <- "#0a4e58"
+brand_accent <- "#19b5c6"
+brand_text   <- "#11222b"
+brand_muted  <- "#4b5661"
+brand_palette  <- grDevices::colorRampPalette(c(brand_accent, brand_main, brand_dark, brand_accent))
+brand_discrete <- brand_palette(16)
+plotly_brand <- list(colorway = brand_discrete, font = list(family = "Inconsolata"))
+
+options(scipen = 999, dplyr.summarise.inform = FALSE)
+```
+
+## 1) Cargar y parsear el archivo
+
+```{r load}
+archivo <- params$archivo
+cat("WD:", getwd(), "\n")
+cat("Archivo:", archivo, "\n")
+stopifnot(file.exists(archivo))
+```
+
+```{r parser}
+# ---------------- Parser robusto ----------------
+guess_data_start_base <- function(df0){
+  v <- suppressWarnings(readr::parse_double(df0[[1]]))
+  idx <- which(!is.na(v) & v > 1e6)
+  if (length(idx)) min(idx) else NA_integer_
+}
+guess_header_row_base <- function(df0, data_start){
+  if (is.na(data_start) || data_start <= 1) return(NA_integer_)
+  prev_df <- as.data.frame(df0[seq_len(data_start - 1), , drop = FALSE], stringsAsFactors = FALSE)
+  nonempty <- rowSums(!is.na(prev_df) & prev_df != "")
+  idx <- which(nonempty >= 2)
+  if (length(idx)) max(idx) else NA_integer_
+}
+make_names_from_block_base <- function(df0, header_row, data_start){
+  if (is.na(header_row)) {
+    raw_names <- names(df0)
+  } else {
+    block <- as.data.frame(df0[seq(from = header_row, to = data_start - 1), , drop = FALSE],
+                           stringsAsFactors = FALSE)
+    collapse_col <- function(x){
+      x <- x[!is.na(x) & x != ""]
+      if (!length(x)) NA_character_ else paste(x, collapse = " | ")
+    }
+    raw_names <- vapply(block, collapse_col, character(1))
+    empties <- is.na(raw_names) | raw_names == ""
+    if (any(empties)) {
+      idx <- seq_along(raw_names)
+      raw_names[empties] <- paste0("col_", idx[empties])
+    }
+  }
+  janitor::make_clean_names(raw_names)
+}
+first_existing_col_base <- function(df, candidates){
+  keep <- candidates[candidates %in% names(df)]
+  if (length(keep)) keep[1] else NA_character_
+}
+standardize_core_names <- function(dat){
+  nms <- names(dat)
+  pats <- list(
+    rut="(^rut(\\s|_|$)|^rut_estudiante|^id.*estudiante)",
+    dv="^(dv|digito|dígito)", primer="^primer.*apellido|apellid.*paterno",
+    segundo="^segundo.*apellido|apellid.*materno", nombres="^nombres?$",
+    estado_hab="^estado.*habilitaci[oó]n",
+    estatus="^estatus.*rendici[oó]n|^estado.*rendici[oó]n",
+    fecha="^fecha.*rendici[oó]n", justif="^justificaci[oó]n.*no.*rend"
+  )
+  rename_map <- list()
+  for (k in names(pats)){
+    hit <- stringr::str_which(nms, stringr::regex(pats[[k]], ignore_case = TRUE))
+    if (length(hit)) {
+      old <- nms[hit[1]]
+      new <- switch(k,
+        rut="rut", dv="dv", primer="primer_apellido", segundo="segundo_apellido",
+        nombres="nombres", estado_hab="estado_habilitacion", estatus="estatus_rendicion",
+        fecha="fecha_rendicion", justif="justificacion_no_rendicion"
+      )
+      rename_map[[new]] <- old
+    }
+  }
+  if (length(rename_map)) dat <- dplyr::rename(dat, !!!rename_map)
+  dat
+}
+fallback_positionals <- function(dat){
+  pos_map <- c("rut","dv","primer_apellido","segundo_apellido","nombres",
+               "estado_habilitacion","estatus_rendicion","fecha_rendicion","justificacion_no_rendicion")
+  for (i in seq_along(pos_map)){
+    tgt <- pos_map[i]
+    if (!tgt %in% names(dat) && i <= ncol(dat)) names(dat)[i] <- tgt
+  }
+  dat
+}
+looks_like_comp_score <- function(x){
+  x2 <- if (is.factor(x)) as.character(x) else x
+  x2 <- x2[!is.na(x2) & x2 != ""]
+  if (!length(x2)) return(FALSE)
+  ok <- stringr::str_detect(x2, stringr::regex("^(nr|n\\s*r|[0-3])$", ignore_case = TRUE)) |
+        stringr::str_detect(x2, stringr::regex("^\\d{1,2}$", ignore_case = TRUE))
+  mean(ok) >= 0.7
+}
+standardize_competencias <- function(dat){
+  nms <- names(dat)
+  ren <- list(
+    comp_11="^(x\\s*)?1[\\._\\- ]?1\\b|distingue\\s+las\\s+ideas\\s+centrales",
+    comp_12="^(x\\s*)?1[\\._\\- ]?2\\b|explica\\s+conceptos\\s+te[oó]ricos?",
+    comp_32a="^(x\\s*)?3[\\._\\- ]?2[\\._\\- ]?a\\b",
+    comp_32b="^(x\\s*)?3[\\._\\- ]?2[\\._\\- ]?b\\b",
+    comp_32c="^(x\\s*)?3[\\._\\- ]?2[\\._\\- ]?c\\b",
+    comp_41="^(x\\s*)?4[\\._\\- ]?1\\b|reconoce\\s+los\\s+componentes",
+    comp_42="^(x\\s*)?4[\\._\\- ]?2\\b|eval[íi]a\\s+la\\s+coherencia",
+    puntaje_total="puntaje.*total.*estudiante",
+    porcentaje_logro="porcentaje.*logro|%.*logro",
+    categoria_global="categor[ií]a.*resultado.*global.*estudiante",
+    incluido_listado="incluido.*listado"
+  )
+  rename_map <- list()
+  for (k in names(ren)){
+    hit <- stringr::str_which(nms, stringr::regex(ren[[k]], ignore_case = TRUE))
+    if (length(hit)) {
+      old <- nms[hit[1]]; rename_map[[k]] <- old
+    }
+  }
+  if (length(rename_map)) dat <- dplyr::rename(dat, !!!rename_map)
+
+  nm <- names(dat)
+  if (!"comp_32a" %in% nm){ hit <- which(stringr::str_detect(nm, stringr::regex("^x3_2_a", TRUE))); if (length(hit)) nm[hit[1]] <- "comp_32a" }
+  if (!"comp_32b" %in% nm){ hit <- which(stringr::str_detect(nm, stringr::regex("^x3_2_b", TRUE))); if (length(hit)) nm[hit[1]] <- "comp_32b" }
+  if (!"comp_32c" %in% nm){ hit <- which(stringr::str_detect(nm, stringr::regex("^x3_2_c", TRUE))); if (length(hit)) nm[hit[1]] <- "comp_32c" }
+  names(dat) <- nm; nm <- names(dat)
+
+  idx_just <- which(nm == "justificacion_no_rendicion")
+  idx_32a  <- which(nm == "comp_32a")
+  idx_32c  <- which(nm == "comp_32c")
+
+  if (length(idx_just) && length(idx_32a)){
+    rng <- seq(from = idx_just + 1, to = idx_32a - 1)
+    rng <- rng[rng >= 1 & rng <= ncol(dat)]
+    if (length(rng)){
+      cand <- nm[rng]; mask <- vapply(dat[cand], looks_like_comp_score, logical(1))
+      cand2 <- cand[mask]
+      if (length(cand2) >= 2){
+        nm[match(tail(cand2, 2), nm)] <- c("comp_11", "comp_12")
+      } else if (length(cand) >= 2){
+        nm[match(tail(cand, 2), nm)] <- c("comp_11", "comp_12")
+      }
+      names(dat) <- nm; nm <- names(dat)
+    }
+  }
+  if (length(idx_32c)){
+    pos <- idx_32c + 1
+    if (!"comp_41" %in% nm && pos <= ncol(dat)) { nm[pos] <- "comp_41"; pos <- pos + 1 }
+    if (!"comp_42" %in% nm && pos <= ncol(dat)) { nm[pos] <- "comp_42"; pos <- pos + 1 }
+    if (!"puntaje_total" %in% nm && pos <= ncol(dat)) { nm[pos] <- "puntaje_total"; pos <- pos + 1 }
+    if (!"porcentaje_logro" %in% nm && pos <= ncol(dat)) { nm[pos] <- "porcentaje_logro"; pos <- pos + 1 }
+    if (!"categoria_global" %in% nm && pos <= ncol(dat)) { nm[pos] <- "categoria_global"; pos <- pos + 1 }
+    names(dat) <- nm
+  }
+  dat
+}
+repair_person_names <- function(df){
+  required <- c("primer_apellido","segundo_apellido","nombres")
+  if (!all(required %in% names(df))) return(df)
+  split_full <- function(txt){
+    if (is.na(txt) || txt == "") return(list(nombres=NA_character_, ap1=NA_character_, ap2=NA_character_))
+    toks <- str_squish(txt) |> str_split("\\s+") |> unlist()
+    toks <- toks[toks != "" & !is.na(toks)]
+    if (length(toks) < 3) return(list(nombres=NA_character_, ap1=NA_character_, ap2=NA_character_))
+    ap2 <- toks[length(toks)]; ap1 <- toks[length(toks)-1]
+    nom <- if (length(toks) > 2) paste(toks[1:(length(toks)-2)], collapse = " ") else NA_character_
+    list(nombres=nom, ap1=ap1, ap2=ap2)
+  }
+  need_fix <- vapply(df$primer_apellido, function(x){
+    if (is.na(x) || x == "") FALSE else str_count(x, "\\S+") >= 3
+  }, logical(1))
+  if (any(need_fix)){
+    fixed <- lapply(df$primer_apellido[need_fix], split_full)
+    df$nombres[need_fix]          <- vapply(fixed, `[[`, character(1), "nombres")
+    df$primer_apellido[need_fix]  <- vapply(fixed, `[[`, character(1), "ap1")
+    df$segundo_apellido[need_fix] <- vapply(fixed, `[[`, character(1), "ap2")
+  }
+  df
+}
+
+parse_resultados_individuales_v2 <- function(path, sheet = NULL, compute_total = TRUE){
+  stopifnot(file.exists(path))
+  if (is.null(sheet)){
+    shs <- readxl::excel_sheets(path)
+    s_low <- stringr::str_to_lower(shs)
+    cand <- shs[stringr::str_detect(s_low, "resultado") & stringr::str_detect(s_low, "individual")]
+    if (!length(cand)) cand <- shs[stringr::str_detect(s_low, "individ")]
+    if (!length(cand)) cand <- shs
+    sheet <- cand[1]
+    message("Usando hoja: ", sheet)
+  }
+  raw <- readxl::read_excel(path, sheet = sheet, col_names = FALSE, col_types = "text")
+  raw <- janitor::remove_empty(raw, which = c("rows","cols"))
+  data_start <- guess_data_start_base(raw)
+  if (is.na(data_start)) stop("No pude detectar el inicio de datos (ID numérico) en la 1ª columna.")
+  hdr_row <- guess_header_row_base(raw, data_start)
+  col_nms <- make_names_from_block_base(raw, hdr_row, data_start)
+  dat <- tibble::as_tibble(raw[seq(from = data_start, to = nrow(raw)), , drop = FALSE])
+  names(dat) <- col_nms
+  dat <- dat %>% mutate(across(everything(), ~ na_if(.x, "")))
+  dat <- standardize_core_names(dat) %>% fallback_positionals()
+  id_candidates <- c("datos_de_estudiantes_de_la_cohorte", "rut", "id_estudiante", "id", names(dat)[1])
+  id_col <- first_existing_col_base(dat, id_candidates)
+  dat <- dat %>% mutate(id_estudiante = as.character(.data[[id_col]]))
+  dat <- repair_person_names(dat)
+  has_3 <- all(c("nombres","primer_apellido","segundo_apellido") %in% names(dat))
+  dat <- dat %>% mutate(
+    nombre_completo = if (has_3) stringr::str_squish(paste(nombres, primer_apellido, segundo_apellido))
+    else NA_character_
+  )
+  n <- nrow(dat)
+  rindio_from_fecha <- if ("fecha_rendicion" %in% names(dat)) {
+    tmp <- tolower(ifelse(is.na(dat$fecha_rendicion), "", dat$fecha_rendicion))
+    ifelse(stringr::str_detect(tmp, stringr::regex("no\\s*rendida", ignore_case = TRUE)), 0L,
+           ifelse(stringr::str_detect(tmp, stringr::regex("rendida", ignore_case = TRUE)), 1L, NA_integer_))
+  } else rep(NA_integer_, n)
+  rindio_from_estat <- if ("estatus_rendicion" %in% names(dat)) {
+    tmp <- tolower(ifelse(is.na(dat$estatus_rendicion), "", dat$estatus_rendicion))
+    ifelse(stringr::str_detect(tmp, stringr::regex("no\\s*rend", ignore_case = TRUE)), 0L,
+           ifelse(stringr::str_detect(tmp, stringr::regex("rend", ignore_case = TRUE)), 1L, NA_integer_))
+  } else rep(NA_integer_, n)
+  dat$rindio <- dplyr::coalesce(rindio_from_fecha, rindio_from_estat)
+  dat <- standardize_competencias(dat)
+  comp_guess <- c("comp_11","comp_12","comp_32a","comp_32b","comp_32c","comp_41","comp_42")
+  comp_cols <<- intersect(names(dat), comp_guess)
+  if (length(comp_cols)){
+    dat <- dat %>% mutate(across(all_of(comp_cols),
+      ~ suppressWarnings(readr::parse_number(as.character(.x)))))
+  }
+  if ("puntaje_total" %in% names(dat)){
+    dat <- dat %>% mutate(puntaje_total = suppressWarnings(readr::parse_number(as.character(puntaje_total))))
+  } else if (compute_total && length(comp_cols)){
+    dat <- dat %>% mutate(puntaje_total = rowSums(across(all_of(comp_cols)), na.rm = TRUE))
+  }
+  if ("porcentaje_logro" %in% names(dat)){
+    dat <- dat %>% mutate(porcentaje_logro = readr::parse_number(as.character(porcentaje_logro)))
+  }
+  dat
+}
+
+dat <- parse_resultados_individuales_v2(archivo)
+
+# Normaliza "NR" a NA
+dat <- dat %>% mutate(across(everything(), ~ ifelse(.x %in% c("NR","N R","nr","n r"), NA, .x)))
+```
+
+```{r glimpse}
+glimpse(dat)
+```
+
+## 2) KPIs, tabla de muestra y reporte automático
+
+```{r kpis}
+n_est   <- nrow(dat)
+p_rinde <- mean(dat$rindio %in% 1L, na.rm = TRUE)
+m_pt    <- mean(dat$puntaje_total, na.rm = TRUE)
+p50_pt  <- as.numeric(quantile(dat$puntaje_total, 0.5, na.rm = TRUE))
+
+# Promedios por competencia usando nombres de columna tal cual (sin labels)
+prom_comp <- if (length(comp_cols)) {
+  dat |>
+    summarize(across(all_of(comp_cols), ~mean(.x, na.rm = TRUE))) |>
+    pivot_longer(everything(), names_to = "competencia", values_to = "prom") |>
+    arrange(match(competencia, comp_cols))
+} else tibble(competencia = character(), prom = numeric())
+
+top_comp <- if (nrow(prom_comp)) prom_comp %>% arrange(desc(prom)) %>% slice_head(n = 1) else NULL
+bot_comp <- if (nrow(prom_comp)) prom_comp %>% arrange(prom) %>% slice_head(n = 1)        else NULL
+
+htmltools::HTML(glue::glue(
+  "<p><b>Resumen ejecutivo</b></p>
+  <ul>
+    <li><b>N estudiantes:</b> {n_est}</li>
+    <li><b>% Rendición:</b> {scales::percent(p_rinde, accuracy = 0.1)}</li>
+    <li><b>Puntaje total</b> — media: {round(m_pt,2)}, mediana: {round(p50_pt,2)}</li>
+    {if (nrow(prom_comp)) glue::glue('<li><b>Mayor promedio:</b> {top_comp$competencia} ({round(top_comp$prom,2)})</li>') else ''}
+    {if (nrow(prom_comp)) glue::glue('<li><b>Menor promedio:</b> {bot_comp$competencia} ({round(bot_comp$prom,2)})</li>') else ''}
+  </ul>"
+))
+```
+
+```{r tabla_muestra}
+cols_show <- c("rut","dv","nombres","primer_apellido","segundo_apellido",
+               "puntaje_total","porcentaje_logro","categoria_global","rindio")
+cols_show <- intersect(cols_show, names(dat))
+tbl <- dat %>% select(all_of(cols_show)) %>% head(15)
+
+plot_ly(
+  type = "table",
+  header = list(values = names(tbl), align = "center",
+                fill = list(color = brand_accent), font = list(color = "white")),
+  cells  = list(values = lapply(tbl, identity), align = "left")
+) |>
+  layout(title = "Muestra de registros (15)")
+```
+
+## 3) Visualizaciones (Plotly)
+
+### 3.1 Histograma puntaje total
+
+```{r g_puntaje}
+dat_p <- dat |> filter(!is.na(puntaje_total))
+
+plot_ly(
+  dat_p,
+  x = ~puntaje_total,
+  type = "histogram",
+  nbinsx = 25,
+  marker = list(line = list(width = 0))
+) |>
+  layout(
+    title = "Distribución puntaje_total",
+    xaxis = list(title = "puntaje_total"),
+    yaxis = list(title = "Frecuencia")
+  ) |>
+  layout(plotly_brand) |>
+  config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+```
+
+### 3.2 Barras por categoría_global
+
+```{r g_cat}
+cat_df <- dat |>
+  mutate(categoria_global = fct_infreq(categoria_global) |> fct_rev()) |>
+  count(categoria_global, name = "n") |>
+  filter(!is.na(categoria_global))
+
+plot_ly(
+  cat_df,
+  y = ~categoria_global,
+  x = ~n,
+  type = "bar",
+  orientation = "h"
+) |>
+  layout(
+    title = "Distribución por categoria_global",
+    xaxis = list(title = "N"),
+    yaxis = list(title = "")
+  ) |>
+  layout(plotly_brand) |>
+  config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+```
+
+### 3.3 Boxplots por competencia (0–3)
+
+```{r g_box}
+if (length(comp_cols)) {
+  dat_long <- dat |>
+    pivot_longer(all_of(comp_cols), names_to = "competencia", values_to = "nota") |>
+    filter(!is.na(nota)) |>
+    mutate(competencia = factor(competencia, levels = comp_cols))
+
+  plot_ly() |>
+    add_trace(
+      data = dat_long,
+      x = ~competencia, y = ~nota,
+      type = "box",
+      boxpoints = "outliers",
+      marker = list(opacity = 0.6),
+      line = list(color = brand_text)
+    ) |>
+    layout(
+      title = "Distribución por competencia",
+      xaxis = list(title = ""),
+      yaxis = list(title = "Nota (0–3)", range = c(0,3), dtick = 1)
+    ) |>
+    layout(plotly_brand) |>
+    config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+} else {
+  htmltools::HTML("<em>No se detectaron columnas de competencias.</em>")
+}
+```
+
+### 3.4 % de niveles (0–3) por competencia
+
+```{r g_stack}
+if (length(comp_cols)) {
+  dist_comp <- dat |>
+    pivot_longer(all_of(comp_cols), names_to = "competencia", values_to = "nota") |>
+    mutate(competencia = factor(competencia, levels = comp_cols),
+           nota = factor(nota, levels = 0:3)) |>
+    count(competencia, nota, .drop = FALSE) |>
+    group_by(competencia) |>
+    mutate(prop = n/sum(n)) |>
+    ungroup()
+
+  plot_ly(
+    dist_comp,
+    x = ~competencia,
+    y = ~prop,
+    color = ~nota,
+    type = "bar"
+  ) |>
+    layout(
+      barmode = "stack",
+      title = "Distribución de niveles por competencia",
+      xaxis = list(title = ""),
+      yaxis = list(title = "% dentro de competencia", tickformat = ".0%")
+    ) |>
+    layout(plotly_brand) |>
+    config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+} else {
+  htmltools::HTML("")
+}
+```
+
+### 3.5 Dispersión: comp_11 vs comp_12
+
+```{r g_scatter}
+if (all(c("comp_11","comp_12") %in% names(dat))) {
+  scat_df <- dat |>
+    filter(!is.na(comp_11), !is.na(comp_12)) |>
+    mutate(
+      j11 = comp_11 + rnorm(n(), 0, 0.05),
+      j12 = comp_12 + rnorm(n(), 0, 0.05),
+      hover = paste0(
+        "<b>", ifelse(is.na(nombre_completo), "(sin nombre)", nombre_completo), "</b>",
+        "<br>comp_11: ", comp_11,
+        "<br>comp_12: ", comp_12,
+        "<br>categoria_global: ", categoria_global
+      )
+    )
+
+  plot_ly(
+    scat_df,
+    x = ~j11, y = ~j12,
+    type = "scatter", mode = "markers",
+    color = ~categoria_global,
+    text = ~hover, hoverinfo = "text",
+    marker = list(size = 7, opacity = 0.85, line = list(width = 0))
+  ) |>
+    layout(
+      title = "comp_11 vs comp_12",
+      xaxis = list(title = "comp_11", range = c(-0.1, 3.1), dtick = 1),
+      yaxis = list(title = "comp_12", range = c(-0.1, 3.1), dtick = 1),
+      legend = list(orientation = "h", y = -0.2)
+    ) |>
+    layout(plotly_brand) |>
+    config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+} else {
+  htmltools::HTML("<em>No están presentes simultáneamente comp_11 y comp_12.</em>")
+}
+```
+
+### 3.6 Radar: promedio por competencia (0–3)
+
+```{r g_radar}
+if (length(comp_cols)) {
+  avg_comp <- dat |>
+    summarize(across(all_of(comp_cols), ~mean(.x, na.rm = TRUE))) |>
+    pivot_longer(everything(), names_to = "competencia", values_to = "prom") |>
+    mutate(competencia = factor(competencia, levels = comp_cols)) |>
+    arrange(competencia)
+
+  plot_ly(
+    type = "scatterpolar",
+    r = avg_comp$prom,
+    theta = avg_comp$competencia,
+    fill = "toself",
+    mode = "lines+markers",
+    hoverinfo = "text",
+    text = paste0(avg_comp$competencia, ": ", round(avg_comp$prom, 2))
+  ) |>
+    layout(
+      title = "Promedio por competencia",
+      polar = list(radialaxis = list(visible = TRUE, range = c(0,3), tick0 = 0, dtick = 1))
+    ) |>
+    layout(plotly_brand) |>
+    config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+} else {
+  htmltools::HTML("")
+}
+```
+
+### 3.7 % de rendición
+
+```{r g_rinde}
+rin_df <- dat |>
+  mutate(rindio = factor(ifelse(rindio %in% 1L, "Rindió", "No rindió"))) |>
+  count(rindio) |>
+  mutate(prop = n/sum(n))
+
+plot_ly(rin_df, x = ~rindio, y = ~prop, type = "bar") |>
+  layout(
+    title = "% de rendición",
+    xaxis = list(title = ""),
+    yaxis = list(title = "Porcentaje", tickformat = ".0%")
+  ) |>
+  layout(plotly_brand) |>
+  config(displaylogo = FALSE, modeBarButtonsToRemove = c("lasso2d","select2d"))
+```
+
+## 4) Notas
+
+* Los nombres de ejes/leyendas usan **directamente los nombres de columnas** (`comp_11`, `comp_12`, etc.).
+* Si cambian nombres de columnas en otro Excel, el parser intenta normalizar; si no existen, esas gráficas se omiten con un aviso breve.
+
+

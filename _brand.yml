@@ -1,0 +1,26 @@
+# _brand.yml
+
+color:
+  palette:
+    brand:       "#0a6d7c"
+    brand-dark:  "#0a4e58"
+    brand-accent: "#19b5c6"
+    text:        "#11222b"
+    muted:       "#4b5661"
+  foreground: text
+  background: "#ffffff"
+  primary:    brand
+
+logo:
+  small:  logo-uah-open.png
+  medium: logo-uah-open.png
+  large:  logo-uah-open.png
+
+typography:
+  fonts:
+    - family: Inconsolata
+      source: google
+  base:
+    family: Inconsolata
+  headings:
+    family: Inconsolata
