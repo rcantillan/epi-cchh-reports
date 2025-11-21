@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="01_slides_example_files/libs/revealjs/dist/theme/quarto-6a90e18a9118307b5aeefb42e1ff29c3.css">
+  <link rel="stylesheet" href="01_slides_example_files/libs/revealjs/dist/theme/quarto-d5a9c4706563da2fd0b43095299cd763.css">
   <link href="01_slides_example_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="01_slides_example_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="01_slides_example_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -121,16 +121,8 @@
       margin-right: 0; 
     }
   </style>
-  <link href="01_slides_example_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-  <script src="01_slides_example_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-  <link href="01_slides_example_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-  <script src="01_slides_example_files/libs/datatables-binding-0.33/datatables.js"></script>
-  <script src="01_slides_example_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-  <link href="01_slides_example_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-  <link href="01_slides_example_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-  <script src="01_slides_example_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-  <link href="01_slides_example_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-  <script src="01_slides_example_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+  <script src="01_slides_example_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="01_slides_example_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
   <link href="01_slides_example_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="01_slides_example_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
@@ -148,7 +140,7 @@
 </section>
 <section id="introducción" class="slide level2">
 <h2>Introducción</h2>
-<div class="div" style="font-size: 45px; text-align: left; margin-top: 3em;">
+<div class="div" style="font-size: 35px; text-align: left; margin-top: 4em;">
 <p>Este informe entrega una lectura <strong>descriptiva</strong> del desempeño de la cohorte en la evaluación EPI.</p>
 <p>Se presentan:</p>
 <ol type="1">
@@ -159,11 +151,45 @@
 </section>
 <section id="tabla-de-rúbrica" class="slide level2">
 <h2>Tabla de Rúbrica</h2>
-<div class="div" style="font-size: 45px; text-align: left; margin-top: 3em;">
+<div class="div" style="font-size: 40px; text-align: left; margin-top: 4em;">
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-ea4bc7288f5f91b2bef2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ea4bc7288f5f91b2bef2">{"x":{"filter":"none","vertical":false,"data":[["3","2","1","0","NR"],["Satisfactorio","Base","Por Mejorar","No Observado","No Responde"],["El desempeño descrito se logra, sin embargo, presenta algunas imprecisiones menores.","El desempeño descrito se logra de forma mínima o suficiente.","El desempeño descrito se presenta de forma errónea y/o no se ajusta a lo solicitado.","El desempeño descrito no es observado dada la ausencia de acciones o productos.","Respuesta no registrada."]],"container":"<table class=\"cell-border stripe compact\">\n  <thead>\n    <tr>\n      <th>Nivel<\/th>\n      <th>Categoría<\/th>\n      <th>Descripción<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","ordering":false,"pageLength":5,"columnDefs":[{"name":"Nivel","targets":0},{"name":"Categoría","targets":1},{"name":"Descripción","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<table class="table table-hover table-condensed caption-top" data-quarto-postprocess="true" style="font-size: 20px; font-family: &quot;Inconsolata&quot;, monospace; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; font-weight: bold; color: white !important; background-color: rgba(10, 109, 124, 255) !important; padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;">Nivel</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; font-weight: bold; color: white !important; background-color: rgba(10, 109, 124, 255) !important; padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;">Categoría</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(10, 109, 124, 255) !important; padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center; width: 8%; font-weight: bold; color: rgba(10, 109, 124, 255) !important; vertical-align: top; padding: 10px; font-size: 1.2em; border-bottom: 1px solid #e0e0e0;">3</td>
+<td style="text-align: center; width: 17%; font-weight: bold; color: rgba(17, 34, 43, 255) !important; vertical-align: top; padding: 10px; border-bottom: 1px solid #e0e0e0;">Satisfactorio</td>
+<td style="text-align: left; width: 75%; vertical-align: top; line-height: 1.5; padding: 10px; color: #4b5661; border-bottom: 1px solid #e0e0e0;">El desempeño descrito se logra, sin embargo, presenta algunas imprecisiones menores.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8%; font-weight: bold; color: rgba(10, 109, 124, 255) !important; vertical-align: top; padding: 10px; font-size: 1.2em; border-bottom: 1px solid #e0e0e0;">2</td>
+<td style="text-align: center; width: 17%; font-weight: bold; color: rgba(17, 34, 43, 255) !important; vertical-align: top; padding: 10px; border-bottom: 1px solid #e0e0e0;">Base</td>
+<td style="text-align: left; width: 75%; vertical-align: top; line-height: 1.5; padding: 10px; color: #4b5661; border-bottom: 1px solid #e0e0e0;">El desempeño descrito se logra de forma mínima o suficiente.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8%; font-weight: bold; color: rgba(10, 109, 124, 255) !important; vertical-align: top; padding: 10px; font-size: 1.2em; border-bottom: 1px solid #e0e0e0;">1</td>
+<td style="text-align: center; width: 17%; font-weight: bold; color: rgba(17, 34, 43, 255) !important; vertical-align: top; padding: 10px; border-bottom: 1px solid #e0e0e0;">Por Mejorar</td>
+<td style="text-align: left; width: 75%; vertical-align: top; line-height: 1.5; padding: 10px; color: #4b5661; border-bottom: 1px solid #e0e0e0;">El desempeño descrito se presenta de forma errónea y/o no se ajusta a lo solicitado.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8%; font-weight: bold; color: rgba(10, 109, 124, 255) !important; vertical-align: top; padding: 10px; font-size: 1.2em; border-bottom: 1px solid #e0e0e0;">0</td>
+<td style="text-align: center; width: 17%; font-weight: bold; color: rgba(17, 34, 43, 255) !important; vertical-align: top; padding: 10px; border-bottom: 1px solid #e0e0e0;">No Observado</td>
+<td style="text-align: left; width: 75%; vertical-align: top; line-height: 1.5; padding: 10px; color: #4b5661; border-bottom: 1px solid #e0e0e0;">El desempeño descrito no es observado dada la ausencia de acciones o productos.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8%; font-weight: bold; color: rgba(10, 109, 124, 255) !important; vertical-align: top; padding: 10px; font-size: 1.2em; border-bottom: 2px solid #0a6d7c;">NR</td>
+<td style="text-align: center; width: 17%; font-weight: bold; color: rgba(17, 34, 43, 255) !important; vertical-align: top; padding: 10px; border-bottom: 2px solid #0a6d7c;">No Responde</td>
+<td style="text-align: left; width: 75%; vertical-align: top; line-height: 1.5; padding: 10px; color: #4b5661; border-bottom: 2px solid #0a6d7c;">Respuesta no registrada.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -182,6 +208,231 @@
 <div class="column" style="width:65%;">
 <p><img data-src="01_slides_example_files/figure-revealjs/plots_items-1.png" width="1056"></p>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#ffc107;">66.7%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 63.0%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 17.5%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="explica-conceptos-teóricos-vinculados-en-el-texto-recurriendo-a-los-conocimientos-básicos-en-psicología-y-disciplinas-fundantes." class="slide level2">
+<h2>Explica conceptos teóricos vinculados en el texto, recurriendo a los conocimientos básicos en Psicología y disciplinas fundantes.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-2.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#dc3545;">47.3%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 26.5%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 31.3%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="section-1" class="slide level2" data-background-color="white">
+<h2></h2>
+<div class="competencia-slide">
+<div class="competencia-text">
+<pre><code>COMPETENCIA: Analiza fenómenos y problemas humanos desde una mirada disciplinar básica, reconociendo dimensiones individuales, relacionales y contextuales involucradas.</code></pre>
+</div>
+</div>
+</section>
+<section id="explica-dimensiones-individuales-psicológicas-y-biológicas-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera." class="slide level2">
+<h2>Explica dimensiones individuales (psicológicas y biológicas) involucradas, utilizando de manera pertinente nociones aprendidas en la carrera.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-3.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#dc3545;">47.8%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 28.4%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 49.3%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="explica-dimensiones-relacionales-involucradas-que-aludan-a-las-interacciones-entre-personas-o-grupos." class="slide level2">
+<h2>Explica dimensiones relacionales involucradas (que aludan a las interacciones entre personas o grupos).</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-4.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#dc3545;">42.5%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 21.8%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 55.9%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="explica-dimensiones-contextuales-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera." class="slide level2">
+<h2>Explica dimensiones contextuales involucradas, utilizando de manera pertinente nociones aprendidas en la carrera.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-5.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#dc3545;">37.0%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 20.9%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 56.9%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="section-2" class="slide level2" data-background-color="white">
+<h2></h2>
+<div class="competencia-slide">
+<div class="competencia-text">
+<pre><code>COMPETENCIA: Analiza investigaciones en Psicología reconociendo sus componentes y la coherencia entre estos.</code></pre>
+</div>
+</div>
+</section>
+<section id="reconoce-los-componentes-de-una-investigación-en-psicología." class="slide level2">
+<h2>Reconoce los componentes de una investigación en Psicología.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-6.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#28a745;">84.7%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 68.7%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 8.5%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="evalúa-la-coherencia-entre-los-distintos-componentes-de-una-investigación." class="slide level2">
+<h2>Evalúa la coherencia entre los distintos componentes de una investigación.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-7.png" width="1056"></p>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<div class="analysis-box">
+<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">
+Indicadores Clave
+</h4>
+<div class="stat-row" style="margin-top:15px;">
+<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br><strong style="font-size:1.2em; color:#ffc107;">54.5%</strong>
+</div>
+<div style="margin-top:15px;">
+<div style="font-size:0.9em;">
+<span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> 34.6%
+</div>
+<div style="font-size:0.9em;">
+<span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> 18.5%
+</div>
+</div>
+</div>
+<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">
+<strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
+</div>
+</div>
+</div></div>
+</section>
+<section id="anexo-plot-alternativos" class="slide level2 center middle" data-background-color="#0a4e58" color="white">
+<h2>Anexo: plot alternativos</h2>
+</section>
+<section id="distingue-las-ideas-centrales-y-elementos-de-apoyo-que-componen-el-argumento-del-texto.-1" class="slide level2">
+<h2>Distingue las ideas centrales y elementos de apoyo que componen el argumento del texto.</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-1.png" width="1152"></p>
+</div>
+</div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -201,14 +452,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="explica-conceptos-teóricos-vinculados-en-el-texto-recurriendo-a-los-conocimientos-básicos-en-psicología-y-disciplinas-fundantes." class="slide level2">
+<section id="explica-conceptos-teóricos-vinculados-en-el-texto-recurriendo-a-los-conocimientos-básicos-en-psicología-y-disciplinas-fundantes.-1" class="slide level2">
 <h2>Explica conceptos teóricos vinculados en el texto, recurriendo a los conocimientos básicos en Psicología y disciplinas fundantes.</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-2.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-2.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -228,22 +483,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="section-1" class="slide level2" data-background-color="white">
-<h2></h2>
-<div class="competencia-slide">
-<div class="competencia-text">
-<pre><code>COMPETENCIA: Analiza fenómenos y problemas humanos desde una mirada disciplinar básica, reconociendo dimensiones individuales, relacionales y contextuales involucradas.</code></pre>
-</div>
-</div>
-</section>
-<section id="explica-dimensiones-individuales-psicológicas-y-biológicas-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera." class="slide level2">
+<section id="explica-dimensiones-individuales-psicológicas-y-biológicas-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera.-1" class="slide level2">
 <h2>Explica dimensiones individuales (psicológicas y biológicas) involucradas, utilizando de manera pertinente nociones aprendidas en la carrera.</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-3.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-3.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -263,14 +514,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="explica-dimensiones-relacionales-involucradas-que-aludan-a-las-interacciones-entre-personas-o-grupos." class="slide level2">
+<section id="explica-dimensiones-relacionales-involucradas-que-aludan-a-las-interacciones-entre-personas-o-grupos.-1" class="slide level2">
 <h2>Explica dimensiones relacionales involucradas (que aludan a las interacciones entre personas o grupos).</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-4.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-4.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -290,14 +545,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="explica-dimensiones-contextuales-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera." class="slide level2">
+<section id="explica-dimensiones-contextuales-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera.-1" class="slide level2">
 <h2>Explica dimensiones contextuales involucradas, utilizando de manera pertinente nociones aprendidas en la carrera.</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-5.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-5.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -317,22 +576,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="section-2" class="slide level2" data-background-color="white">
-<h2></h2>
-<div class="competencia-slide">
-<div class="competencia-text">
-<pre><code>COMPETENCIA: Analiza investigaciones en Psicología reconociendo sus componentes y la coherencia entre estos.</code></pre>
-</div>
-</div>
-</section>
-<section id="reconoce-los-componentes-de-una-investigación-en-psicología." class="slide level2">
+<section id="reconoce-los-componentes-de-una-investigación-en-psicología.-1" class="slide level2">
 <h2>Reconoce los componentes de una investigación en Psicología.</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-6.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-6.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -352,14 +607,18 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
 </section>
-<section id="evalúa-la-coherencia-entre-los-distintos-componentes-de-una-investigación." class="slide level2">
+<section id="evalúa-la-coherencia-entre-los-distintos-componentes-de-una-investigación.-1" class="slide level2">
 <h2>Evalúa la coherencia entre los distintos componentes de una investigación.</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_items-7.png" width="1056"></p>
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
+<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-7.png" width="1152"></p>
+</div>
 </div><div class="column" style="width:35%;">
+<div class="div" style="font-size: 25px; text-align: left; margin-top: 4em;">
 <div class="analysis-box">
 <h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">
 Indicadores Clave
@@ -379,38 +638,8 @@ Indicadores Clave
 <div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">
 <strong><em>Índice de Calidad:</em></strong><em> Porcentaje del puntaje ideal alcanzado por el curso.<br><strong></strong></em><strong>Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.
 </div>
+</div>
 </div></div>
-</section>
-<section id="anexo-lollipop-resumen" class="slide level2">
-<h2>Anexo: Lollipop (Resumen)</h2>
-</section>
-<section id="distingue-las-ideas-centrales-y-elementos-de-apoyo-que-componen-el-argumento-del-texto.-lollipop" class="slide level2">
-<h2>Distingue las ideas centrales y elementos de apoyo que componen el argumento del texto. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-1.png" width="1152"></p>
-</section>
-<section id="explica-conceptos-teóricos-vinculados-en-el-texto-recurriendo-a-los-conocimientos-básicos-en-psicología-y-disciplinas-fundantes.-lollipop" class="slide level2">
-<h2>Explica conceptos teóricos vinculados en el texto, recurriendo a los conocimientos básicos en Psicología y disciplinas fundantes. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-2.png" width="1152"></p>
-</section>
-<section id="explica-dimensiones-individuales-psicológicas-y-biológicas-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera.-lollipop" class="slide level2">
-<h2>Explica dimensiones individuales (psicológicas y biológicas) involucradas, utilizando de manera pertinente nociones aprendidas en la carrera. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-3.png" width="1152"></p>
-</section>
-<section id="explica-dimensiones-relacionales-involucradas-que-aludan-a-las-interacciones-entre-personas-o-grupos.-lollipop" class="slide level2">
-<h2>Explica dimensiones relacionales involucradas (que aludan a las interacciones entre personas o grupos). (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-4.png" width="1152"></p>
-</section>
-<section id="explica-dimensiones-contextuales-involucradas-utilizando-de-manera-pertinente-nociones-aprendidas-en-la-carrera.-lollipop" class="slide level2">
-<h2>Explica dimensiones contextuales involucradas, utilizando de manera pertinente nociones aprendidas en la carrera. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-5.png" width="1152"></p>
-</section>
-<section id="reconoce-los-componentes-de-una-investigación-en-psicología.-lollipop" class="slide level2">
-<h2>Reconoce los componentes de una investigación en Psicología. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-6.png" width="1152"></p>
-</section>
-<section id="evalúa-la-coherencia-entre-los-distintos-componentes-de-una-investigación.-lollipop" class="slide level2">
-<h2>Evalúa la coherencia entre los distintos componentes de una investigación. (Lollipop)</h2>
-<p><img data-src="01_slides_example_files/figure-revealjs/plots_lollipop-7.png" width="1152"></p>
 <script>
   window.addEventListener("load", (event) => {
     function checkLogo() {

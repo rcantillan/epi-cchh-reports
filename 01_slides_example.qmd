@@ -86,13 +86,12 @@ parse_deep_excel <- function(path){
   
   if (is.na(header_row_idx)) return(list(data=tibble(), map=tibble()))
   
-  # Extraer filas de títulos (Fila detectada y la siguiente)
+  # Extraer filas de títulos
   row_main <- as.character(raw_block[header_row_idx, ])
   row_sub  <- as.character(raw_block[header_row_idx + 1, ])
   
   col_keys <- character(length(row_main))
   
-  # Construir claves de columna
   for(j in seq_along(col_keys)){
     val_main <- if(!is.na(row_main[j])) str_squish(row_main[j]) else ""
     val_sub  <- if(!is.na(row_sub[j]))  str_squish(row_sub[j]) else ""
@@ -105,7 +104,6 @@ parse_deep_excel <- function(path){
     else { col_keys[j] <- NA_character_ }
   }
   
-  # Identificar columnas válidas
   valid_indices <- which(!is.na(col_keys) & col_keys %in% names(manual_titles))
   
   if(length(valid_indices) == 0) return(list(data=tibble(), map=tibble()))
@@ -117,12 +115,10 @@ parse_deep_excel <- function(path){
   final_col_ids <- paste0("item_", seq_along(valid_indices))
   colnames(dat_subset) <- final_col_ids
   
-  # Limpieza
   dat <- dat_subset %>%
     mutate(across(everything(), ~ na_if(str_trim(.x), ""))) %>%
     mutate(across(everything(), ~ ifelse(toupper(.x) %in% c("NR","N R","N-R"), "NR", .x)))
   
-  # Mapa final
   mapa <- tibble(
     col_id = final_col_ids,
     code = col_keys[valid_indices],
@@ -169,7 +165,7 @@ tabla_rubrica <- tibble::tibble(
 
 ## Introducción
 
-::: {.div style="font-size: 45px; text-align: left; margin-top: 3em;"}
+::: {.div style="font-size: 35px; text-align: left; margin-top: 4em;"}
 
 Este informe entrega una lectura **descriptiva** del desempeño de la cohorte en la evaluación EPI.
 
@@ -183,15 +179,50 @@ Se presentan:
 
 ## Tabla de Rúbrica
 
-::: {.div style="font-size: 45px; text-align: left; margin-top: 3em;"}
+::: {.div style="font-size: 40px; text-align: left; margin-top: 4em;"}
 
 ```{r show_rubrica, echo=FALSE}
-DT::datatable(
-  tabla_rubrica,
-  rownames = FALSE,
-  options = list(dom = 't', ordering = FALSE, pageLength = 5),
-  class = 'cell-border stripe compact'
-)
+library(kableExtra)
+
+tabla_rubrica %>%
+  kbl(escape = F, align = "ccl") %>% # Alinear: Centro, Centro, Izquierda
+  kable_styling(
+    bootstrap_options = c("hover", "condensed"), 
+    full_width = TRUE, 
+    font_size = 20, # Un poco más chico para que quepa cómodo
+    html_font = "\"Inconsolata\", monospace", # Tu fuente corporativa
+    position = "center"
+  ) %>%
+  # --- ENCABEZADO ---
+  row_spec(0, 
+    bold = TRUE, 
+    color = "white", 
+    background = "#0a6d7c", 
+    extra_css = "padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;"
+  ) %>%
+  # --- COLUMNA 1: NIVEL ---
+  column_spec(1, 
+    width = "8%", 
+    bold = TRUE, 
+    color = "#0a6d7c", 
+    extra_css = "vertical-align: top; padding: 10px; font-size: 1.2em;"
+  ) %>%
+  # --- COLUMNA 2: CATEGORÍA ---
+  column_spec(2, 
+    width = "17%", 
+    bold = TRUE, 
+    color = "#11222b", 
+    extra_css = "vertical-align: top; padding: 10px;"
+  ) %>%
+  # --- COLUMNA 3: DESCRIPCIÓN ---
+  column_spec(3, 
+    width = "75%", 
+    extra_css = "vertical-align: top; text-align: left; line-height: 1.5; padding: 10px; color: #4b5661;"
+  ) %>%
+  # --- FILAS (Líneas separadoras sutiles) ---
+  row_spec(1:(nrow(tabla_rubrica)-1), extra_css = "border-bottom: 1px solid #e0e0e0;") %>%
+  # Borde final fuerte
+  row_spec(nrow(tabla_rubrica), extra_css = "border-bottom: 2px solid #0a6d7c;")
 ```
 
 :::
@@ -254,21 +285,19 @@ if (nrow(final_items) == 0) {
       mutate(prop = n/sum(n))
 
     # --- ESTADÍSTICOS DE ALTO NIVEL (INSIGHTS) ---
-    
-    # 1. Base válida (excluyendo NR)
     df_valid <- df %>% filter(level %in% c("0","1","2","3"))
     total_valid <- sum(df_valid$n)
-    
-    # 2. Índice de Calidad (0 a 100): (Puntaje Real / Puntaje Ideal) * 100
-    puntos_reales <- sum(as.numeric(as.character(df_valid$level)) * df_valid$n)
-    puntos_ideales <- total_valid * 3
-    indice_calidad <- if(puntos_ideales > 0) (puntos_reales / puntos_ideales) else 0
-    
-    # 3. Logro Efectivo (Niveles 2 + 3)
+    points_sum <- sum(as.numeric(as.character(df_valid$level)) * df_valid$n)
+    max_points <- total_valid * 3
+    ilr <- if(max_points > 0) points_sum / max_points else 0
     pct_logro <- sum(df$prop[df$level %in% c("2","3")])
-    
-    # 4. Brecha Crítica (Niveles 0 + 1)
     pct_brecha <- sum(df$prop[df$level %in% c("0","1")])
+    
+    num_vals <- suppressWarnings(readr::parse_number(as.character(x)))
+    num_vals <- num_vals[!is.na(num_vals) & num_vals %in% 0:3]
+    media <- if(length(num_vals)) mean(num_vals) else NA
+    top   <- df %>% arrange(desc(n)) %>% slice(1)
+    p_nr  <- sum(df$prop[df$level == "NR"], na.rm=TRUE)
     
     # Título limpio
     titulo_display <- str_replace(titulo, "^\\d+(\\.\\d+)?(\\.[a-z])?\\s*", "")
@@ -284,13 +313,13 @@ if (nrow(final_items) == 0) {
     
     g <- ggplot(df, aes(x = level, y = n)) +
       geom_col(fill = brand_main, width = 0.75) + 
-      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 6, fontface="bold", color=brand_dark) +
+      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 5, fontface="bold", color=brand_dark) +
       scale_x_discrete(drop = FALSE, labels = nivel_labels) +
       labs(x = NULL, y = NULL) +
       theme(
         panel.grid.major.x = element_blank(),
         axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 15, color = brand_text, lineheight = 1.1, margin = margin(t=2)),
+        axis.text.x = element_text(size = 14, color = brand_text, lineheight = 1.1, margin = margin(t=10)),
         plot.margin = margin(10,10,30,10)
       )
     print(g)
@@ -299,39 +328,38 @@ if (nrow(final_items) == 0) {
     
     # COL 2: INSIGHTS ESTRATÉGICOS
     cat("::: {.column width='35%'}\n")
+    cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 4em;"}\n')
+
     
-    # Caja de Análisis con Indicadores de Valor
     cat('<div class="analysis-box">')
-      cat('<h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">Indicadores Clave</h4>')
+      cat('<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">Indicadores Clave</h4>')
       
-      # Indicador 1: Índice de Calidad (Estilo Semáforo)
-      color_ic <- if(indice_calidad >= 0.7) "#28a745" else if(indice_calidad >= 0.5) "#ffc107" else "#dc3545"
+      color_ic <- if(ilr >= 0.7) "#28a745" else if(ilr >= 0.5) "#ffc107" else "#dc3545"
       cat('<div class="stat-row" style="margin-top:15px;">')
-      cat('<span style="font-size:1.1em; color:#666;">Índice de Calidad Global (0-100%):</span><br>')
-      cat(glue::glue('<strong style="font-size:1.1em; color:{color_ic};">{scales::percent(indice_calidad, accuracy=0.1)}</strong>'))
+      cat('<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br>')
+      cat(glue::glue('<strong style="font-size:1.2em; color:{color_ic};">{scales::percent(ilr, accuracy=0.1)}</strong>'))
       cat('</div>')
       
-      # Indicador 2: Logro vs Brecha
       cat('<div style="margin-top:15px;">')
-      cat(glue::glue('<div><span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> {fmt_pct(pct_logro)}</div>'))
-      cat(glue::glue('<div><span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> {fmt_pct(pct_brecha)}</div>'))
+      cat(glue::glue('<div style="font-size:0.9em;"><span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> {fmt_pct(pct_logro)}</div>'))
+      cat(glue::glue('<div style="font-size:0.9em;"><span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> {fmt_pct(pct_brecha)}</div>'))
       cat('</div>')
 
     cat('</div>')
     
-    # Pie de página explicativo (Pequeño)
-    cat('<div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">')
+    cat('<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">')
     cat('<strong>*Índice de Calidad:</strong> Porcentaje del puntaje ideal alcanzado por el curso.<br>')
     cat('<strong>*Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.')
     cat('</div>')
-    
+
+    cat("\n:::\n") 
     cat("\n:::\n") 
     cat("::::\n\n") 
   }
 }
 ```
 
-## Anexo: Lollipop (Resumen)
+## Anexo: plot alternativos {.center .middle background-color="#0a4e58" color="white"}
 
 ```{r plots_lollipop, results='asis', echo=FALSE}
 #| fig.width: 12
@@ -362,8 +390,24 @@ if (nrow(final_items) > 0) {
       complete(level = factor(c("0","1","2","3","NR"), levels = c("0","1","2","3","NR")), fill = list(n = 0)) |>
       mutate(prop = n/sum(n))
       
+      # ESTADÍSTICOS (Replicados)
+      df_valid <- df %>% filter(level %in% c("0","1","2","3"))
+      total_valid <- sum(df_valid$n)
+      points_sum <- sum(as.numeric(as.character(df_valid$level)) * df_valid$n)
+      max_points <- total_valid * 3
+      ilr <- if(max_points > 0) points_sum / max_points else 0
+      pct_logro <- sum(df$prop[df$level %in% c("2","3")])
+      pct_brecha <- sum(df$prop[df$level %in% c("0","1")])
+
       cat("\n\n---\n\n")
-      cat("## ", titulo_display, " (Lollipop)\n\n")
+      cat("## ", titulo_display, "\n\n")
+      
+      cat(":::: {.columns}\n\n")
+      
+      # COL 1: LOLLIPOP
+      cat("::: {.column width='65%'}\n")
+      # AQUI SE AGREGA LA CLASE DIV SOLICITADA
+      cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 4em;"}\n')
       
       g <- ggplot(df, aes(x = level, y = prop)) +
         geom_segment(aes(xend=level, y=0, yend=prop), color=brand_main, linewidth=1.5) +
@@ -373,11 +417,40 @@ if (nrow(final_items) > 0) {
         scale_x_discrete(labels = nivel_labels) +
         labs(x=NULL, y=NULL) +
         theme(
-           axis.text.x = element_text(size = 11, color = brand_text, lineheight = 1.1),
+           axis.text.x = element_text(size = 14, color = brand_text, lineheight = 1.1),
            plot.margin = margin(20,20,40,20)
         )
-      
       print(g)
+      
+      cat('\n:::\n') # Fin div
+      cat("\n:::\n")
+      
+      # COL 2: INSIGHTS
+      cat("::: {.column width='35%'}\n")
+      cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 4em;"}\n')
+      
+      cat('<div class="analysis-box">')
+        cat('<h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">Indicadores Clave</h4>')
+        color_ic <- if(ilr >= 0.7) "#28a745" else if(ilr >= 0.5) "#ffc107" else "#dc3545"
+        cat('<div class="stat-row" style="margin-top:15px;">')
+        cat('<span style="font-size:1.1em; color:#666;">Índice de Calidad Global (0-100%):</span><br>')
+        cat(glue::glue('<strong style="font-size:1.1em; color:{color_ic};">{scales::percent(ilr, accuracy=0.1)}</strong>'))
+        cat('</div>')
+        cat('<div style="margin-top:15px;">')
+        cat(glue::glue('<div><span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> {fmt_pct(pct_logro)}</div>'))
+        cat(glue::glue('<div><span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> {fmt_pct(pct_brecha)}</div>'))
+        cat('</div>')
+      cat('</div>')
+      
+      cat('<div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">')
+      cat('<strong>*Índice de Calidad:</strong> Porcentaje del puntaje ideal alcanzado por el curso.<br>')
+      cat('<strong>*Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.')
+      cat('</div>')
+
+      cat('\n:::\n') # Fin div
+      cat("\n:::\n") 
+      
+      cat("::::\n\n")
   }
 }
 ```
