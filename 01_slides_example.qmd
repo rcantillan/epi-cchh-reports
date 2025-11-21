@@ -457,11 +457,10 @@ if (nrow(final_items) > 0) {
 
 
 
-## Balance General: Brecha vs Logro {.center .middle background-color="#0a4e58" color="white"}
-
+## Balance General {.center .middle background-color="#0a4e58" color="white"}
 
 ```{r plot_divergente, results='asis', echo=FALSE}
-#| fig.width: 14
+#| fig.width: 13
 #| fig.height: 7
 
 if (nrow(final_items) > 0) {
@@ -564,6 +563,102 @@ if (nrow(final_items) > 0) {
   print(g)
 }
 ```
+
+
+```{r plot_heatmap, results='asis', echo=FALSE}
+#| fig.width: 17
+#| fig.height: 8.5
+
+if (nrow(final_items) > 0) {
+  
+  # 1. Consolidar datos
+  all_data <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    code   <- final_items$code[i]
+    raw_title <- final_items$final_title[i]
+    
+    comp_id <- stringr::str_sub(code, 1, 1)
+    comp_label <- paste("Competencia", comp_id)
+    
+    # Limpieza y WRAP
+    item_label_clean <- str_replace(raw_title, "^\\d+(\\.\\d+)?(\\.[a-z])?\\s*", "")
+    item_label <- stringr::str_wrap(item_label_clean, width = 50)
+    
+    x <- dat[[col_id]]
+    
+    tibble(raw = x) %>%
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(stringr::str_detect(val, "\\bNR\\b") ~ "NR", TRUE ~ val),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","NR"))
+      ) %>%
+      count(level, name = "n") %>%
+      mutate(
+        prop = n / sum(n),
+        item = item_label,
+        competencia = comp_label,
+        code_order = code
+      )
+  })
+  
+  # Ordenar
+  all_data <- all_data %>%
+    arrange(desc(code_order)) %>% 
+    mutate(item = factor(item, levels = unique(item)))
+  
+  # 2. Generar Heatmap
+  cat("\n\n---\n\n")
+  cat("## Mapa de Calor: Distribución del Curso\n\n")
+  
+  g <- ggplot(all_data, aes(x = level, y = item, fill = prop)) +
+    geom_tile(color = "white", linewidth = 1) + 
+    
+    geom_text(aes(label = scales::percent(prop, accuracy = 1)), 
+              color = ifelse(all_data$prop > 0.5, "white", "#333333"), 
+              size = 5, fontface = "bold") + 
+    
+    facet_grid(competencia ~ ., scales = "free_y", space = "free_y", switch = "y") +
+    
+    scale_fill_gradient(low = "#e0f2f1", high = brand_main, labels = scales::percent) +
+    scale_x_discrete(position = "top", labels = nivel_labels) +
+    
+    labs(
+      x = NULL, y = NULL, fill = "Concentración",
+      caption = "Intensidad de color indica mayor porcentaje de estudiantes."
+    ) +
+    
+    theme_minimal(base_size = 18) + 
+    theme(
+      legend.position = "right",
+      
+      # EJE X (Arriba)
+      axis.text.x = element_text(face = "bold", size = 14, color = brand_dark),
+      
+      # EJE Y (Texto de los ítems) - ALINEACIÓN DERECHA (hjust = 1)
+      axis.text.y = element_text(
+        size = 14, 
+        color = "#333333", 
+        margin = margin(r=10), 
+        lineheight = 1.1, 
+        hjust = 1  # <--- ESTO ALINEA EL TEXTO A LA DERECHA
+      ),
+      
+      # TÍTULOS DE COMPETENCIA
+      strip.text.y.left = element_text(angle = 0, face = "bold", size = 14, color = "#0a4e58"),
+      strip.placement = "outside",
+      strip.background = element_rect(fill = "#f0f0f0", color = NA),
+      
+      panel.grid = element_blank(),
+      panel.spacing = unit(0.5, "lines")
+    )
+  
+  print(g)
+}
+```
+
+
 
 
 ```{=html}
