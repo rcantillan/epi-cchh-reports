@@ -313,13 +313,13 @@ if (nrow(final_items) == 0) {
     
     g <- ggplot(df, aes(x = level, y = n)) +
       geom_col(fill = brand_main, width = 0.75) + 
-      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 5, fontface="bold", color=brand_dark) +
+      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 6, fontface="bold", color=brand_dark) +
       scale_x_discrete(drop = FALSE, labels = nivel_labels) +
       labs(x = NULL, y = NULL) +
       theme(
         panel.grid.major.x = element_blank(),
         axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 14, color = brand_text, lineheight = 1.1, margin = margin(t=10)),
+        axis.text.x = element_text(size = 15, color = brand_text, lineheight = 1.1, margin = margin(t=10)),
         plot.margin = margin(10,10,30,10)
       )
     print(g)
