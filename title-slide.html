@@ -1,0 +1,78 @@
+<!-- ===========================
+     title-slide.html  (v3: imagen IZQ = misma altura que texto DER)
+     =========================== -->
+<section id="title-slide" class="quarto-title-block">
+  <div class="title-container title-left-image">
+    <!-- IZQUIERDA: IMAGEN -->
+    <div class="title-image" id="title-image-box">
+      $if(cover)$
+        <img id="title-image-el" src="$cover$" alt="Cover Image">
+      $else$
+        <img id="title-image-el" src="boliviainteligente-vvMq-KvCF7A-unsplash.jpg" alt="Cover Image">
+      $endif$
+    </div>
+
+    <!-- DERECHA: TEXTO -->
+    <div class="title-content" id="title-text-el">
+      <h1 class="title">$title$</h1>
+      $if(subtitle)$
+      <p class="subtitle">$subtitle$</p>
+      $endif$
+      <p class="author">$author$</p>
+      <p class="institute">$institute$</p>
+      $if(date)$
+      <p class="footer">$date$</p>
+      $endif$
+
+      $if(intro)$
+      <div class="lead-intro">
+        $intro$
+      </div>
+      $endif$
+
+      $if(highlights)$
+      <div class="lead-intro">
+        <ul>
+          $for(highlights)$
+          <li>$highlights$</li>
+          $endfor$
+        </ul>
+      </div>
+      $endif$
+    </div>
+  </div>
+
+  <!-- Igualador de alturas: imagen = altura del bloque de texto -->
+  <script>
+    (function(){
+      function equalize(){
+        try{
+          var text = document.getElementById('title-text-el');
+          var img  = document.getElementById('title-image-el');
+          var box  = document.getElementById('title-image-box');
+          if(!text || !img || !box) return;
+
+          // Altura del texto (incluye padding interno)
+          var th = text.offsetHeight;
+
+          // Límite de seguridad: 92% del alto de la ventana (para que no desborde)
+          var maxH = Math.floor(window.innerHeight * 0.92);
+
+          var target = Math.min(th, maxH);
+
+          // Fijamos la altura del contenedor y de la imagen
+          box.style.height = target + 'px';
+          img.style.height = target + 'px';
+          img.style.width  = '100%';
+          img.style.objectFit = 'cover';
+        }catch(e){}
+      }
+      // Ejecuta en carga y en resize
+      window.addEventListener('load', equalize);
+      window.addEventListener('resize', equalize);
+      // También cuando Reveal navega a la primera slide
+      document.addEventListener('readystatechange', equalize);
+    })();
+  </script>
+</section>
+

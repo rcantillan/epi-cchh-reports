@@ -1,0 +1,247 @@
+---
+title: "Reporte de Resultados EPI"
+subtitle: "Carrera de Psicología"
+author: "Dirección de Docencia"
+date: last-modified
+params:
+  # CAMBIA ESTA RUTA POR LA UBICACIÓN REAL DE TU EXCEL
+  archivo: "data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: false
+    embed-resources: true
+    code-fold: true
+    df-print: paged
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+<style>
+  .brand-header { color: #0a6d7c; border-bottom: 2px solid #0a6d7c; padding-bottom: 10px; margin-bottom: 20px; }
+  .plot-container { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+  .plot-title { font-weight: bold; color: #333; font-size: 1.1em; margin-bottom: 5px; }
+</style>
+
+<div class="brand-header">
+  <h1>Reporte de Resultados de Aprendizaje</h1>
+  <p>Evaluación de Perfil Intermedio (EPI)</p>
+</div>
+
+## Introducción
+
+El siguiente informe presenta la distribución de los niveles de logro obtenidos por la cohorte. 
+Los enunciados de cada competencia han sido extraídos de la matriz de especificaciones (Hoja 1) para asegurar la pertinencia disciplinar.
+
+> **Simbología:**
+> * **0 - 3:** Niveles de logro (Deficiente a Satisfactorio).
+> * **NR:** No Rinde / No Respuesta.
+
+```{r}
+#| label: setup
+#| include: false
+
+# Carga de librerías
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(tidyverse, readxl, janitor, glue, scales, knitr, stringr)
+
+# Configuración de colores corporativos
+col_main <- "#0a6d7c"  # Verde azulado institucional
+col_gray <- "#e0e0e0"
+
+```
+
+
+```{r}
+#| label: funciones-carga
+
+# -----------------------------------------------------------------------------
+# 1. FUNCIÓN PARA LEER DICCIONARIO DE LABELS (Desde Hoja 1)
+# -----------------------------------------------------------------------------
+get_labels_dictionary <- function(filepath) {
+  # CORRECCIÓN: Leemos sin importar nombres de columnas para evitar errores con celdas vacías
+  raw_sheet <- read_excel(filepath, sheet = 1, col_names = FALSE)
+  
+  # Convertimos directamente a vector usando base R (más robusto que dplyr aquí)
+  text_vector <- as.vector(as.matrix(raw_sheet))
+  
+  # Eliminamos NAs y textos vacíos
+  text_vector <- text_vector[!is.na(text_vector) & nzchar(as.character(text_vector))]
+  
+  return(text_vector)
+}
+
+# -----------------------------------------------------------------------------
+# 2. FUNCIÓN PARA LEER DATOS (Resultados Individuales)
+# -----------------------------------------------------------------------------
+get_results_data <- function(filepath) {
+  sheets <- excel_sheets(filepath)
+  
+  # Buscamos la hoja por nombre aproximado (insensible a mayúsculas)
+  target <- sheets[str_detect(tolower(sheets), "resultado.*individual|individual")]
+  
+  # Si no la encuentra por nombre, usa la hoja 2 como fallback (asumiendo que la 1 es rúbrica)
+  if (length(target) == 0) {
+    target_sheet_name <- sheets[2]
+  } else {
+    target_sheet_name <- target[1]
+  }
+  
+  # Leemos los datos limpiando los nombres de columnas
+  df <- read_excel(filepath, sheet = target_sheet_name, guess_max = 2000) %>% 
+    clean_names()
+  
+  return(df)
+}
+
+# -----------------------------------------------------------------------------
+# 3. FUNCIÓN PARA BUSCAR EL MATCH DE ETIQUETA
+# -----------------------------------------------------------------------------
+find_label_match <- function(col_name, dictionary) {
+  
+  # A. Si el nombre de la columna ya es muy descriptivo (> 20 caracteres), lo usamos.
+  if (nchar(col_name) > 20) {
+    label <- col_name %>% 
+      str_replace_all("_", " ") %>% 
+      str_to_sentence()
+    return(label)
+  }
+  
+  # B. Si el nombre es un código (ej: x1_1, c1), buscamos en el diccionario.
+  #    Extraemos el patrón numérico (ej: "1.1" o "3.2.a")
+  code_pattern <- str_extract(col_name, "\\d+[\\._]\\d+([\\._][a-zA-Z])?") %>% 
+    str_replace_all("_", ".")
+  
+  if (!is.na(code_pattern)) {
+    # Buscamos en el diccionario una línea que contenga ese código
+    match <- dictionary[str_detect(dictionary, fixed(code_pattern))]
+    
+    if (length(match) > 0) {
+      # Tomamos el match más largo (suele ser la descripción completa con el código)
+      best_match <- match[which.max(nchar(match))]
+      return(best_match)
+    }
+  }
+  
+  # C. Fallback
+  return(paste("Ítem:", col_name))
+}
+
+```
+
+
+```{r}
+#| label: carga-datos
+
+path <- params$archivo
+
+if (!file.exists(path)) {
+  stop(paste("ERROR: No se encuentra el archivo en:", path))
+}
+
+# Ejecutamos carga con la función corregida
+sheet1_text <- get_labels_dictionary(path)
+df_data     <- get_results_data(path)
+
+```
+
+
+```{r}
+#| label: identificar-columnas
+
+# Función para detectar si una columna es un ítem de evaluación (0-3 o NR)
+is_item_col <- function(x) {
+  val_chr <- as.character(x)
+  validos <- c("0", "1", "2", "3", "NR", "N/R", "NA", NA)
+  
+  # Umbral de validación (80% de coincidencia)
+  mean(val_chr %in% validos, na.rm = TRUE) > 0.8
+}
+
+# Seleccionamos columnas candidatas
+cols_candidates <- df_data %>% 
+  select(-matches("rut|nombre|apellido|dv|carrera|sede|fecha|mail|correo|estado|avance"))
+
+# Aplicar filtro de contenido
+item_cols <- cols_candidates %>% 
+  select(where(is_item_col)) %>% 
+  names()
+
+```
+
+
+## Resultados por Competencia
+
+```{r}
+#| label: generar-plots
+
+if (length(item_cols) == 0) {
+  cat("\n> **ADVERTENCIA:** No se detectaron columnas de ítems automáticamente. Revisa los nombres en la hoja de Resultados Individuales.\n")
+} else {
+  
+  for (col in item_cols) {
+    
+    # 1. Preparar datos
+    plot_df <- df_data %>% 
+      select(val = all_of(col)) %>% 
+      mutate(val = as.character(val)) %>% 
+      mutate(val = case_when(
+        val %in% c("N R", "N-R", "nr", "No Rinde") ~ "NR",
+        is.na(val) ~ "NR",
+        TRUE ~ val
+      )) %>% 
+      filter(val %in% c("0", "1", "2", "3", "NR")) %>% 
+      count(val) %>% 
+      mutate(prop = n / sum(n)) %>% 
+      mutate(pct_label = percent(prop, accuracy = 1))
+    
+    # 2. Título Dinámico
+    titulo <- find_label_match(col, sheet1_text)
+    
+    # 3. Gráfico
+    g <- ggplot(plot_df, aes(x = val, y = prop)) +
+      geom_col(fill = col_main, width = 0.6) +
+      geom_text(aes(label = pct_label), vjust = -0.5, 
+                color = "#333333", fontface = "bold", size = 3.5) +
+      scale_y_continuous(labels = percent, limits = c(0, 1.15)) +
+      labs(
+        title = str_wrap(titulo, width = 80),
+        subtitle = paste("Variable origen:", col),
+        x = NULL,
+        y = NULL
+      ) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(face = "bold", size = 11, color = "#222222"),
+        plot.subtitle = element_text(size = 8, color = "#777777"),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 10, face = "bold")
+      )
+    
+    # 4. Imprimir
+    print(g)
+    cat("\n\n<br><hr style='border-top: 1px solid #eee; margin: 20px 0;'><br>\n\n")
+  }
+}
+```
+
+## Anexo: Datos Procesados
+
+```{r}
+#| layout-ncol: 1
+
+head(df_data %>% select(any_of(item_cols)))
+
+```
+
+
+
+
+
+
+
+

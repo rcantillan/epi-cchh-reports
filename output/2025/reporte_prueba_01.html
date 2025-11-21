@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="">
+
+<title>reporte_prueba_01</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="reporte_prueba_01_files/libs/clipboard/clipboard.min.js"></script>
+<script src="reporte_prueba_01_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="reporte_prueba_01_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="reporte_prueba_01_files/libs/quarto-html/popper.min.js"></script>
+<script src="reporte_prueba_01_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="reporte_prueba_01_files/libs/quarto-html/anchor.min.js"></script>
+<link href="reporte_prueba_01_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="reporte_prueba_01_files/libs/quarto-html/quarto-syntax-highlighting-9a88c4820ae434787121b2358194d883.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="reporte_prueba_01_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="reporte_prueba_01_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="reporte_prueba_01_files/libs/bootstrap/bootstrap-431a6cc37d101083eb04a730ad5c9cb1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+<link href="reporte_prueba_01_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="reporte_prueba_01_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="reporte_prueba_01_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="reporte_prueba_01_files/libs/datatables-binding-0.33/datatables.js"></script>
+<script src="reporte_prueba_01_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="reporte_prueba_01_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="reporte_prueba_01_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="reporte_prueba_01_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="reporte_prueba_01_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="reporte_prueba_01_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="reporte_prueba_01_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="reporte_prueba_01_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción">Introducción</a></li>
+  <li><a href="#tabla-interactiva-con-la-rúbrica-03-nr" id="toc-tabla-interactiva-con-la-rúbrica-03-nr" class="nav-link" data-scroll-target="#tabla-interactiva-con-la-rúbrica-03-nr">Tabla interactiva con la rúbrica (0–3 + NR)</a>
+  <ul class="collapse">
+  <li><a href="#escala-de-niveles-de-logro-rúbrica" id="toc-escala-de-niveles-de-logro-rúbrica" class="nav-link" data-scroll-target="#escala-de-niveles-de-logro-rúbrica">Escala de niveles de logro (rúbrica)</a></li>
+  </ul></li>
+  <li><a href="#distribución-por-ítem-03-nr" id="toc-distribución-por-ítem-03-nr" class="nav-link" data-scroll-target="#distribución-por-ítem-03-nr">Distribución por ítem (0–3 + NR)</a>
+  <ul class="collapse">
+  <li><a href="#anexo-ejemplo-de-gráfico-alternativo-tipo-lollipop" id="toc-anexo-ejemplo-de-gráfico-alternativo-tipo-lollipop" class="nav-link" data-scroll-target="#anexo-ejemplo-de-gráfico-alternativo-tipo-lollipop">Anexo · Ejemplo de gráfico alternativo tipo “lollipop”</a></li>
+  </ul></li>
+  <li><a href="#notas-finales" id="toc-notas-finales" class="nav-link" data-scroll-target="#notas-finales">Notas finales</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content"><div class="quarto-title-block"><div class="quarto-title-tools-only"><h1></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+
+
+
+
+<p><img src="assets/img/logo-uah-open.png" class="brand-logo img-fluid"></p>
+<p class="brand-title">
+<span class="brand-title-main">Análisis EPI</span> <span class="brand-title-sub">Reporte carrera de Psicología</span>
+</p>
+<p>Roberto Cantillan Carrasco</p>
+<section id="introducción" class="level2">
+<h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
+<p>Este informe entrega una lectura <strong>claramente descriptiva</strong> del desempeño de la cohorte en siete ítems de la evaluación EPI. Cada gráfico muestra la <strong>distribución de niveles (0–3)</strong> y la <strong>proporción de NR</strong>, lo que permite identificar patrones de <strong>base (0–1)</strong>, <strong>consolidación (2)</strong> y <strong>techo (3)</strong> sin imponer interpretaciones de contenido. El foco es <strong>visibilizar la forma de las distribuciones</strong> —por ejemplo, si hay concentración en un nivel específico, dispersión amplia o presencia relevante de NR— para orientar decisiones posteriores (refuerzo, articulación con cursos, seguimiento).</p>
+<p>Bajo cada figura agregamos un <strong>párrafo automático</strong> que resume: i) proporciones por nivel, ii) <strong>modo</strong> (nivel más frecuente), iii) <strong>medidas de tendencia y dispersión</strong> (media, mediana e IQR sobre válidos 0–3) y iv) una <strong>lectura orientativa</strong> (sesgo a base, consolidación, techo o patrón mixto). Esta lectura <strong>no interpreta</strong> el significado sustantivo de los niveles, solo describe el <strong>perfil estadístico</strong> observado.</p>
+<blockquote class="blockquote">
+<p><strong>Sugerencia de lectura:</strong> si observas mucha masa en 0–1, piensa en <strong>reforzar fundamentos</strong>; si predomina 2, refleja <strong>consolidación</strong> con margen para empujar a 3; si hay techo (3), podría haber <strong>contenido ya dominado</strong>; si NR es alto, conviene revisar <strong>cobertura/implementación</strong>.</p>
+</blockquote>
+</section>
+<section id="tabla-interactiva-con-la-rúbrica-03-nr" class="level2">
+<h2 class="anchored" data-anchor-id="tabla-interactiva-con-la-rúbrica-03-nr">Tabla interactiva con la rúbrica (0–3 + NR)</h2>
+<section id="escala-de-niveles-de-logro-rúbrica" class="level3">
+<h3 class="anchored" data-anchor-id="escala-de-niveles-de-logro-rúbrica">Escala de niveles de logro (rúbrica)</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-9f1ff8f6a395a04ff602" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9f1ff8f6a395a04ff602">{"x":{"filter":"none","vertical":false,"data":[["3","2","1","0","NR"],["Satisfactorio","Base","Por Mejorar","No observado","No responde"],["El desempeño descrito se logra, sin embargo, presenta algunas imprecisiones.","El desempeño descrito se logra de forma mínima","El desempeño descrito se presenta de forma errónea y/o no se ajusta a lo solicitado","El desempeño descrito no es observado dada la ausencia de acciones o productos","Respuesta no registrada (el ítem no pudo ser evaluado o la pregunta no fue respondida)."]],"container":"<table class=\"compact stripe hover\">\n  <thead>\n    <tr>\n      <th>Nivel<\/th>\n      <th>Categoría<\/th>\n      <th>Descripción<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","ordering":false,"columnDefs":[{"name":"Nivel","targets":0},{"name":"Categoría","targets":1},{"name":"Descripción","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+</section>
+<section id="distribución-por-ítem-03-nr" class="level2">
+<h2 class="anchored" data-anchor-id="distribución-por-ítem-03-nr">Distribución por ítem (0–3 + NR)</h2>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-1.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>45.5%</strong> en el nivel <strong>2</strong>. Reparto por niveles: 0=0.0%, 1=17.5%, 2=45.5%, 3=17.5%, NR=19.4%. Sobre válidos (0–3), la media es <strong>2</strong>, la mediana <strong>2</strong> y el rango intercuartílico <strong>2–2</strong>. En síntesis, el patrón sugiere una <strong>consolidación</strong> mayoritaria en nivel <strong>2</strong>.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-2.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>42.2%</strong> en el nivel <strong>NR</strong>. Reparto por niveles: 0=4.7%, 1=26.5%, 2=24.2%, 3=2.4%, NR=42.2%. Sobre válidos (0–3), la media es <strong>1.42</strong>, la mediana <strong>1</strong> y el rango intercuartílico <strong>1–2</strong>. En síntesis, el patrón sugiere una participación de <strong>NR</strong> relevante; conviene revisar cobertura y condiciones de aplicación.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-3.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>40.8%</strong> en el nivel <strong>1</strong>. Reparto por niveles: 0=8.5%, 1=40.8%, 2=14.7%, 3=13.7%, NR=22.3%. Sobre válidos (0–3), la media es <strong>1.43</strong>, la mediana <strong>1</strong> y el rango intercuartílico <strong>1–2</strong>. En síntesis, el patrón sugiere un <strong>perfil mixto</strong> sin un sesgo marcado.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-4.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>51.7%</strong> en el nivel <strong>1</strong>. Reparto por niveles: 0=4.3%, 1=51.7%, 2=18.0%, 3=3.8%, NR=22.3%. Sobre válidos (0–3), la media es <strong>1.27</strong>, la mediana <strong>1</strong> y el rango intercuartílico <strong>1–2</strong>. En síntesis, el patrón sugiere un sesgo hacia <strong>bases (0–1)</strong>, lo que sugiere reforzar fundamentos.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-5.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>37.4%</strong> en el nivel <strong>1</strong>. Reparto por niveles: 0=19.4%, 1=37.4%, 2=13.7%, 3=7.1%, NR=22.3%. Sobre válidos (0–3), la media es <strong>1.11</strong>, la mediana <strong>1</strong> y el rango intercuartílico <strong>0.75–2</strong>. En síntesis, el patrón sugiere un sesgo hacia <strong>bases (0–1)</strong>, lo que sugiere reforzar fundamentos.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-6.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>51.2%</strong> en el nivel <strong>3</strong>. Reparto por niveles: 0=0.9%, 1=7.6%, 2=17.5%, 3=51.2%, NR=22.7%. Sobre válidos (0–3), la media es <strong>2.54</strong>, la mediana <strong>3</strong> y el rango intercuartílico <strong>2–3</strong>. En síntesis, el patrón sugiere un <strong>techo (3)</strong> predominante, consistente con desempeños altos.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/plots_items-7.png" class="img-fluid" width="672"></p>
+<p>La distribución muestra <strong>46.9%</strong> en el nivel <strong>NR</strong>. Reparto por niveles: 0=8.1%, 1=10.4%, 2=27.5%, 3=7.1%, NR=46.9%. Sobre válidos (0–3), la media es <strong>1.63</strong>, la mediana <strong>2</strong> y el rango intercuartílico <strong>1–2</strong>. En síntesis, el patrón sugiere una participación de <strong>NR</strong> relevante; conviene revisar cobertura y condiciones de aplicación.</p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<section id="anexo-ejemplo-de-gráfico-alternativo-tipo-lollipop" class="level3">
+<h3 class="anchored" data-anchor-id="anexo-ejemplo-de-gráfico-alternativo-tipo-lollipop">Anexo · Ejemplo de gráfico alternativo tipo “lollipop”</h3>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-1.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-2.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-3.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-4.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-5.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-6.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+<p><img src="reporte_prueba_01_files/figure-html/graficos_lollipop-7.png" class="img-fluid" width="672"></p>
+<hr class="plot-sep">
+<div class="plot-spacer">
+
+</div>
+</section>
+</section>
+<section id="notas-finales" class="level2">
+<h2 class="anchored" data-anchor-id="notas-finales">Notas finales</h2>
+<ul>
+<li>Los <strong>enunciados</strong> de cada ítem se extraen desde la fila <strong>inmediatamente superior</strong> al inicio de datos; si no hay texto, se usa el <strong>colapso</strong> de encabezados.</li>
+<li>El texto bajo cada figura es <strong>descriptivo y automático</strong> (repartos, tendencia, dispersión y lectura orientativa), sin interpretar sustantivamente el significado de los niveles.</li>
+<li>Para forzar un <strong>orden/selección exacta</strong> de columnas (p.&nbsp;ej., <code>1.1 → 4.2</code>), reemplaza <code>item_cols</code> por un vector explícito con los nombres reales de tu planilla.</li>
+</ul>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<div class="brand-footer">
+  <div class="brand-footer-wrap">
+    <div>UAH · Equipo EPI</div>
+    <div><a href="https://ejemplo.com">Repositorio</a></div>
+    <div>© 2025 · Versión exploratoria</div>
+  </div>
+</div>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> ""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> ""</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">params:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  archivo:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    value: "/home/rober/Documentos/epi-cchh-reports/data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    label: "Archivo Excel (Resultados Individuales)"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: false</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: paged</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: styles/report.scss</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    title-block-banner: false</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">    include-after-body: _footer.html</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: auto</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="al">![](assets/img/logo-uah-open.png)</span>{.brand-logo}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"brand-title"</span><span class="dt">&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"brand-title-main"</span><span class="dt">&gt;</span>Análisis EPI<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"brand-title-sub"</span><span class="dt">&gt;</span>Reporte carrera de Psicología<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Roberto Cantillan Carrasco</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introducción</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Este informe entrega una lectura **claramente descriptiva** del desempeño de la cohorte en siete ítems de la evaluación EPI. Cada gráfico muestra la **distribución de niveles (0–3)** y la **proporción de NR**, lo que permite identificar patrones de **base (0–1)**, **consolidación (2)** y **techo (3)** sin imponer interpretaciones de contenido. El foco es **visibilizar la forma de las distribuciones** —por ejemplo, si hay concentración en un nivel específico, dispersión amplia o presencia relevante de NR— para orientar decisiones posteriores (refuerzo, articulación con cursos, seguimiento).</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>Bajo cada figura agregamos un **párrafo automático** que resume: i) proporciones por nivel, ii) **modo** (nivel más frecuente), iii) **medidas de tendencia y dispersión** (media, mediana e IQR sobre válidos 0–3) y iv) una **lectura orientativa** (sesgo a base, consolidación, techo o patrón mixto). Esta lectura **no interpreta** el significado sustantivo de los niveles, solo describe el **perfil estadístico** observado.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Sugerencia de lectura:** si observas mucha masa en 0–1, piensa en **reforzar fundamentos**; si predomina 2, refleja **consolidación** con margen para empujar a 3; si hay techo (3), podría haber **contenido ya dominado**; si NR es alto, conviene revisar **cobertura/implementación**.</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"pacman"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  tidyverse, readxl, janitor, readr, forcats,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  scales, glue, stringr, ggplot2, rlang</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Paleta UAH</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>brand_main   <span class="ot">&lt;-</span> <span class="st">"#0a6d7c"</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>brand_dark   <span class="ot">&lt;-</span> <span class="st">"#0a4e58"</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>brand_muted  <span class="ot">&lt;-</span> <span class="st">"#4b5661"</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">message =</span> <span class="cn">FALSE</span>, <span class="at">warning =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>, <span class="at">dplyr.summarise.inform =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r load, include=FALSE}</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] Carga del archivo (OCULTO)</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>archivo <span class="ot">&lt;-</span> params<span class="sc">$</span>archivo</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">file.exists</span>(archivo))</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r parser, include=FALSE}</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># [2] Parser robusto (OCULTO): detecta encabezados, datos y enunciados por columna</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>guess_data_start_base <span class="ot">&lt;-</span> <span class="cf">function</span>(df0){</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_double</span>(df0[[<span class="dv">1</span>]]))</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(v) <span class="sc">&amp;</span> v <span class="sc">&gt;</span> <span class="fl">1e6</span>)   <span class="co"># IDs tipo RUT numérico</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(idx)) <span class="fu">min</span>(idx) <span class="cf">else</span> <span class="cn">NA_integer_</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>guess_header_row_base <span class="ot">&lt;-</span> <span class="cf">function</span>(df0, data_start){</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(data_start) <span class="sc">||</span> data_start <span class="sc">&lt;=</span> <span class="dv">1</span>) <span class="fu">return</span>(<span class="cn">NA_integer_</span>)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>  prev_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df0[<span class="fu">seq_len</span>(data_start <span class="sc">-</span> <span class="dv">1</span>), , <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  nonempty <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(prev_df) <span class="sc">&amp;</span> prev_df <span class="sc">!=</span> <span class="st">""</span>)</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">which</span>(nonempty <span class="sc">&gt;=</span> <span class="dv">2</span>)</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(idx)) <span class="fu">max</span>(idx) <span class="cf">else</span> <span class="cn">NA_integer_</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>collapse_headers_block <span class="ot">&lt;-</span> <span class="cf">function</span>(df0, header_row, data_start){</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(header_row)) <span class="fu">return</span>(<span class="fu">names</span>(df0))</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  block <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df0[<span class="fu">seq</span>(<span class="at">from =</span> header_row, <span class="at">to =</span> data_start <span class="sc">-</span> <span class="dv">1</span>), , <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  collapse_col <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(x)) <span class="cn">NA_character_</span> <span class="cf">else</span> <span class="fu">paste</span>(x, <span class="at">collapse =</span> <span class="st">" | "</span>)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vapply</span>(block, collapse_col, <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>make_names_from_block_base <span class="ot">&lt;-</span> <span class="cf">function</span>(raw_names){</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  nm <span class="ot">&lt;-</span> raw_names</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  empties <span class="ot">&lt;-</span> <span class="fu">is.na</span>(nm) <span class="sc">|</span> nm <span class="sc">==</span> <span class="st">""</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(empties)) {</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> <span class="fu">seq_along</span>(nm); nm[empties] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"col_"</span>, idx[empties])</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">make_clean_names</span>(nm)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>parse_resultados_individuales_v3 <span class="ot">&lt;-</span> <span class="cf">function</span>(path, <span class="at">sheet =</span> <span class="cn">NULL</span>){</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">file.exists</span>(path))</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(sheet)){</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    shs <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">excel_sheets</span>(path)</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    s_low <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_to_lower</span>(shs)</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>    cand <span class="ot">&lt;-</span> shs[stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"resultado"</span>) <span class="sc">&amp;</span> stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"individual"</span>)]</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(cand)) cand <span class="ot">&lt;-</span> shs[stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"individ"</span>)]</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(cand)) cand <span class="ot">&lt;-</span> shs</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    sheet <span class="ot">&lt;-</span> cand[<span class="dv">1</span>]</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(path, <span class="at">sheet =</span> sheet, <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">col_types =</span> <span class="st">"text"</span>)</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">remove_empty</span>(raw, <span class="at">which =</span> <span class="fu">c</span>(<span class="st">"rows"</span>,<span class="st">"cols"</span>))</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>  data_start <span class="ot">&lt;-</span> <span class="fu">guess_data_start_base</span>(raw)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(data_start)) <span class="fu">stop</span>(<span class="st">"No pude detectar el inicio de datos (ID numérico) en la 1ª columna."</span>)</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>  header_row <span class="ot">&lt;-</span> <span class="fu">guess_header_row_base</span>(raw, data_start)</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>  raw_collapsed <span class="ot">&lt;-</span> <span class="fu">collapse_headers_block</span>(raw, header_row, data_start)</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  clean_names   <span class="ot">&lt;-</span> <span class="fu">make_names_from_block_base</span>(raw_collapsed)</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Toma el texto más cercano hacia arriba (primera celda no vacía por columna)</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>  grab_header_near <span class="ot">&lt;-</span> <span class="cf">function</span>(j){</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>    from <span class="ot">&lt;-</span> data_start <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    to   <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(header_row), <span class="dv">1</span>L, header_row)</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>    up <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> from, <span class="at">to =</span> to, <span class="at">by =</span> <span class="sc">-</span><span class="dv">1</span>L)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> <span class="fu">as.character</span>(raw[up, j])</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> vals[<span class="sc">!</span><span class="fu">is.na</span>(vals) <span class="sc">&amp;</span> <span class="fu">trimws</span>(vals) <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(vals)) vals[<span class="dv">1</span>] <span class="cf">else</span> <span class="cn">NA_character_</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>  header_near <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(raw)), grab_header_near, <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>(raw[<span class="fu">seq</span>(<span class="at">from =</span> data_start, <span class="at">to =</span> <span class="fu">nrow</span>(raw)), , <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(dat) <span class="ot">&lt;-</span> clean_names</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">na_if</span>(.x, <span class="st">""</span>)))</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">ifelse</span>(.x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"NR"</span>,<span class="st">"N R"</span>,<span class="st">"nr"</span>,<span class="st">"n r"</span>), <span class="cn">NA</span>, .x)))</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>  headers <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_index        =</span> <span class="fu">seq_len</span>(<span class="fu">ncol</span>(raw)),</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">colname_clean    =</span> clean_names,</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">header_near      =</span> header_near,</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">header_collapsed =</span> raw_collapsed</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">data =</span> dat, <span class="at">headers =</span> headers, <span class="at">meta =</span> <span class="fu">list</span>(<span class="at">sheet =</span> sheet, <span class="at">data_start =</span> data_start, <span class="at">header_row =</span> header_row))</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>parsed  <span class="ot">&lt;-</span> <span class="fu">parse_resultados_individuales_v3</span>(archivo)</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>dat     <span class="ot">&lt;-</span> parsed<span class="sc">$</span>data</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>headers <span class="ot">&lt;-</span> parsed<span class="sc">$</span>headers</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>meta    <span class="ot">&lt;-</span> parsed<span class="sc">$</span>meta</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r detect_items, include=FALSE}</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="co"># [3] Detección de ítems 0–3/NR (OCULTO)</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>to_numeric <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">return</span>(x)</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.factor</span>(x)) x <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  v1 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(x, <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark=</span><span class="st">"."</span>, <span class="at">grouping_mark=</span><span class="st">","</span>)))</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>  v2 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(x, <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark=</span><span class="st">","</span>, <span class="at">grouping_mark=</span><span class="st">"."</span>)))</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(v2)) <span class="sc">&gt;</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(v1))) v2 <span class="cf">else</span> v1</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>is_item_col <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">thr =</span> <span class="fl">0.6</span>){</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_trim</span>(z)</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> z[<span class="sc">!</span><span class="fu">is.na</span>(z) <span class="sc">&amp;</span> z <span class="sc">!=</span> <span class="st">""</span>]</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(z)) <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>  z_up <span class="ot">&lt;-</span> <span class="fu">toupper</span>(z)</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>  z_up[z_up <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N R"</span>,<span class="st">"N-R"</span>)] <span class="ot">&lt;-</span> <span class="st">"NR"</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>  nums <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(z_up))</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>  ok <span class="ot">&lt;-</span> (<span class="sc">!</span><span class="fu">is.na</span>(nums) <span class="sc">&amp;</span> nums <span class="sc">%in%</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">|</span> (z_up <span class="sc">==</span> <span class="st">"NR"</span>)</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(ok) <span class="sc">&gt;=</span> thr</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>nms <span class="ot">&lt;-</span> <span class="fu">names</span>(dat)</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>cand_cols <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="st">"^x</span><span class="sc">\\</span><span class="st">d"</span>, nms, <span class="at">value =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="st">"^col_</span><span class="sc">\\</span><span class="st">d+$"</span>, nms, <span class="at">value =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="st">"^1[</span><span class="sc">\\</span><span class="st">._ ]?1</span><span class="sc">\\</span><span class="st">b|^1[</span><span class="sc">\\</span><span class="st">._ ]?2</span><span class="sc">\\</span><span class="st">b|^3[</span><span class="sc">\\</span><span class="st">._ ]?2[</span><span class="sc">\\</span><span class="st">._ ]?[abc]</span><span class="sc">\\</span><span class="st">b|^4[</span><span class="sc">\\</span><span class="st">._ ]?[12]</span><span class="sc">\\</span><span class="st">b"</span>,</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tolower</span>(<span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">"."</span>, nms)), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(cand_cols)) {</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  cand_cols <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(nms, <span class="fu">c</span>(<span class="st">"rut"</span>,<span class="st">"dv"</span>,<span class="st">"primer_apellido"</span>,<span class="st">"segundo_apellido"</span>,<span class="st">"nombres"</span>))</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>item_cols <span class="ot">&lt;-</span> cand_cols[<span class="fu">vapply</span>(dat[cand_cols], is_item_col, <span class="fu">logical</span>(<span class="dv">1</span>))]</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>item_pos  <span class="ot">&lt;-</span> <span class="fu">match</span>(item_cols, nms)</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>item_cols <span class="ot">&lt;-</span> item_cols[<span class="fu">order</span>(item_pos)]</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r labels_items, include=FALSE}</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="co"># [4] Labels de ítems + rúbrica de niveles (OCULTO)</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Labels de ítems desde "Resultados grupales"</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>build_item_labels <span class="ot">&lt;-</span> <span class="cf">function</span>(path){</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"readxl"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>  shs   <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">excel_sheets</span>(path)</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>  s_low <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_to_lower</span>(shs)</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>  cand  <span class="ot">&lt;-</span> shs[stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"resultado"</span>) <span class="sc">&amp;</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>               stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"grupal"</span>)]</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(cand)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>  sheet <span class="ot">&lt;-</span> cand[<span class="dv">1</span>]</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>    readxl<span class="sc">::</span><span class="fu">read_excel</span>(path, <span class="at">sheet =</span> sheet,</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">col_types =</span> <span class="st">"text"</span>)</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">remove_empty</span>(raw, <span class="at">which =</span> <span class="fu">c</span>(<span class="st">"rows"</span>,<span class="st">"cols"</span>))</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">ncol</span>(raw) <span class="sc">||</span> <span class="sc">!</span><span class="fu">nrow</span>(raw)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fila con más celdas no vacías desde la columna 3 en adelante</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>  ne <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(raw[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">drop =</span> <span class="cn">FALSE</span>]), <span class="dv">1</span>,</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>              <span class="cf">function</span>(z) <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(z) <span class="sc">&amp;</span> <span class="fu">trimws</span>(z) <span class="sc">!=</span> <span class="st">""</span>))</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(ne) <span class="sc">||</span> <span class="fu">all</span>(ne <span class="sc">==</span> <span class="dv">0</span>)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>  header_row <span class="ot">&lt;-</span> <span class="fu">which.max</span>(ne)</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  vals <span class="ot">&lt;-</span> raw[header_row, , drop <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(<span class="fu">seq_along</span>(vals), <span class="cf">function</span>(j){</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>    val <span class="ot">&lt;-</span> vals[[j]]</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(val) <span class="sc">||</span> <span class="fu">trimws</span>(val) <span class="sc">==</span> <span class="st">""</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Saltar columnas de puntaje/porcentaje/categoría</span></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"PUNTAJE TOTAL|PORCENTAJE|CATEGOR"</span>, val, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>    code <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(val, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d+(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+)*(?:[abc])?</span><span class="sc">\\</span><span class="st">b"</span>)</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(code) <span class="sc">||</span> <span class="fu">trimws</span>(code) <span class="sc">==</span> <span class="st">""</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>    label <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_trim</span>(</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_replace</span>(</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>        val,</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>        <span class="st">"^</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d+(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+)*(?:[abc])?</span><span class="sc">\\</span><span class="st">s*[-–—</span><span class="sc">\\</span><span class="st">.]*"</span>,</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>        <span class="st">""</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>      <span class="at">col_index_grupal =</span> j,</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>      <span class="at">codigo_item      =</span> code,</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>      <span class="at">label_grupal     =</span> label</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>item_labels <span class="ot">&lt;-</span> <span class="fu">build_item_labels</span>(archivo)</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Rúbrica de niveles de logro (0–3 + NR) desde "Rúbrica resultados globales"</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>build_rubrica_niveles <span class="ot">&lt;-</span> <span class="cf">function</span>(path){</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>  shs   <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">excel_sheets</span>(path)</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>  s_low <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_to_lower</span>(shs)</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>  cand  <span class="ot">&lt;-</span> shs[stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"rúbrica"</span>) <span class="sc">&amp;</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>               stringr<span class="sc">::</span><span class="fu">str_detect</span>(s_low, <span class="st">"resultado"</span>)]</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(cand)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  sheet <span class="ot">&lt;-</span> cand[<span class="dv">1</span>]</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>    readxl<span class="sc">::</span><span class="fu">read_excel</span>(path, <span class="at">sheet =</span> sheet,</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">col_types =</span> <span class="st">"text"</span>)</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>  raw <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">remove_empty</span>(raw, <span class="at">which =</span> <span class="fu">c</span>(<span class="st">"rows"</span>,<span class="st">"cols"</span>))</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">nrow</span>(raw) <span class="sc">||</span> <span class="sc">!</span><span class="fu">ncol</span>(raw)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Buscar fila donde aparece "Nivel de logro"</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>  col3 <span class="ot">&lt;-</span> raw[[<span class="dv">3</span>]]</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>  idx  <span class="ot">&lt;-</span> <span class="fu">which</span>(stringr<span class="sc">::</span><span class="fu">str_detect</span>(</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_to_lower</span>(col3),</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nivel</span><span class="sc">\\</span><span class="st">s*de</span><span class="sc">\\</span><span class="st">s*logro"</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(idx)) <span class="fu">return</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>())</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>  base_row <span class="ot">&lt;-</span> idx[<span class="dv">1</span>]</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>  cats_row <span class="ot">&lt;-</span> raw[base_row <span class="sc">+</span> <span class="dv">1</span>, ]</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>  pts_row  <span class="ot">&lt;-</span> raw[base_row <span class="sc">+</span> <span class="dv">2</span>, ]</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>  defs_row <span class="ot">&lt;-</span> raw[base_row <span class="sc">+</span> <span class="dv">3</span>, ]</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_dfr</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(raw)), <span class="cf">function</span>(j){</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>    cat <span class="ot">&lt;-</span> cats_row[[j]]</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>    pts <span class="ot">&lt;-</span> pts_row[[j]]</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>    def <span class="ot">&lt;-</span> defs_row[[j]]</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(cat) <span class="sc">||</span> <span class="fu">trimws</span>(cat) <span class="sc">==</span> <span class="st">""</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>    puntaje <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(<span class="fu">ifelse</span>(<span class="fu">is.na</span>(pts), <span class="st">""</span>, pts), <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(puntaje)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>      <span class="at">puntaje   =</span> <span class="fu">as.integer</span>(puntaje),</span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>      <span class="at">categoria =</span> stringr<span class="sc">::</span><span class="fu">str_squish</span>(cat),</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>      <span class="at">definicion =</span> stringr<span class="sc">::</span><span class="fu">str_squish</span>(<span class="fu">ifelse</span>(<span class="fu">is.na</span>(def), <span class="st">""</span>, def))</span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>rubrica_raw <span class="ot">&lt;-</span> <span class="fu">build_rubrica_niveles</span>(archivo)</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(rubrica_raw) <span class="sc">&amp;&amp;</span> <span class="st">"puntaje"</span> <span class="sc">%in%</span> <span class="fu">names</span>(rubrica_raw)) {</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>  rubrica_niveles <span class="ot">&lt;-</span> rubrica_raw <span class="sc">%&gt;%</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(puntaje <span class="sc">&lt;=</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>      <span class="at">nivel =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>        puntaje <span class="sc">==</span> <span class="dv">3</span>L <span class="sc">~</span> <span class="dv">3</span>L,</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>        puntaje <span class="sc">==</span> <span class="dv">2</span>L <span class="sc">~</span> <span class="dv">2</span>L,</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>        puntaje <span class="sc">==</span> <span class="dv">1</span>L <span class="sc">~</span> <span class="dv">1</span>L,</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>        puntaje <span class="sc">==</span> <span class="dv">0</span>L <span class="sc">~</span> <span class="dv">0</span>L,</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_integer_</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(nivel)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(nivel, categoria, definicion) <span class="sc">%&gt;%</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(dplyr<span class="sc">::</span><span class="fu">desc</span>(nivel))</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fallback mínimo por si no se encuentra la hoja</span></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>  rubrica_niveles <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>    <span class="at">nivel =</span> <span class="fu">c</span>(<span class="dv">3</span>L,<span class="dv">2</span>L,<span class="dv">1</span>L,<span class="dv">0</span>L),</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>    <span class="at">categoria =</span> <span class="fu">c</span>(<span class="st">"Satisfactorio"</span>,<span class="st">"Base"</span>,<span class="st">"Por mejorar"</span>,<span class="st">"No observado"</span>),</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>    <span class="at">definicion =</span> <span class="fu">c</span>(</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Desempeño alto respecto a la expectativa de ingreso."</span>,</span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Desempeño acorde a la expectativa de ingreso."</span>,</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Desempeño con brechas relevantes respecto a la expectativa."</span>,</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>      <span class="st">"No se observa evidencia suficiente para evaluar el desempeño."</span></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregamos NR manualmente</span></span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>rubrica_niveles <span class="ot">&lt;-</span> rubrica_niveles <span class="sc">%&gt;%</span></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>      <span class="at">nivel =</span> <span class="cn">NA_integer_</span>,</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>      <span class="at">categoria =</span> <span class="st">"NR"</span>,</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>      <span class="at">definicion =</span> <span class="st">"Respuesta no registrada (el ítem no pudo ser evaluado o la pregunta no fue respondida)."</span></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">nivel_label =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(nivel),</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"NR"</span>,</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">as.character</span>(nivel))</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector nombrado para los labels del eje X</span></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>nivel_labels <span class="ot">&lt;-</span> rubrica_niveles <span class="sc">%&gt;%</span></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>    <span class="at">etiqueta =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>      categoria <span class="sc">==</span> <span class="st">"NR"</span> <span class="sc">~</span> <span class="st">"NR — No responde"</span>,</span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>              <span class="sc">~</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{nivel_label} — {categoria}"</span>)</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>  {rlang<span class="sc">::</span><span class="fu">set_names</span>(.<span class="sc">$</span>etiqueta, .<span class="sc">$</span>nivel_label)}</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a><span class="co"># Fallback por si algo falla</span></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(nivel_labels)) {</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>  nivel_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"0"</span><span class="ot">=</span><span class="st">"0"</span>, <span class="st">"1"</span><span class="ot">=</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="ot">=</span><span class="st">"2"</span>, <span class="st">"3"</span><span class="ot">=</span><span class="st">"3"</span>, <span class="st">"NR"</span><span class="ot">=</span><span class="st">"NR"</span>)</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a><span class="co"># Funciones de labels para los gráficos y captions --------------------</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>label_for <span class="ot">&lt;-</span> <span class="cf">function</span>(nm){</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> headers <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(colname_clean <span class="sc">==</span> nm)</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>  txt <span class="ot">&lt;-</span> h<span class="sc">$</span>header_near</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(txt) <span class="sc">||</span> <span class="sc">!</span><span class="fu">length</span>(txt) <span class="sc">||</span> <span class="fu">is.na</span>(txt) <span class="sc">||</span> <span class="fu">trimws</span>(txt) <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>    txt <span class="ot">&lt;-</span> h<span class="sc">$</span>header_collapsed</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>  code <span class="ot">&lt;-</span> <span class="cn">NA_character_</span></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(txt) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(txt) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(txt)) {</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>    code <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(txt, <span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">d+(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+)*(?:[abc])?</span><span class="sc">\\</span><span class="st">b"</span>)</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3.1 Ítems desde "Resultados grupales"</span></span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(code) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(item_labels)) {</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>    hit <span class="ot">&lt;-</span> item_labels <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(codigo_item <span class="sc">==</span> code)</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(hit)) {</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{code} — {hit$label_grupal[1]}"</span>))</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3.2 Overrides manuales</span></span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>  nm_low <span class="ot">&lt;-</span> <span class="fu">tolower</span>(nm)</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"3[</span><span class="sc">\\</span><span class="st">._ ]?2[</span><span class="sc">\\</span><span class="st">._ ]?a"</span>, nm_low)) <span class="fu">return</span>(<span class="st">"3.2a — Dimensiones individuales"</span>)</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"3[</span><span class="sc">\\</span><span class="st">._ ]?2[</span><span class="sc">\\</span><span class="st">._ ]?b"</span>, nm_low)) <span class="fu">return</span>(<span class="st">"3.2b — Dimensiones relacionales"</span>)</span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"3[</span><span class="sc">\\</span><span class="st">._ ]?2[</span><span class="sc">\\</span><span class="st">._ ]?c"</span>, nm_low)) <span class="fu">return</span>(<span class="st">"3.2c — Dimensiones contextuales"</span>)</span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"^4[</span><span class="sc">\\</span><span class="st">._ ]?1</span><span class="sc">\\</span><span class="st">b"</span>, nm_low))     <span class="fu">return</span>(<span class="st">"4.1 — Componentes de investigación"</span>)</span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"^4[</span><span class="sc">\\</span><span class="st">._ ]?2</span><span class="sc">\\</span><span class="st">b"</span>, nm_low))     <span class="fu">return</span>(<span class="st">"4.2 — Coherencia entre componentes"</span>)</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (nm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"col_10"</span>,<span class="st">"x1_1"</span>,<span class="st">"comp_11"</span>)) <span class="fu">return</span>(<span class="st">"1.1 — Distingue ideas centrales"</span>)</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (nm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"col_11"</span>,<span class="st">"x1_2"</span>,<span class="st">"comp_12"</span>)) <span class="fu">return</span>(<span class="st">"1.2 — Explica conceptos teóricos"</span>)</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3.3 Fallback con el header original</span></span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(txt) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(txt) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(txt) <span class="sc">&amp;&amp;</span> <span class="fu">trimws</span>(txt) <span class="sc">!=</span> <span class="st">""</span>) {</span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>    short <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>      txt,</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a>      <span class="st">"^</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d+(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+)*(?:[abc])?</span><span class="sc">\\</span><span class="st">s*[-–—</span><span class="sc">\\</span><span class="st">.]*"</span>,</span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a>      <span class="st">""</span></span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a>    short <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_squish</span>(short)</span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nchar</span>(short) <span class="sc">&gt;</span> <span class="dv">120</span>) short <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">substr</span>(short, <span class="dv">1</span>, <span class="dv">117</span>), <span class="st">"..."</span>)</span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(short)</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a>  nm</span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a>header_lookup <span class="ot">&lt;-</span> <span class="cf">function</span>(nm){</span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> headers <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(colname_clean <span class="sc">==</span> nm)</span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a>  txt <span class="ot">&lt;-</span> h<span class="sc">$</span>header_near</span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(txt) <span class="sc">||</span> <span class="sc">!</span><span class="fu">length</span>(txt) <span class="sc">||</span> <span class="fu">is.na</span>(txt) <span class="sc">||</span> <span class="fu">trimws</span>(txt) <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>    txt <span class="ot">&lt;-</span> h<span class="sc">$</span>header_collapsed</span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(txt) <span class="sc">||</span> <span class="sc">!</span><span class="fu">length</span>(txt) <span class="sc">||</span> <span class="fu">is.na</span>(txt) <span class="sc">||</span> <span class="fu">trimws</span>(txt) <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>    txt <span class="ot">&lt;-</span> nm</span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_wrap</span>(<span class="fu">as.character</span>(txt), <span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tabla interactiva con la rúbrica (0–3 + NR)</span></span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a><span class="fu">### Escala de niveles de logro (rúbrica)</span></span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{r tabla_rubrica, echo=FALSE}</span></span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">exists</span>(<span class="st">"rubrica_niveles"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(rubrica_niveles)) {</span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>  tabla <span class="ot">&lt;-</span> rubrica_niveles <span class="sc">%&gt;%</span></span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>      <span class="at">Nivel =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(nivel), <span class="st">"NR"</span>, <span class="fu">as.character</span>(nivel)),</span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Categoría</span><span class="st">`</span> <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(categoria <span class="sc">==</span> <span class="st">"NR"</span>, <span class="st">"No responde"</span>, categoria),</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Descripción</span><span class="st">`</span> <span class="ot">=</span> definicion</span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Nivel, <span class="st">`</span><span class="at">Categoría</span><span class="st">`</span>, <span class="st">`</span><span class="at">Descripción</span><span class="st">`</span>)</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>  DT<span class="sc">::</span><span class="fu">datatable</span>(</span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>    tabla,</span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a>    <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>      <span class="at">pageLength =</span> <span class="dv">5</span>,</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>      <span class="at">dom =</span> <span class="st">"tip"</span>,</span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordering =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>    <span class="at">class =</span> <span class="st">"compact stripe hover"</span></span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"_No se encontró la hoja de 'Rúbrica resultados globales' en el archivo de Excel._"</span>)</span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a><span class="fu">## Distribución por ítem (0–3 + NR)</span></span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a><span class="in">```{r plots_items, fig.width=7, fig.height=4, echo=FALSE, results='asis'}</span></span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a><span class="co"># Chunk visible: genera el gráfico y un texto interpretativo más elaborado debajo.</span></span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(item_cols)) {</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"_No se detectaron columnas con valores 0–3/NR. Verifica que los ítems estén presentes._</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>  fmt_pct <span class="ot">&lt;-</span> <span class="cf">function</span>(x) scales<span class="sc">::</span><span class="fu">percent</span>(x, <span class="at">accuracy =</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Lectura orientativa (sin interpretación sustantiva)</span></span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>  diagnosis <span class="ot">&lt;-</span> <span class="cf">function</span>(p0, p1, p2, p3, pNR){</span>
+<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a>    low  <span class="ot">&lt;-</span> p0 <span class="sc">+</span> p1</span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>    mid  <span class="ot">&lt;-</span> p2</span>
+<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a>    high <span class="ot">&lt;-</span> p3</span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (pNR <span class="sc">&gt;=</span> <span class="fl">0.25</span>) <span class="fu">return</span>(<span class="st">"una participación de **NR** relevante; conviene revisar cobertura y condiciones de aplicación."</span>)</span>
+<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (low <span class="sc">&gt;=</span> <span class="fl">0.50</span>) <span class="fu">return</span>(<span class="st">"un sesgo hacia **bases (0–1)**, lo que sugiere reforzar fundamentos."</span>)</span>
+<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (high <span class="sc">&gt;=</span> <span class="fl">0.50</span>) <span class="fu">return</span>(<span class="st">"un **techo (3)** predominante, consistente con desempeños altos."</span>)</span>
+<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mid <span class="sc">&gt;=</span> <span class="fl">0.45</span>) <span class="fu">return</span>(<span class="st">"una **consolidación** mayoritaria en nivel **2**."</span>)</span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a>    <span class="st">"un **perfil mixto** sin un sesgo marcado."</span></span>
+<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a>  plot_and_describe <span class="ot">&lt;-</span> <span class="cf">function</span>(x, nm){</span>
+<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">raw =</span> x) <span class="sc">|&gt;</span></span>
+<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a>        <span class="at">val =</span> <span class="fu">toupper</span>(stringr<span class="sc">::</span><span class="fu">str_trim</span>(<span class="fu">as.character</span>(raw))),</span>
+<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a>        <span class="at">val =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a>          val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N R"</span>,<span class="st">"N-R"</span>) <span class="sc">~</span> <span class="st">"NR"</span>,</span>
+<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> val</span>
+<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>        <span class="at">num =</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(val)),</span>
+<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a>        <span class="at">level =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(num), <span class="st">"NR"</span>, <span class="fu">as.character</span>(num)),</span>
+<span id="cb1-487"><a href="#cb1-487" aria-hidden="true" tabindex="-1"></a>        <span class="at">level =</span> <span class="fu">factor</span>(level, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>))</span>
+<span id="cb1-488"><a href="#cb1-488" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb1-489"><a href="#cb1-489" aria-hidden="true" tabindex="-1"></a>      <span class="fu">count</span>(level, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-490"><a href="#cb1-490" aria-hidden="true" tabindex="-1"></a>      <span class="fu">complete</span>(<span class="at">level =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>)), <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-491"><a href="#cb1-491" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">prop =</span> n<span class="sc">/</span><span class="fu">sum</span>(n))</span>
+<span id="cb1-492"><a href="#cb1-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-493"><a href="#cb1-493" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Gráfico ----</span></span>
+<span id="cb1-494"><a href="#cb1-494" aria-hidden="true" tabindex="-1"></a>    g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> level, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb1-495"><a href="#cb1-495" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_col</span>(<span class="at">fill =</span> brand_main, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb1-496"><a href="#cb1-496" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">fmt_pct</span>(prop)),</span>
+<span id="cb1-497"><a href="#cb1-497" aria-hidden="true" tabindex="-1"></a>                <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">3.3</span>, <span class="at">color =</span> brand_dark) <span class="sc">+</span></span>
+<span id="cb1-498"><a href="#cb1-498" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_discrete</span>(<span class="at">drop =</span> <span class="cn">FALSE</span>, <span class="at">labels =</span> nivel_labels) <span class="sc">+</span></span>
+<span id="cb1-499"><a href="#cb1-499" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
+<span id="cb1-500"><a href="#cb1-500" aria-hidden="true" tabindex="-1"></a>        <span class="at">title   =</span> <span class="fu">label_for</span>(nm),</span>
+<span id="cb1-501"><a href="#cb1-501" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle=</span> <span class="fu">paste0</span>(<span class="st">"Columna: "</span>, nm),</span>
+<span id="cb1-502"><a href="#cb1-502" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Nivel de logro"</span>, <span class="at">y =</span> <span class="st">"Frecuencia"</span>,</span>
+<span id="cb1-503"><a href="#cb1-503" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="fu">header_lookup</span>(nm)</span>
+<span id="cb1-504"><a href="#cb1-504" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-505"><a href="#cb1-505" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb1-506"><a href="#cb1-506" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
+<span id="cb1-507"><a href="#cb1-507" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title    =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb1-508"><a href="#cb1-508" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> brand_muted),</span>
+<span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption  =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> brand_muted),</span>
+<span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin   =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">8</span>, <span class="at">r =</span> <span class="dv">6</span>, <span class="at">b =</span> <span class="dv">8</span>, <span class="at">l =</span> <span class="dv">6</span>, <span class="at">unit =</span> <span class="st">"pt"</span>)</span>
+<span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(g)</span>
+<span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ---- Texto interpretativo (Markdown, debajo del plot) ----</span></span>
+<span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a>    p0  <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[df<span class="sc">$</span>level<span class="sc">==</span><span class="st">"0"</span>];  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(p0))  p0  <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-516"><a href="#cb1-516" aria-hidden="true" tabindex="-1"></a>    p1  <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[df<span class="sc">$</span>level<span class="sc">==</span><span class="st">"1"</span>];  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(p1))  p1  <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-517"><a href="#cb1-517" aria-hidden="true" tabindex="-1"></a>    p2  <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[df<span class="sc">$</span>level<span class="sc">==</span><span class="st">"2"</span>];  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(p2))  p2  <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-518"><a href="#cb1-518" aria-hidden="true" tabindex="-1"></a>    p3  <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[df<span class="sc">$</span>level<span class="sc">==</span><span class="st">"3"</span>];  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(p3))  p3  <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-519"><a href="#cb1-519" aria-hidden="true" tabindex="-1"></a>    pNR <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[df<span class="sc">$</span>level<span class="sc">==</span><span class="st">"NR"</span>]; <span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(pNR)) pNR <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-520"><a href="#cb1-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-521"><a href="#cb1-521" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Métricas sobre válidos (0–3)</span></span>
+<span id="cb1-522"><a href="#cb1-522" aria-hidden="true" tabindex="-1"></a>    num_vals <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(<span class="fu">as.character</span>(x)))</span>
+<span id="cb1-523"><a href="#cb1-523" aria-hidden="true" tabindex="-1"></a>    num_vals <span class="ot">&lt;-</span> num_vals[<span class="sc">!</span><span class="fu">is.na</span>(num_vals) <span class="sc">&amp;</span> num_vals <span class="sc">%in%</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb1-524"><a href="#cb1-524" aria-hidden="true" tabindex="-1"></a>    media    <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(num_vals)) <span class="fu">mean</span>(num_vals) <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb1-525"><a href="#cb1-525" aria-hidden="true" tabindex="-1"></a>    mediana  <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(num_vals)) <span class="fu">median</span>(num_vals) <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb1-526"><a href="#cb1-526" aria-hidden="true" tabindex="-1"></a>    q1       <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(num_vals)) <span class="fu">quantile</span>(num_vals, <span class="fl">0.25</span>, <span class="at">names =</span> <span class="cn">FALSE</span>) <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb1-527"><a href="#cb1-527" aria-hidden="true" tabindex="-1"></a>    q3       <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(num_vals)) <span class="fu">quantile</span>(num_vals, <span class="fl">0.75</span>, <span class="at">names =</span> <span class="cn">FALSE</span>) <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb1-528"><a href="#cb1-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-529"><a href="#cb1-529" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Modo y su porcentaje (sobre total, incluyendo NR)</span></span>
+<span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a>    top_idx <span class="ot">&lt;-</span> <span class="fu">which.max</span>(df<span class="sc">$</span>n)</span>
+<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a>    modo    <span class="ot">&lt;-</span> <span class="fu">as.character</span>(df<span class="sc">$</span>level[top_idx])</span>
+<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a>    modo_pt <span class="ot">&lt;-</span> df<span class="sc">$</span>prop[top_idx]</span>
+<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a>    diag <span class="ot">&lt;-</span> <span class="fu">diagnosis</span>(p0, p1, p2, p3, pNR)</span>
+<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a>    texto <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a>      <span class="st">"La distribución muestra **{fmt_pct(modo_pt)}** en el nivel **{modo}**. "</span>,</span>
+<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Reparto por niveles: 0={fmt_pct(p0)}, 1={fmt_pct(p1)}, 2={fmt_pct(p2)}, 3={fmt_pct(p3)}, NR={fmt_pct(pNR)}. "</span>,</span>
+<span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a>      <span class="st">"{if(!is.na(media)) glue::glue('Sobre válidos (0–3), la media es **{round(media,2)}**, la mediana **{round(mediana,2)}** y el rango intercuartílico **{round(q1,2)}–{round(q3,2)}**. ') else ''}"</span>,</span>
+<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>      <span class="st">"En síntesis, el patrón sugiere {diag}"</span></span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Separación contundente entre ítems: línea + espaciador alto (estilos desde SCSS)</span></span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>, texto, <span class="st">"</span><span class="sc">\n\n</span><span class="st">&lt;hr class='plot-sep'&gt;</span><span class="sc">\n\n</span><span class="st">&lt;div class='plot-spacer'&gt;&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">walk</span>(item_cols, <span class="sc">~</span> <span class="fu">plot_and_describe</span>(dat[[.x]], .x))</span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a><span class="fu">### Anexo · Ejemplo de gráfico alternativo tipo “lollipop”</span></span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a><span class="in">```{r graficos_lollipop, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}</span></span>
+<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a><span class="co"># Este bloque asume que ya existen:</span></span>
+<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a><span class="co"># - dat          : data.frame con las respuestas crudas por ítem</span></span>
+<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a><span class="co"># - item_cols    : vector con los nombres de columnas de ítems</span></span>
+<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a><span class="co"># - nivel_labels : vector con labels para 0,1,2,3,NR</span></span>
+<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a><span class="co"># - label_for()  : función que devuelve el título legible del ítem</span></span>
+<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a><span class="co"># - brand_main   : color principal</span></span>
+<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a><span class="co"># - brand_muted  : color secundario (texto)</span></span>
+<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">length</span>(item_cols)) {</span>
+<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"_No se detectaron columnas con valores 0–3/NR para generar lollipop plots._</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a>  fmt_pct <span class="ot">&lt;-</span> <span class="cf">function</span>(x) scales<span class="sc">::</span><span class="fu">percent</span>(x, <span class="at">accuracy =</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-570"><a href="#cb1-570" aria-hidden="true" tabindex="-1"></a>  plot_lollipop <span class="ot">&lt;-</span> <span class="cf">function</span>(x, nm){</span>
+<span id="cb1-571"><a href="#cb1-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-572"><a href="#cb1-572" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">raw =</span> x) <span class="sc">|&gt;</span></span>
+<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-574"><a href="#cb1-574" aria-hidden="true" tabindex="-1"></a>        <span class="at">val =</span> <span class="fu">toupper</span>(stringr<span class="sc">::</span><span class="fu">str_trim</span>(<span class="fu">as.character</span>(raw))),</span>
+<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a>        <span class="at">val =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>          val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N R"</span>,<span class="st">"N-R"</span>) <span class="sc">~</span> <span class="st">"NR"</span>,</span>
+<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> val</span>
+<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>        <span class="at">num   =</span> <span class="fu">suppressWarnings</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(val)),</span>
+<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a>        <span class="at">level =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(num), <span class="st">"NR"</span>, <span class="fu">as.character</span>(num)),</span>
+<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>        <span class="at">level =</span> <span class="fu">factor</span>(level, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>))</span>
+<span id="cb1-582"><a href="#cb1-582" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">count</span>(level, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a>      tidyr<span class="sc">::</span><span class="fu">complete</span>(</span>
+<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>        <span class="at">level =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"NR"</span>)),</span>
+<span id="cb1-586"><a href="#cb1-586" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill  =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">0</span>)</span>
+<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-589"><a href="#cb1-589" aria-hidden="true" tabindex="-1"></a>        <span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)</span>
+<span id="cb1-590"><a href="#cb1-590" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-591"><a href="#cb1-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-592"><a href="#cb1-592" aria-hidden="true" tabindex="-1"></a>    max_prop <span class="ot">&lt;-</span> <span class="fu">max</span>(df<span class="sc">$</span>prop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-593"><a href="#cb1-593" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-594"><a href="#cb1-594" aria-hidden="true" tabindex="-1"></a>    g <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(df, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> level, <span class="at">y =</span> prop)) <span class="sc">+</span></span>
+<span id="cb1-595"><a href="#cb1-595" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_segment</span>(</span>
+<span id="cb1-596"><a href="#cb1-596" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> level, <span class="at">xend =</span> level, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> prop),</span>
+<span id="cb1-597"><a href="#cb1-597" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">0.9</span>,</span>
+<span id="cb1-598"><a href="#cb1-598" aria-hidden="true" tabindex="-1"></a>        <span class="at">colour    =</span> brand_main</span>
+<span id="cb1-599"><a href="#cb1-599" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-600"><a href="#cb1-600" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">3.2</span>, <span class="at">colour =</span> brand_main) <span class="sc">+</span></span>
+<span id="cb1-601"><a href="#cb1-601" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_text</span>(</span>
+<span id="cb1-602"><a href="#cb1-602" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">fmt_pct</span>(prop)),</span>
+<span id="cb1-603"><a href="#cb1-603" aria-hidden="true" tabindex="-1"></a>        <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">3.2</span></span>
+<span id="cb1-604"><a href="#cb1-604" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-605"><a href="#cb1-605" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">scale_y_continuous</span>(</span>
+<span id="cb1-606"><a href="#cb1-606" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> fmt_pct,</span>
+<span id="cb1-607"><a href="#cb1-607" aria-hidden="true" tabindex="-1"></a>        <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, max_prop <span class="sc">*</span> <span class="fl">1.15</span>)</span>
+<span id="cb1-608"><a href="#cb1-608" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-609"><a href="#cb1-609" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">scale_x_discrete</span>(</span>
+<span id="cb1-610"><a href="#cb1-610" aria-hidden="true" tabindex="-1"></a>        <span class="at">drop   =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-611"><a href="#cb1-611" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> nivel_labels</span>
+<span id="cb1-612"><a href="#cb1-612" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-613"><a href="#cb1-613" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
+<span id="cb1-614"><a href="#cb1-614" aria-hidden="true" tabindex="-1"></a>        <span class="at">title    =</span> <span class="fu">label_for</span>(nm),</span>
+<span id="cb1-615"><a href="#cb1-615" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Distribución por nivel (gráfico tipo lollipop)"</span>,</span>
+<span id="cb1-616"><a href="#cb1-616" aria-hidden="true" tabindex="-1"></a>        <span class="at">x        =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-617"><a href="#cb1-617" aria-hidden="true" tabindex="-1"></a>        <span class="at">y        =</span> <span class="st">"Porcentaje de estudiantes"</span></span>
+<span id="cb1-618"><a href="#cb1-618" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-619"><a href="#cb1-619" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb1-620"><a href="#cb1-620" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">theme</span>(</span>
+<span id="cb1-621"><a href="#cb1-621" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title    =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb1-622"><a href="#cb1-622" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">color =</span> brand_muted, <span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb1-623"><a href="#cb1-623" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x   =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb1-624"><a href="#cb1-624" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y   =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb1-625"><a href="#cb1-625" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y  =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb1-626"><a href="#cb1-626" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin   =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">8</span>, <span class="at">r =</span> <span class="dv">6</span>, <span class="at">b =</span> <span class="dv">8</span>, <span class="at">l =</span> <span class="dv">6</span>, <span class="at">unit =</span> <span class="st">"pt"</span>)</span>
+<span id="cb1-627"><a href="#cb1-627" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-628"><a href="#cb1-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(g)</span>
+<span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-631"><a href="#cb1-631" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Separador entre plots (HTML, ahora sí como HTML real)</span></span>
+<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">&lt;hr class='plot-sep'&gt;</span><span class="sc">\n\n</span><span class="st">&lt;div class='plot-spacer'&gt;&lt;/div&gt;</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">walk</span>(item_cols, <span class="sc">~</span> <span class="fu">plot_lollipop</span>(dat[[.x]], .x))</span>
+<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a><span class="fu">## Notas finales</span></span>
+<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Los **enunciados** de cada ítem se extraen desde la fila **inmediatamente superior** al inicio de datos; si no hay texto, se usa el **colapso** de encabezados.</span>
+<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>El texto bajo cada figura es **descriptivo y automático** (repartos, tendencia, dispersión y lectura orientativa), sin interpretar sustantivamente el significado de los niveles.</span>
+<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Para forzar un **orden/selección exacta** de columnas (p. ej., <span class="in">`1.1 → 4.2`</span>), reemplaza <span class="in">`item_cols`</span> por un vector explícito con los nombres reales de tu planilla.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<script src="reporte_prueba_01_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

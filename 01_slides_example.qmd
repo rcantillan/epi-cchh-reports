@@ -1,0 +1,406 @@
+---
+title: "![](assets/img/logo-uah-open.png){width=280px style='display:block; margin-bottom:40px; margin-left:0;'} Análisis EPI"
+subtitle: "Reporte carrera de Psicología"
+author: ""
+logo: assets/img/logo-uah-open.png
+
+params:
+  archivo:
+    value: "/home/rober/Documentos/epi-cchh-reports/data/raw/BD REPORTE EPI PSICOLOGÍA.xlsx"
+    label: "Archivo Excel (Resultados Individuales)"
+
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    theme:
+      - default
+      - styles/report.scss
+    slide-number: true
+    auto-stretch: false
+    df-print: paged
+    code-fold: true
+    code-tools: true
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  tidyverse, readxl, janitor, readr, forcats,
+  scales, glue, stringr, ggplot2, rlang, DT
+)
+
+brand_main   <- "#0a6d7c"
+brand_dark   <- "#0a4e58"
+brand_muted  <- "#4b5661"
+brand_text   <- "#11222b" 
+
+theme_set(theme_minimal(base_size = 16)) 
+
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+options(scipen = 999, dplyr.summarise.inform = FALSE)
+```
+
+```{r labels_items, include=FALSE}
+# [1] DICCIONARIO MAESTRO DE TÍTULOS
+manual_titles <- c(
+  "1.1"   = "1.1 Distingue las ideas centrales y elementos de apoyo que componen el argumento del texto.",
+  "1.2"   = "1.2 Explica conceptos teóricos vinculados en el texto, recurriendo a los conocimientos básicos en Psicología y disciplinas fundantes.",
+  "3.2"   = "3.2 Explica dimensiones individuales, relacionales y contextuales utilizando nociones aprendidas en su formación inicial básica.",
+  "4.1"   = "4.1 Reconoce los componentes de una investigación en Psicología.",
+  "4.2"   = "4.2 Evalúa la coherencia entre los distintos componentes de una investigación.",
+  "3.2.a" = "3.2.a Explica dimensiones individuales (psicológicas y biológicas) involucradas, utilizando de manera pertinente nociones aprendidas en la carrera.",
+  "3.2.b" = "3.2.b Explica dimensiones relacionales involucradas (que aludan a las interacciones entre personas o grupos).",
+  "3.2.c" = "3.2.c Explica dimensiones contextuales involucradas, utilizando de manera pertinente nociones aprendidas en la carrera."
+)
+
+# [2] TEXTOS DE COMPETENCIAS (SEPARADORES)
+textos_competencia <- list(
+  "1" = "COMPETENCIA: Comprende textos disciplinares escritos, utilizando conocimientos de la Psicología y de otras disciplinas fundantes propios del ciclo básico de formación.",
+  "3" = "COMPETENCIA: Analiza fenómenos y problemas humanos desde una mirada disciplinar básica, reconociendo dimensiones individuales, relacionales y contextuales involucradas.",
+  "4" = "COMPETENCIA: Analiza investigaciones en Psicología reconociendo sus componentes y la coherencia entre estos."
+)
+```
+
+```{r parser, include=FALSE}
+# [3] PARSER DE BÚSQUEDA PROFUNDA
+parse_deep_excel <- function(path){
+  if (!file.exists(path)) return(list(data=tibble(), map=tibble()))
+  
+  # Leer bloque grande para encontrar RUT
+  raw_block <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", col_names = FALSE, n_max = 200, .name_repair = "minimal", col_types = "text"))
+  
+  # Buscar fila RUT
+  header_row_idx <- which(apply(raw_block, 1, function(x) any(str_detect(x, "RUT ESTUDIANTE"), na.rm = TRUE)))[1]
+  
+  if (is.na(header_row_idx)) {
+     raw_block <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", col_names = FALSE, .name_repair = "minimal", col_types = "text"))
+     header_row_idx <- which(apply(raw_block, 1, function(x) any(str_detect(x, "RUT ESTUDIANTE"), na.rm = TRUE)))[1]
+  }
+  
+  if (is.na(header_row_idx)) return(list(data=tibble(), map=tibble()))
+  
+  # Extraer filas de títulos (Fila detectada y la siguiente)
+  row_main <- as.character(raw_block[header_row_idx, ])
+  row_sub  <- as.character(raw_block[header_row_idx + 1, ])
+  
+  col_keys <- character(length(row_main))
+  
+  # Construir claves de columna
+  for(j in seq_along(col_keys)){
+    val_main <- if(!is.na(row_main[j])) str_squish(row_main[j]) else ""
+    val_sub  <- if(!is.na(row_sub[j]))  str_squish(row_sub[j]) else ""
+    
+    code_main <- str_extract(val_main, "^\\d+\\.\\d+")
+    code_sub  <- str_extract(val_sub, "^\\d+\\.\\d+\\.[a-z]")
+    
+    if (!is.na(code_sub)) { col_keys[j] <- code_sub } 
+    else if (!is.na(code_main)) { col_keys[j] <- code_main } 
+    else { col_keys[j] <- NA_character_ }
+  }
+  
+  # Identificar columnas válidas
+  valid_indices <- which(!is.na(col_keys) & col_keys %in% names(manual_titles))
+  
+  if(length(valid_indices) == 0) return(list(data=tibble(), map=tibble()))
+  
+  # Leer datos reales
+  raw_data <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", col_names = FALSE, skip = header_row_idx + 1, .name_repair = "minimal", col_types = "text"))
+  
+  dat_subset <- raw_data[, valid_indices]
+  final_col_ids <- paste0("item_", seq_along(valid_indices))
+  colnames(dat_subset) <- final_col_ids
+  
+  # Limpieza
+  dat <- dat_subset %>%
+    mutate(across(everything(), ~ na_if(str_trim(.x), ""))) %>%
+    mutate(across(everything(), ~ ifelse(toupper(.x) %in% c("NR","N R","N-R"), "NR", .x)))
+  
+  # Mapa final
+  mapa <- tibble(
+    col_id = final_col_ids,
+    code = col_keys[valid_indices],
+    final_title = manual_titles[col_keys[valid_indices]]
+  )
+  
+  return(list(data = dat, map = mapa))
+}
+
+# Ejecutar
+archivo <- params$archivo
+if(file.exists(archivo)){
+  res <- parse_deep_excel(archivo)
+  dat <- res$data
+  final_items <- res$map
+} else {
+  dat <- tibble()
+  final_items <- tibble()
+}
+```
+
+```{r labels_rubrica, include=FALSE}
+# [4] Utils
+nivel_labels <- c(
+  "0" = "No Observado\n(0)", 
+  "1" = "Por Mejorar\n(1)", 
+  "2" = "Base\n(2)", 
+  "3" = "Satisfactorio\n(3)", 
+  "NR" = "No Responde\n(NR)"
+)
+
+tabla_rubrica <- tibble::tibble(
+  Nivel = c("3", "2", "1", "0", "NR"),
+  Categoría = c("Satisfactorio", "Base", "Por Mejorar", "No Observado", "No Responde"),
+  Descripción = c(
+    "El desempeño descrito se logra, sin embargo, presenta algunas imprecisiones menores.",
+    "El desempeño descrito se logra de forma mínima o suficiente.",
+    "El desempeño descrito se presenta de forma errónea y/o no se ajusta a lo solicitado.",
+    "El desempeño descrito no es observado dada la ausencia de acciones o productos.",
+    "Respuesta no registrada."
+  )
+)
+```
+
+## Introducción
+
+::: {.div style="font-size: 45px; text-align: left; margin-top: 3em;"}
+
+Este informe entrega una lectura **descriptiva** del desempeño de la cohorte en la evaluación EPI.
+
+Se presentan:
+
+1.  **Tabla de Rúbrica**: Definición de los niveles de logro.
+2.  **Resultados por Ítem**: Gráfico de frecuencias y estadísticos.
+
+:::
+
+
+## Tabla de Rúbrica
+
+::: {.div style="font-size: 45px; text-align: left; margin-top: 3em;"}
+
+```{r show_rubrica, echo=FALSE}
+DT::datatable(
+  tabla_rubrica,
+  rownames = FALSE,
+  options = list(dom = 't', ordering = FALSE, pageLength = 5),
+  class = 'cell-border stripe compact'
+)
+```
+
+:::
+
+```{r plots_items, results='asis', echo=FALSE}
+#| fig.width: 11
+#| fig.height: 7.5
+
+if (nrow(final_items) == 0) {
+  cat("### No se detectaron ítems.\n")
+  cat("El código buscó la fila con 'RUT ESTUDIANTE' y luego las columnas con códigos (1.1, 3.2.a, etc).")
+} else {
+  
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+  
+  last_group_prefix <- ""
+
+  for(i in 1:nrow(final_items)){
+    
+    row_info <- final_items[i, ]
+    col_id   <- row_info$col_id
+    titulo   <- row_info$final_title
+    code     <- row_info$code
+    
+    # --- SEPARADOR DE COMPETENCIA ---
+    current_prefix <- str_sub(code, 1, 1)
+    
+    if (current_prefix != last_group_prefix) {
+      texto_slide <- textos_competencia[[current_prefix]]
+      if (!is.null(texto_slide)) {
+        cat("\n\n---\n\n")
+        cat(glue::glue('##  {{data-background-color="white"}}
+                       
+<div class="competencia-slide">
+  <div class="competencia-text">
+    {texto_slide}
+  </div>
+</div>
+'), "\n\n")
+      }
+      last_group_prefix <- current_prefix
+    }
+    
+    # --- PREPARACIÓN DE DATOS ---
+    x <- dat[[col_id]]
+    
+    df <- tibble(raw = x) |>
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(
+           str_detect(val, "\\bNR\\b") ~ "NR",
+           TRUE ~ val
+        ),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","NR"))
+      ) |>
+      count(level, name = "n") |>
+      complete(level = factor(c("0","1","2","3","NR"), levels = c("0","1","2","3","NR")), fill = list(n = 0)) |>
+      mutate(prop = n/sum(n))
+
+    # --- ESTADÍSTICOS DE ALTO NIVEL (INSIGHTS) ---
+    
+    # 1. Base válida (excluyendo NR)
+    df_valid <- df %>% filter(level %in% c("0","1","2","3"))
+    total_valid <- sum(df_valid$n)
+    
+    # 2. Índice de Calidad (0 a 100): (Puntaje Real / Puntaje Ideal) * 100
+    puntos_reales <- sum(as.numeric(as.character(df_valid$level)) * df_valid$n)
+    puntos_ideales <- total_valid * 3
+    indice_calidad <- if(puntos_ideales > 0) (puntos_reales / puntos_ideales) else 0
+    
+    # 3. Logro Efectivo (Niveles 2 + 3)
+    pct_logro <- sum(df$prop[df$level %in% c("2","3")])
+    
+    # 4. Brecha Crítica (Niveles 0 + 1)
+    pct_brecha <- sum(df$prop[df$level %in% c("0","1")])
+    
+    # Título limpio
+    titulo_display <- str_replace(titulo, "^\\d+(\\.\\d+)?(\\.[a-z])?\\s*", "")
+    
+    # --- GENERAR SLIDE ---
+    cat("\n\n---\n\n")
+    cat("## ", titulo_display, "\n\n")
+    
+    cat(":::: {.columns}\n\n")
+    
+    # COL 1: GRAFICO
+    cat("::: {.column width='65%'}\n")
+    
+    g <- ggplot(df, aes(x = level, y = n)) +
+      geom_col(fill = brand_main, width = 0.75) + 
+      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 6, fontface="bold", color=brand_dark) +
+      scale_x_discrete(drop = FALSE, labels = nivel_labels) +
+      labs(x = NULL, y = NULL) +
+      theme(
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 15, color = brand_text, lineheight = 1.1, margin = margin(t=2)),
+        plot.margin = margin(10,10,30,10)
+      )
+    print(g)
+    
+    cat("\n:::\n")
+    
+    # COL 2: INSIGHTS ESTRATÉGICOS
+    cat("::: {.column width='35%'}\n")
+    
+    # Caja de Análisis con Indicadores de Valor
+    cat('<div class="analysis-box">')
+      cat('<h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">Indicadores Clave</h4>')
+      
+      # Indicador 1: Índice de Calidad (Estilo Semáforo)
+      color_ic <- if(indice_calidad >= 0.7) "#28a745" else if(indice_calidad >= 0.5) "#ffc107" else "#dc3545"
+      cat('<div class="stat-row" style="margin-top:15px;">')
+      cat('<span style="font-size:1.1em; color:#666;">Índice de Calidad Global (0-100%):</span><br>')
+      cat(glue::glue('<strong style="font-size:1.1em; color:{color_ic};">{scales::percent(indice_calidad, accuracy=0.1)}</strong>'))
+      cat('</div>')
+      
+      # Indicador 2: Logro vs Brecha
+      cat('<div style="margin-top:15px;">')
+      cat(glue::glue('<div><span style="color:#28a745; font-weight:bold;">Logro Efectivo (2-3):</span> {fmt_pct(pct_logro)}</div>'))
+      cat(glue::glue('<div><span style="color:#dc3545; font-weight:bold;">Brecha Crítica (0-1):</span> {fmt_pct(pct_brecha)}</div>'))
+      cat('</div>')
+
+    cat('</div>')
+    
+    # Pie de página explicativo (Pequeño)
+    cat('<div style="font-size:0.4em; color:#666; line-height:1.2; margin-top:20px;">')
+    cat('<strong>*Índice de Calidad:</strong> Porcentaje del puntaje ideal alcanzado por el curso.<br>')
+    cat('<strong>*Logro Efectivo:</strong> % de estudiantes en niveles Base y Satisfactorio.')
+    cat('</div>')
+    
+    cat("\n:::\n") 
+    cat("::::\n\n") 
+  }
+}
+```
+
+## Anexo: Lollipop (Resumen)
+
+```{r plots_lollipop, results='asis', echo=FALSE}
+#| fig.width: 12
+#| fig.height: 5.5
+
+if (nrow(final_items) > 0) {
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+
+  for(i in 1:nrow(final_items)){
+      row_info <- final_items[i, ]
+      col_id   <- row_info$col_id
+      titulo   <- row_info$final_title
+      titulo_display <- str_replace(titulo, "^\\d+(\\.\\d+)?(\\.[a-z])?\\s*", "")
+      
+      x <- dat[[col_id]]
+      df <- tibble(raw = x) |>
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(
+           str_detect(val, "\\bNR\\b") ~ "NR",
+           TRUE ~ val
+        ),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","NR"))
+      ) |>
+      count(level, name = "n") |>
+      complete(level = factor(c("0","1","2","3","NR"), levels = c("0","1","2","3","NR")), fill = list(n = 0)) |>
+      mutate(prop = n/sum(n))
+      
+      cat("\n\n---\n\n")
+      cat("## ", titulo_display, " (Lollipop)\n\n")
+      
+      g <- ggplot(df, aes(x = level, y = prop)) +
+        geom_segment(aes(xend=level, y=0, yend=prop), color=brand_main, linewidth=1.5) +
+        geom_point(size=5, color=brand_main) +
+        geom_text(aes(label=fmt_pct(prop)), vjust=-1.2, size=5, fontface="bold") +
+        scale_y_continuous(labels=fmt_pct, limits=c(0, max(df$prop)*1.3)) +
+        scale_x_discrete(labels = nivel_labels) +
+        labs(x=NULL, y=NULL) +
+        theme(
+           axis.text.x = element_text(size = 11, color = brand_text, lineheight = 1.1),
+           plot.margin = margin(20,20,40,20)
+        )
+      
+      print(g)
+  }
+}
+```
+
+```{=html}
+<script>
+  window.addEventListener("load", (event) => {
+    function checkLogo() {
+      const isTitleSlide = Reveal.getIndices().h === 0;
+      const logo = document.querySelector('.slide-logo');
+      if (logo) {
+        if (isTitleSlide) {
+          logo.style.display = 'none';
+          logo.style.visibility = 'hidden';
+        } else {
+          logo.style.display = 'block';
+          logo.style.visibility = 'visible';
+        }
+      }
+    }
+    checkLogo();
+    Reveal.on('ready', checkLogo);
+    Reveal.on('slidechanged', checkLogo);
+  });
+</script>
+```
