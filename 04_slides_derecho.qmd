@@ -1,0 +1,549 @@
+---
+title: "![](assets/img/logo-uah-open.png){width=280px style='display:block; margin-bottom:40px; margin-left:0;'} Análisis EPI Derecho"
+subtitle: "Reporte de Resultados - Perfil Intermedio"
+author: "Dirección de Docencia"
+logo: assets/img/logo-uah-open.png
+
+params:
+  # RUTA AL ARCHIVO
+  archivo:
+    value: "data/raw/BD_DERECHO.xlsx" 
+    label: "Archivo Excel (Resultados Individuales)"
+
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    theme:
+      - default
+      - styles/report.scss
+    slide-number: true
+    auto-stretch: false
+    df-print: paged
+    code-fold: true
+    code-tools: true
+
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  tidyverse, readxl, janitor, readr, forcats,
+  scales, glue, stringr, ggplot2, rlang, DT, kableExtra
+)
+
+brand_main   <- "#0a6d7c"
+brand_dark   <- "#0a4e58"
+brand_muted  <- "#4b5661"
+brand_text   <- "#11222b" 
+
+theme_set(theme_minimal(base_size = 16)) 
+
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+options(scipen = 999, dplyr.summarise.inform = FALSE)
+```
+
+```{r data_rubricas, include=FALSE}
+# --- RÚBRICAS DERECHO ---
+
+rubrica_p1 <- tibble::tibble(
+  Dimensión = c(
+    "1. Idoneidad Acción Precario",
+    "2. Posicionamiento Ético",
+    "3. Razonamientos Jurídicos",
+    "4. Lenguaje y Rol (P1)"
+  ),
+  `Nivel 4 (Óptimo)` = c(
+    "Evalúa idoneidad, justifica postura con art. 2195 CC completo.",
+    "Valora sentencia integrando interpretación del precario y matrimonio.",
+    "Relaciona motivaciones de Finnis como contenidos implícitos del tribunal.",
+    "Lenguaje pertinente. Identifica roles y actuaciones para proyectarse."
+  ),
+  `Nivel 3 (Satisfactorio)` = c(
+    "Evalúa idoneidad pero confunde algunos elementos.",
+    "Valoración ética general. Omite detalles de interpretación.",
+    "Identifica razones de Finnis pero señala razones distintas a ética/justicia.",
+    "Lenguaje básico, algunas imprecisiones."
+  ),
+  `Nivel 2 (Básico)` = c(
+    "Identifica elementos pero no justifica adecuadamente.",
+    "Postura ética con argumentos sin relación directa.",
+    "Solo describe la conexión como arbitraria o moral.",
+    "Lenguaje formal pero impreciso."
+  ),
+  `Nivel 1 (Insuficiente)` = c(
+    "No identifica postura ni fundamentación pertinente.",
+    "No toma posición ética o usa postura relativista.",
+    "Refiere elementos sin relación con derecho positivo.",
+    "Lenguaje informal. Confunde roles."
+  )
+)
+
+rubrica_p2 <- tibble::tibble(
+  Dimensión = c(
+    "1. Equivalentes Jurisdiccionales",
+    "2. Sistema Procesal Actual",
+    "3. Enfoque de Género",
+    "4. Desigualdades Estructurales"
+  ),
+  `Nivel 4 (Óptimo)` = c(
+    "Identifica todos (mediación) y fundamenta razones.",
+    "Conoce características tutelas/garantías y explica relación.",
+    "Análisis profundo de implicancias de género.",
+    "Reflexión crítica sobre desigualdades."
+  ),
+  `Nivel 3 (Satisfactorio)` = c(
+    "Identifica algunos y mediación, distingue parcialmente.",
+    "Reconoce sistema de garantías pero sin precisión exacta.",
+    "Reconoce enfoque de género de manera general.",
+    "Menciona desigualdades generales."
+  ),
+  `Nivel 2 (Básico)` = c(
+    "Identifica 1-2 equivalentes. Sin argumento claro.",
+    "No identifica características clave.",
+    "Menciona género sin análisis.",
+    "Menciona desigualdades sin contexto."
+  ),
+  `Nivel 1 (Insuficiente)` = c(
+    "No refiere equivalentes o enuncia conceptos erróneos.",
+    "No identifica sistema de garantías procesales.",
+    "No refiere al enfoque de género.",
+    "No presenta reflexión sobre desigualdades."
+  )
+)
+```
+
+```{r carga_datos_fija, include=FALSE}
+# --- PARSER POR POSICIÓN (K3 a R3) ---
+parse_deep_excel <- function(path){
+  if (!file.exists(path)) return(list(data=tibble(), map=tibble(), status="NO_FILE"))
+   
+  # Leer saltando 2 filas (encabezados en fila 3)
+  raw_data <- suppressMessages(read_excel(path, sheet = 1, skip = 2, .name_repair = "minimal"))
+   
+  # Verificar columnas (K=11, R=18)
+  if(ncol(raw_data) < 18) {
+    return(list(data=tibble(), map=tibble(), status="NO_COLS"))
+  }
+   
+  # Extraer
+  dat_subset <- raw_data[, 11:18]
+  colnames(dat_subset) <- paste0("item_", 1:8)
+   
+  # Limpieza
+  dat <- dat_subset %>%
+    mutate(across(everything(), ~ na_if(str_trim(as.character(.x)), ""))) %>%
+    mutate(across(everything(), ~ ifelse(toupper(.x) %in% c("NR","N R","N-R"), "NR", .x)))
+   
+  # Mapa Fijo
+  mapa <- tibble(
+    col_id = colnames(dat_subset), 
+    code = c("1.1", "1.2", "1.3", "1.4", "2.1", "2.2", "2.3", "2.4"),
+    final_title = c(
+      "1.1 Idoneidad Acción de Precario",
+      "1.2 Posicionamiento Ético",
+      "1.3 Razonamientos Jurídicos",
+      "1.4 Lenguaje y Rol (Caso 1)",
+      "2.1 Enfoque de Género",
+      "2.2 Desigualdades Estructurales",
+      "2.3 Perspectiva Interseccional",
+      "2.4 Lenguaje y Rol (Caso 2)"
+    )
+  )
+   
+  return(list(data = dat, map = mapa, status="OK"))
+}
+
+# Ejecutar carga
+res <- parse_deep_excel(params$archivo)
+dat <- res$data
+final_items <- res$map
+status_msg <- res$status
+
+textos_competencia <- list(
+  "1" = "ACTIVIDAD PROBLEMA 1: Precario y Justicia Social",
+  "2" = "ACTIVIDAD PROBLEMA 2: Proyecto de Ley y Familia"
+)
+
+nivel_labels <- c(
+  "1" = "Insuficiente\n(1)", "2" = "Básico\n(2)", "3" = "Satisfactorio\n(3)", "4" = "Óptimo\n(4)", "NR" = "NR"
+)
+```
+
+## Introducción
+
+\<div style="font-size: 35px; text-align: left; margin-top: 4em;"\>
+Este informe entrega una lectura **descriptiva** del desempeño de la cohorte en la evaluación EPI de **Derecho**.
+
+Se presentan:
+
+1.  **Tabla de Rúbrica**: Definición de los niveles de logro (Escala 1-4).
+2.  **Resultados por Ítem**: Gráfico de frecuencias y estadísticos.
+
+\</div\>
+
+## Tabla de Rúbrica: Actividad 1
+
+\<div style="font-size: 18px; margin-top: 2em;"\>
+
+```{r show_rubrica_1, echo=FALSE}
+kbl(rubrica_p1, escape = F, align = "ccl") %>% 
+  kable_styling(
+    bootstrap_options = c("hover", "condensed"), 
+    full_width = TRUE, 
+    font_size = 18, 
+    html_font = "\"Inconsolata\", monospace",
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#0a6d7c", extra_css = "padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;") %>%
+  column_spec(1, width = "15%", bold = TRUE, color = "#0a6d7c", extra_css = "vertical-align: top; padding: 10px; font-size: 1.1em;") %>%
+  row_spec(1:(nrow(rubrica_p1)-1), extra_css = "border-bottom: 1px solid #e0e0e0;") %>%
+  row_spec(nrow(rubrica_p1), extra_css = "border-bottom: 2px solid #0a6d7c;")
+```
+
+\</div\>
+
+## Tabla de Rúbrica: Actividad 2
+
+\<div style="font-size: 18px; margin-top: 2em;"\>
+
+```{r show_rubrica_2, echo=FALSE}
+kbl(rubrica_p2, escape = F, align = "ccl") %>% 
+  kable_styling(
+    bootstrap_options = c("hover", "condensed"), 
+    full_width = TRUE, 
+    font_size = 18, 
+    html_font = "\"Inconsolata\", monospace",
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#0a6d7c", extra_css = "padding: 12px; font-size: 1.1em; border-bottom: 3px solid #084e5a;") %>%
+  column_spec(1, width = "15%", bold = TRUE, color = "#0a6d7c", extra_css = "vertical-align: top; padding: 10px; font-size: 1.1em;") %>%
+  row_spec(1:(nrow(rubrica_p2)-1), extra_css = "border-bottom: 1px solid #e0e0e0;") %>%
+  row_spec(nrow(rubrica_p2), extra_css = "border-bottom: 2px solid #0a6d7c;")
+```
+
+\</div\>
+
+```{r plots_items, results='asis', echo=FALSE}
+#| fig.width: 11
+#| fig.height: 7.5
+
+if (status_msg != "OK" || nrow(final_items) == 0) {
+  cat("\n\n---\n\n")
+  cat("## Error de Lectura\n\n")
+  cat("No se encontraron datos en las columnas K-R (11-18) fila 3. Verifique el Excel.")
+} else {
+   
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+  last_prefix <- ""
+   
+  for(i in 1:nrow(final_items)){
+     
+    row_info <- final_items[i, ]
+    col_id   <- row_info$col_id
+    titulo   <- row_info$final_title
+    code     <- row_info$code
+     
+    # Separador
+    curr_prefix <- str_sub(code, 1, 1)
+    if (curr_prefix != last_prefix) {
+      txt <- textos_competencia[[curr_prefix]]
+      if (!is.null(txt)) {
+        cat("\n\n---\n\n")
+        # Usamos HTML para evitar warnings de Div
+        cat(glue::glue('##  {{data-background-color="white"}}
+<div class="competencia-slide"><div class="competencia-text">{txt}</div></div>'), "\n\n")
+      }
+      last_prefix <- curr_prefix
+    }
+     
+    # Datos
+    x <- dat[[col_id]]
+    df <- tibble(raw = x) %>%
+      mutate(
+        val = toupper(str_trim(as.character(raw))),
+        clean = ifelse(str_detect(val, "NR"), "NR", val),
+        num = suppressWarnings(readr::parse_number(clean)),
+        # Filtro 1-4
+        level = ifelse(is.na(num) | !num %in% 1:4, "NR", as.character(num)),
+        level = factor(level, levels = c("1","2","3","4","NR"))
+      ) %>%
+      count(level, name = "n") %>%
+      complete(level, fill = list(n = 0)) %>%
+      mutate(prop = n/sum(n))
+
+    # KPIs
+    validos <- df %>% filter(level != "NR")
+    n_valid <- sum(validos$n)
+     
+    if(n_valid > 0){
+       pts <- sum(as.numeric(as.character(validos$level)) * validos$n)
+       ilr <- pts / (n_valid * 4) # Base 4
+    } else { ilr <- 0 }
+     
+    pct_logro  <- sum(df$prop[df$level %in% c("3","4")])
+    pct_brecha <- sum(df$prop[df$level %in% c("1","2")])
+     
+    clean_title <- str_replace(titulo, "^\\d+(\\.\\d+)?\\s*", "")
+     
+    # Slide
+    cat("\n\n---\n\n")
+    cat("## ", clean_title, "\n\n")
+     
+    cat(":::: {.columns}\n\n")
+     
+    # Col 1
+    cat("::: {.column width='65%'}\n")
+    g <- ggplot(df, aes(x = level, y = n)) +
+      geom_col(fill = brand_main, width = 0.75) + 
+      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 6, fontface="bold", color=brand_dark) +
+      scale_x_discrete(drop = FALSE, labels = nivel_labels) +
+      labs(x = NULL, y = NULL) +
+      theme(
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 14, color = brand_text, lineheight = 1.1, margin = margin(t=10)),
+        plot.margin = margin(10,10,30,10)
+      )
+    print(g)
+    cat("\n:::\n")
+     
+    # Col 2
+    cat("::: {.column width='35%'}\n")
+    cat('<div style="font-size: 25px; text-align: left; margin-top: 4em;">\n')
+    cat('<div class="analysis-box">')
+      cat('<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">Indicadores Clave</h4>')
+       
+      color_ic <- if(ilr >= 0.7) "#28a745" else if(ilr >= 0.5) "#ffc107" else "#dc3545"
+      cat(glue::glue('<div class="stat-row" style="margin-top:15px;"><span style="color:#666;">Índice de Calidad Global:</span><br><strong style="font-size:1.2em; color:{color_ic};">{scales::percent(ilr, accuracy=0.1)}</strong></div>'))
+      cat(glue::glue('<div style="margin-top:15px;"><div style="font-size:0.9em;"><span style="color:#28a745; font-weight:bold;">Logro (3-4):</span> {fmt_pct(pct_logro)}</div>'))
+      cat(glue::glue('<div style="font-size:0.9em;"><span style="color:#dc3545; font-weight:bold;">Brecha (1-2):</span> {fmt_pct(pct_brecha)}</div></div>'))
+    cat('</div>')
+    cat('<div style="font-size:0.45em; color:#666; margin-top:20px;">*Índice de Calidad: Puntaje / Ideal (Base 4).</div>')
+    cat('</div>\n')
+    cat("\n:::\n") 
+    cat("::::\n\n") 
+  }
+}
+```
+
+## Anexo: Vistas Alternativas {.center .middle background-color="\#0a4e58" color="white"}
+
+```{r plots_lollipop, results='asis', echo=FALSE}
+#| fig.width: 12
+#| fig.height: 5.5
+
+if (status_msg == "OK" && nrow(final_items) > 0) {
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+
+  for(i in 1:nrow(final_items)){
+      row_info <- final_items[i, ]
+      col_id   <- row_info$col_id
+      titulo   <- row_info$final_title
+       
+      x <- dat[[col_id]]
+      df <- tibble(raw = x) %>%
+      mutate(
+        val = toupper(str_trim(as.character(raw))),
+        clean = ifelse(str_detect(val, "NR"), "NR", val),
+        num = suppressWarnings(readr::parse_number(clean)),
+        level = ifelse(is.na(num) | !num %in% 1:4, "NR", as.character(num)),
+        level = factor(level, levels = c("1","2","3","4","NR"))
+      ) %>%
+      count(level, name = "n") %>%
+      complete(level, fill = list(n = 0)) %>%
+      mutate(prop = n/sum(n))
+       
+      pct_logro <- sum(df$prop[df$level %in% c("3","4")])
+      clean_title <- str_replace(titulo, "^\\d+(\\.\\d+)?\\s*", "")
+
+      cat("\n\n---\n\n")
+      cat("## ", clean_title, "\n\n")
+       
+      cat(":::: {.columns}\n\n")
+       
+      # Col 1
+      cat("::: {.column width='65%'}\n")
+      cat('<div style="font-size: 25px; text-align: left; margin-top: 4em;">\n')
+       
+      g <- ggplot(df, aes(x = level, y = prop)) +
+        geom_segment(aes(xend=level, y=0, yend=prop), color=brand_main, linewidth=1.5) +
+        geom_point(size=5, color=brand_main) +
+        geom_text(aes(label=fmt_pct(prop)), vjust=-1.2, size=5, fontface="bold") +
+        scale_y_continuous(labels=fmt_pct, limits=c(0, max(df$prop)*1.3)) +
+        scale_x_discrete(labels = nivel_labels) +
+        labs(x=NULL, y=NULL) +
+        theme(axis.text.x = element_text(size = 13, color = brand_text))
+      print(g)
+       
+      cat('</div>\n')
+      cat('\n:::\n')
+       
+      # Col 2
+      cat("::: {.column width='35%'}\n")
+      cat('<div style="font-size: 25px; text-align: left; margin-top: 4em;">\n')
+      cat('<div class="analysis-box">')
+        cat('<h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">Indicadores Clave</h4>')
+        cat(glue::glue('<div style="margin-top:15px;"><div><span style="color:#28a745; font-weight:bold;">Logro (3-4):</span> {fmt_pct(pct_logro)}</div></div>'))
+      cat('</div>')
+      cat('</div>\n')
+      cat('\n:::\n')
+      cat("::::\n\n")
+  }
+}
+```
+
+## Balance General {.center .middle background-color="\#0a4e58" color="white"}
+
+```{r plot_divergente, results='asis', echo=FALSE}
+#| fig.width: 13
+#| fig.height: 7
+
+if (status_msg == "OK" && nrow(final_items) > 0) {
+   
+  all_data <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    code   <- final_items$code[i]
+    raw_title <- final_items$final_title[i]
+     
+    item_label <- stringr::str_wrap(str_replace(raw_title, "^\\d+\\.\\d+\\s*", ""), width = 45)
+     
+    x <- dat[[col_id]]
+    tibble(raw = x) %>%
+      mutate(
+        num = suppressWarnings(readr::parse_number(as.character(raw))),
+        cat = case_when(
+          num %in% 1:2 ~ "Brecha (1-2)",
+          num %in% 3:4 ~ "Logro (3-4)",
+          TRUE ~ NA_character_ 
+        )
+      ) %>%
+      filter(!is.na(cat)) %>%
+      count(cat) %>%
+      mutate(item = item_label, code_order = code)
+  }) %>%
+    group_by(item) %>% mutate(prop = n / sum(n)) %>% ungroup()
+
+  cat("\n\n---\n\n")
+  cat("## Balance General\n\n")
+   
+  all_data <- all_data %>% mutate(item = factor(item, levels = unique(item)))
+
+  g <- ggplot(all_data, aes(x = item, y = prop, fill = cat)) +
+    geom_col(width = 0.7, alpha = 0.95) + 
+    geom_text(aes(label = scales::percent(prop, accuracy = 1)), position = position_stack(vjust = 0.5), color = "white", size = 4.5, fontface = "bold") +
+    coord_flip() +
+    scale_fill_manual(values = c("Brecha (1-2)" = "#d9534f", "Logro (3-4)" = "#0a6d7c")) +
+    labs(x = NULL, y = NULL, fill = NULL) +
+    theme_minimal(base_size = 18) +
+    theme(legend.position = "top", axis.text.y = element_text(size = 12))
+   
+  print(g)
+}
+```
+
+```{r plot_heatmap, results='asis', echo=FALSE}
+#| fig.width: 17
+#| fig.height: 8.5
+
+if (status_msg == "OK" && nrow(final_items) > 0) {
+   
+  all_data <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    code   <- final_items$code[i]
+    raw_title <- final_items$final_title[i]
+     
+    item_label <- stringr::str_wrap(str_replace(raw_title, "^\\d+\\.\\d+\\s*", ""), width = 50)
+     
+    x <- dat[[col_id]]
+    tibble(raw = x) %>%
+      mutate(
+        val = toupper(str_trim(as.character(raw))),
+        clean = ifelse(str_detect(val, "NR"), "NR", val),
+        num = suppressWarnings(readr::parse_number(clean)),
+        level = ifelse(is.na(num) | !num %in% 1:4, "NR", as.character(num)),
+        level = factor(level, levels = c("1","2","3","4","NR"))
+      ) %>%
+      count(level, name = "n") %>%
+      mutate(prop = n/sum(n), item = item_label, code_order = code)
+  })
+   
+  all_data <- all_data %>% mutate(item = factor(item, levels = unique(item)))
+   
+  cat("\n\n---\n\n")
+  cat("## Distribución Detallada\n\n")
+   
+  g <- ggplot(all_data, aes(x = level, y = item, fill = prop)) +
+    geom_tile(color = "white", linewidth = 1) + 
+    geom_text(aes(label = scales::percent(prop, accuracy = 1)), color = ifelse(all_data$prop > 0.5, "white", "#333333"), size = 5, fontface = "bold") + 
+    scale_fill_gradient(low = "#e0f2f1", high = brand_main, labels = scales::percent) +
+    scale_x_discrete(position = "top", labels = nivel_labels) +
+    labs(x = NULL, y = NULL, fill = "Concentración") +
+    theme_minimal(base_size = 18) + 
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(face = "bold", size = 14, color = brand_dark),
+      axis.text.y = element_text(size = 14, color = "#333333", hjust = 1),
+      panel.grid = element_blank()
+    )
+  print(g)
+}
+```
+
+```{r resumen_ejecutivo, results='asis', echo=FALSE}
+if (status_msg == "OK" && nrow(final_items) > 0) {
+   
+  ranking <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    titulo <- final_items$final_title[i]
+    x <- dat[[col_id]]
+     
+    vals_char <- toupper(str_trim(as.character(x)))
+    vals_clean <- ifelse(str_detect(vals_char, "NR"), NA, vals_char)
+    vals_num <- suppressWarnings(readr::parse_number(vals_clean))
+    vals <- vals_num[!is.na(vals_num) & vals_num %in% 1:4]
+     
+    if(length(vals) == 0) return(tibble(item=titulo, logro=0))
+    pct_logro <- sum(vals >= 3) / length(vals)
+    tibble(item = titulo, logro = pct_logro)
+  }) %>% arrange(desc(logro))
+   
+  top_3 <- head(ranking, 3)
+  bottom_3 <- tail(ranking, 3) %>% arrange(logro) 
+  promedio_total <- mean(ranking$logro, na.rm = TRUE)
+   
+  cat("##  \n\n")
+  cat("### Balance Global\n\n")
+  cat(glue::glue("> El promedio general de logro de la cohorte es del **{scales::percent(promedio_total, accuracy=1)}**."))
+  cat("\n\n---\n\n") 
+
+  cat(":::: {.columns}\n\n")
+   
+  cat('::: {.column width="50%" style="font-size: 27px; text-align: left; margin-top: 2.2em;"}\n\n')
+  cat("### Fortalezas Consolidadas\n\n")
+  if(nrow(top_3) > 0) {
+    for(k in 1:nrow(top_3)){
+      item_name <- str_replace(top_3$item[k], "^\\d+\\.\\d+\\s*", "")
+      cat(glue::glue("* **{item_name}** ({scales::percent(top_3$logro[k], accuracy=1)})."), "\n")
+    }
+  }
+  cat("\n:::\n\n")
+   
+  cat('::: {.column width="50%" style="font-size: 27px; text-align: left; margin-top: 2.2em;"}\n\n')
+  cat("### Oportunidades de Mejora\n\n")
+  if(nrow(bottom_3) > 0) {
+    for(k in 1:nrow(bottom_3)){
+      item_name <- str_replace(bottom_3$item[k], "^\\d+\\.\\d+\\s*", "")
+      cat(glue::glue("* **{item_name}** ({scales::percent(bottom_3$logro[k], accuracy=1)})."), "\n")
+    }
+  }
+  cat("\n:::\n\n")
+  cat("::::\n\n")
+}
+```
+

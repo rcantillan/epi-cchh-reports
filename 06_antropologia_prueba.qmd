@@ -1,0 +1,639 @@
+---
+title: "![](assets/img/logo-uah-open.png){width=280px style='display:block; margin-bottom:40px; margin-left:0;'} Análisis EPI"
+subtitle: "Reporte de Resultados de Antropología"
+author: ""
+logo: assets/img/logo-uah-open.png
+
+params:
+  archivo:
+    value: "data/raw/BD REPORTE EPI ANTROPOLOGÍA (1).xlsx" 
+    label: "Archivo Excel (Resultados Individuales)"
+
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    theme:
+      - default
+      - styles/report.scss
+    slide-number: true
+    auto-stretch: false
+    df-print: paged
+    code-fold: true
+    code-tools: true
+    # css: styles/custom_titles.css 
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  tidyverse, readxl, janitor, readr, forcats,
+  scales, glue, stringr, ggplot2, rlang, DT, kableExtra
+)
+
+brand_main   <- "#0a6d7c"
+brand_dark   <- "#0a4e58"
+brand_muted  <- "#4b5661"
+brand_text   <- "#11222b" 
+
+theme_set(theme_minimal(base_size = 16)) 
+
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+options(scipen = 999, dplyr.summarise.inform = FALSE)
+```
+
+```{r labels_items, include=FALSE}
+# [1] DICCIONARIO DE TÍTULOS
+# Ajusta esto según las columnas reales de tu Excel
+manual_titles <- c(
+  "ENFOQUES TEÓRICO-CONCEPTUALES DE LA ANTROPOLOGÍA Y SU RELACIÓN CON UNA EXPERIENCIA DE TRABAJO ETNOGRÁFICO ESPECÍFICO." = 
+  "Enfoques Teórico-Conceptuales y Trabajo Etnográfico",
+  
+  "ELEMENTOS FUNDAMENTALES DE LA HISTORIA Y EL PENSAMIENTO LATINOAMERICANO PARA COMPRENDER UN PROBLEMA DE INVESTIGACIÓN ESPECÍFICO." = 
+  "Historia y Pensamiento Latinoamericano",
+  
+  "FUNDAMENTOS Y ESTRATEGIAS DE LAS METODOLOGÍAS CUALITATIVAS Y LA ETNOGRAFÍA PARA FORMULAR PROYECTOS DE INVESTIGACIÓN ANTROPOLÓGICA." = 
+  "Metodologías Cualitativas y Etnografía",
+  
+  "HERRAMIENTAS INTRODUCTORIAS DEL TRABAJO ETNOGRÁFICO, INCORPORANDO EL DISEÑO, IMPLEMENTACIÓN Y REPORTE ESCRITO (ANÁLISIS)" = 
+  "Herramientas del Trabajo Etnográfico (Diseño y Reporte)",
+  
+  "ESPECIFICIDADES DISCIPLINARES DE LA ANTROPOLOGÍA Y SU RELACIÓN CON OTRAS DISCIPLINAS DE LAS CIENCIAS HUMANAS." = 
+  "Especificidades Disciplinares e Interdisciplina",
+  
+  "ASPECTOS FORMALES ASOCIADOS AL ENSAYO" = 
+  "Aspectos Formales (Ensayo)"
+)
+```
+
+```{r parser, include=FALSE}
+# [3] PARSER DE EXCEL (ROBUSTO)
+parse_deep_excel <- function(path){
+  if (!file.exists(path)) return(list(data=tibble(), map=tibble()))
+  
+  # 1. Leer bloque inicial para ubicar encabezados
+  raw_block <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", col_names = FALSE, n_max = 50, .name_repair = "minimal", col_types = "text"))
+  
+  # Buscar fila "RUT ESTUDIANTE"
+  header_row_idx <- which(apply(raw_block, 1, function(x) any(str_detect(toupper(x), "RUT ESTUDIANTE"), na.rm = TRUE)))[1]
+  
+  if (is.na(header_row_idx)) return(list(data=tibble(), map=tibble()))
+  
+  # 2. Leer encabezados
+  headers_df <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", skip = header_row_idx - 1, n_max = 1, .name_repair = "minimal", col_types = "text"))
+  raw_headers <- colnames(headers_df)
+  clean_headers <- str_squish(toupper(raw_headers)) 
+  
+  # 3. Identificar columnas válidas
+  target_cols <- names(manual_titles)
+  valid_indices <- which(clean_headers %in% target_cols)
+  
+  if(length(valid_indices) == 0) return(list(data=tibble(), map=tibble()))
+  
+  # 4. Leer datos
+  raw_data <- suppressMessages(read_excel(path, sheet = "Resultados Individuales", col_names = FALSE, skip = header_row_idx, .name_repair = "minimal", col_types = "text"))
+  
+  dat_subset <- raw_data[, valid_indices]
+  final_col_ids <- paste0("item_", seq_along(valid_indices))
+  colnames(dat_subset) <- final_col_ids
+  
+  # --- LIMPIEZA ---
+  dat <- dat_subset %>%
+    mutate(across(everything(), ~ na_if(str_trim(.x), ""))) %>%
+    filter(!if_all(everything(), is.na)) %>%
+    mutate(across(everything(), ~ ifelse(toupper(.x) %in% c("NR","N R","N-R"), "NR", .x)))
+  
+  # 5. Metadatos
+  found_headers <- clean_headers[valid_indices]
+  final_titles_vec <- manual_titles[found_headers]
+  
+  mapa <- tibble(
+    col_id = final_col_ids,
+    code = found_headers, 
+    final_title = final_titles_vec
+  )
+  
+  return(list(data = dat, map = mapa))
+}
+
+# Ejecutar carga
+archivo <- params$archivo
+if(file.exists(archivo)){
+  res <- parse_deep_excel(archivo)
+  dat <- res$data
+  final_items <- res$map
+} else {
+  dat <- tibble()
+  final_items <- tibble()
+}
+```
+
+```{r labels_rubrica, include=FALSE}
+# [4] CONFIGURACIÓN DE LAS DOS RÚBRICAS
+
+# --- 1. Rúbrica Institucional (Referencial) ---
+tabla_rubrica_inst <- tibble::tibble(
+  Nivel = c("4 (Óptimo)", "3 (Satisfactorio)", "2 (Base)", "1 (Por Mejorar)", "0 (No Obs)"),
+  `% Logro Ref` = c("100%-85%", "84%-65%", "64%-50%", "49%-0%", "0 pts"),
+  Descripción = c(
+    "Avanza con autonomía al ciclo de profundización. Cuenta con desempeños relevantes y demuestra un buen nivel de conocimientos teórico-disciplinares.",
+    "Avanza con autonomía. Demuestra un conocimiento apropiado teórico-disciplinar y manejo metodológico.",
+    "Avanza con apoyos adicionales. Demuestra conocimiento básico de contenidos esenciales, pero carece de profundidad.",
+    "Avanza con apoyos adicionales. No alcanza un mínimo de conocimiento de contenidos esperado.",
+    "No presenta respuestas, lo que no permite evidenciar el logro de aprendizajes."
+  )
+)
+
+# --- 2. Rúbrica Original de la Carrera (Aplicada en Gráficos) ---
+nivel_labels <- c(
+  "0" = "No Obs.\n(0)", 
+  "1" = "Insatis.\n(1)", 
+  "2" = "Bajo\n(2)", 
+  "3" = "Medio\n(3)", 
+  "4" = "Satisf.\n(4)",
+  "NR" = "No Resp.\n(NR)"
+)
+
+tabla_rubrica_orig <- tibble::tibble(
+  Nivel = c("4", "3", "2", "1", "0", "NR"),
+  Categoría = c("Satisfactorio", "Medio", "Bajo", "Insatisfactorio", "No Observado", "No Responde"),
+  Descripción = c(
+    "El desempeño descrito se reconoce, relaciona y comprende analíticamente de forma completa, integrando enfoques teóricos y contextualización adecuada.",
+    "El desempeño se logra parcialmente; reconoce elementos pero la comprensión analítica o contextualización es parcial.",
+    "Reconoce conceptos o elementos aislados pero no logra relacionarlos adecuadamente con la experiencia o el fenómeno. Comprensión insuficiente.",
+    "No identifica los enfoques o elementos fundamentales, impidiendo establecer relaciones o comprensiones mínimas del problema o experiencia.",
+    "El desempeño descrito no es observado dada la ausencia de acciones o productos.",
+    "Respuesta no registrada."
+  )
+)
+```
+
+## Contexto de la Evaluación
+
+::: {.div style="font-size: 28px; text-align: left; margin-top: 3.5em; line-height: 1.4;"}
+
+- **Propósito de la EPI**: La Evaluación de Perfil Intermedio (EPI) es un hito formativo cuya finalidad es promover el uso de evidencia para la toma de decisiones pedagógicas, enfocándose en la calidad de los aprendizajes.
+
+- **Alcance**: Esta evaluación permite identificar niveles de logro al finalizar el ciclo básico, detectando tanto aprendizajes logrados como nudos críticos para enfrentar el ciclo de profundización.
+
+- **Lectura de Resultados**: Los términos utilizados como "buen nivel", "apropiado" o "mínimo" deben entenderse en el contexto específico y situado de esta evaluación. El objetivo central es detectar niveles de autonomía y necesidades de apoyo.
+
+:::
+
+## Rúbrica Institucional (Referencial)
+
+::: {.div style="font-size: 24px; text-align: left; margin-top: 3em;"}
+
+```{r show_rubrica_inst, echo=FALSE}
+tabla_rubrica_inst %>%
+  kbl(escape = F, align = "cll") %>% 
+  kable_styling(
+    bootstrap_options = c("hover", "condensed"), 
+    full_width = TRUE, 
+    font_size = 20, 
+    html_font = "\"Inconsolata\", monospace",
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#0a6d7c", extra_css = "padding: 10px; font-size: 1.1em;") %>%
+  column_spec(1, width = "15%", bold = TRUE, color = "#0a6d7c", extra_css = "vertical-align: top; padding: 8px;") %>%
+  column_spec(2, width = "15%", bold = TRUE, color = "#11222b", extra_css = "vertical-align: top; padding: 8px;") %>%
+  column_spec(3, width = "70%", extra_css = "vertical-align: top; text-align: left; line-height: 1.3; padding: 8px; color: #4b5661;") %>%
+  row_spec(1:(nrow(tabla_rubrica_inst)-1), extra_css = "border-bottom: 1px solid #e0e0e0;")
+```
+
+:::
+
+## Rúbrica Específica de la Carrera
+
+::: {.div style="font-size: 24px; text-align: left; margin-top: 3em;"}
+
+```{r show_rubrica_orig, echo=FALSE}
+tabla_rubrica_orig %>%
+  kbl(escape = F, align = "cll") %>% 
+  kable_styling(
+    bootstrap_options = c("hover", "condensed"), 
+    full_width = TRUE, 
+    font_size = 20, 
+    html_font = "\"Inconsolata\", monospace",
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#4b5661", extra_css = "padding: 10px; font-size: 1.1em;") %>%
+  column_spec(1, width = "10%", bold = TRUE, color = "#0a6d7c", extra_css = "vertical-align: top; padding: 8px;") %>%
+  column_spec(2, width = "15%", bold = TRUE, color = "#11222b", extra_css = "vertical-align: top; padding: 8px;") %>%
+  column_spec(3, width = "75%", extra_css = "vertical-align: top; text-align: left; line-height: 1.3; padding: 8px; color: #4b5661;") %>%
+  row_spec(1:(nrow(tabla_rubrica_orig)-1), extra_css = "border-bottom: 1px solid #e0e0e0;")
+```
+
+:::
+
+```{r plots_items, results='asis', echo=FALSE}
+#| fig.width: 11
+#| fig.height: 7.5
+
+if (nrow(final_items) == 0) {
+  cat("### No se detectaron ítems.\n")
+  cat("Verifique los nombres de columna en el Excel.")
+} else {
+  
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+  
+  for(i in 1:nrow(final_items)){
+    row_info <- final_items[i, ]
+    col_id   <- row_info$col_id
+    titulo   <- row_info$final_title
+    code     <- row_info$code
+    
+    # --- PROCESAMIENTO ---
+    x <- dat[[col_id]]
+    
+    df <- tibble(raw = x) |>
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(
+           str_detect(val, "\\bNR\\b") ~ "NR",
+           TRUE ~ val
+        ),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","4","NR"))
+      ) |>
+      count(level, name = "n") |>
+      complete(level = factor(c("0","1","2","3","4","NR"), levels = c("0","1","2","3","4","NR")), fill = list(n = 0)) |>
+      mutate(prop = n/sum(n))
+
+    # --- ESTADÍSTICOS ---
+    df_valid <- df %>% filter(level %in% c("0","1","2","3","4"))
+    total_valid <- sum(df_valid$n)
+    
+    points_sum <- sum(as.numeric(as.character(df_valid$level)) * df_valid$n)
+    max_points <- total_valid * 4
+    ilr <- if(max_points > 0) points_sum / max_points else 0
+    
+    pct_logro  <- sum(df$prop[df$level %in% c("3","4")]) 
+    pct_brecha <- sum(df$prop[df$level %in% c("0","1","2")])
+    pct_bajo   <- sum(df$prop[df$level %in% c("0","1")]) 
+    pct_max    <- sum(df$prop[df$level == "4"])          
+    
+    # --- LÓGICA DE TEXTO AUTOMÁTICO ---
+    texto_analisis <- ""
+    
+    if (pct_bajo >= 0.5) {
+      texto_analisis <- glue::glue("Se observa que la competencia/situación no se encuentra lograda, pues más de la mitad de los/las estudiantes ({fmt_pct(pct_bajo)}) obtiene los niveles más bajos.")
+    } else if (pct_max >= 0.7) {
+      texto_analisis <- glue::glue("Se observa que la competencia o situación problema se encuentra bien lograda al registrar el {fmt_pct(pct_max)} de los estudiantes en el nivel de desempeño más alto.")
+    } else if (pct_logro >= 0.7) {
+      texto_analisis <- glue::glue("Se observa que la competencia/situación problema se encuentra medianamente lograda, pues el {fmt_pct(pct_logro)} de los estudiantes obtuvo resultados en los niveles Satisfactorio y Óptimo.")
+    } else {
+      texto_analisis <- "Los resultados muestran una distribución heterogénea entre los niveles de logro y brecha, sin predominios críticos según los criterios definidos."
+    }
+    
+    # --- GENERAR SLIDE ---
+    cat("\n\n---\n\n")
+    cat(glue::glue("## {titulo} {{style='font-size: 0.6em; line-height: 1.1;'}}\n\n"))
+    
+    cat(":::: {.columns}\n\n")
+    
+    # Columna Izquierda: Gráfico
+    cat("::: {.column width='65%'}\n")
+    g <- ggplot(df, aes(x = level, y = n)) +
+      geom_col(fill = brand_main, width = 0.75) + 
+      geom_text(aes(label = fmt_pct(prop)), vjust = -0.5, size = 6, fontface="bold", color=brand_dark) +
+      scale_x_discrete(drop = FALSE, labels = nivel_labels) +
+      labs(x = NULL, y = NULL) +
+      theme(
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 14, color = brand_text, lineheight = 1.1, margin = margin(t=10)),
+        plot.margin = margin(10,10,30,10)
+      )
+    print(g)
+    cat("\n:::\n")
+    
+    # Columna Derecha: Indicadores y Texto
+    cat("::: {.column width='35%'}\n")
+    cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 2em;"}\n')
+
+    cat('<div class="analysis-box">')
+      cat('<h4 style="margin-top:0; color:#0a6d7c; border-bottom:1px solid #ccc; font-size:1em;">Indicadores Clave</h4>')
+      color_ic <- if(ilr >= 0.7) "#28a745" else if(ilr >= 0.5) "#ffc107" else "#dc3545"
+      
+      cat('<div class="stat-row" style="margin-top:15px;">')
+      cat('<span style="font-size:0.85em; color:#666;">Índice de Calidad Global (0-100%):</span><br>')
+      cat(glue::glue('<strong style="font-size:1.2em; color:{color_ic};">{scales::percent(ilr, accuracy=0.1)}</strong>'))
+      cat('</div>')
+      
+      cat('<div style="margin-top:15px;">')
+      cat(glue::glue('<div style="font-size:0.9em;"><span style="color:#28a745; font-weight:bold;">Logro (3-4):</span> {fmt_pct(pct_logro)}</div>'))
+      cat(glue::glue('<div style="font-size:0.9em;"><span style="color:#dc3545; font-weight:bold;">Brecha (0-2):</span> {fmt_pct(pct_brecha)}</div>'))
+      cat('</div>')
+    cat('</div>')
+    
+    # Caja de texto automático
+    cat('<div style="margin-top: 25px; padding: 15px; background-color: #f0f7f8; border-left: 5px solid #0a6d7c; font-size: 0.85em; line-height: 1.4; color: #2c3e50;">')
+      cat(glue::glue('<em>"{texto_analisis}"</em>'))
+    cat('</div>')
+
+    # Footer actualizado con definición de medida
+    cat('<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">')
+    cat('<strong>*Índice de Calidad:</strong> Medida de intensidad del desempeño. Representa la suma de puntajes obtenidos por la cohorte dividida por el puntaje máximo posible (Ideal).<br>')
+    cat('</div>')
+
+    cat("\n:::\n") 
+    cat("\n:::\n") 
+    cat("::::\n\n") 
+  }
+}
+```
+
+## Anexo: Resumen Visual {.center .middle background-color="\#0a4e58" color="white"}
+
+```{r plots_lollipop, results='asis', echo=FALSE}
+#| fig.width: 12
+#| fig.height: 5.5
+
+if (nrow(final_items) > 0) {
+  fmt_pct <- function(x) scales::percent(x, accuracy = 0.1)
+
+  for(i in 1:nrow(final_items)){
+      row_info <- final_items[i, ]
+      col_id   <- row_info$col_id
+      titulo   <- row_info$final_title
+      
+      x <- dat[[col_id]]
+      df <- tibble(raw = x) |>
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(str_detect(val, "\\bNR\\b") ~ "NR", TRUE ~ val),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","4","NR"))
+      ) |>
+      count(level, name = "n") |>
+      complete(level = factor(c("0","1","2","3","4","NR"), levels = c("0","1","2","3","4","NR")), fill = list(n = 0)) |>
+      mutate(prop = n/sum(n))
+      
+      # Recalculamos porcentajes para el texto
+      pct_logro  <- sum(df$prop[df$level %in% c("3","4")])
+      pct_brecha <- sum(df$prop[df$level %in% c("0","1","2")])
+      pct_bajo   <- sum(df$prop[df$level %in% c("0","1")]) 
+      pct_max    <- sum(df$prop[df$level == "4"])   
+
+      # Texto Automático
+      texto_analisis <- ""
+      if (pct_bajo >= 0.5) {
+        texto_analisis <- glue::glue("Se observa que la competencia/situación no se encuentra lograda, pues más de la mitad de los/las estudiantes ({fmt_pct(pct_bajo)}) obtiene los niveles más bajos.")
+      } else if (pct_max >= 0.7) {
+        texto_analisis <- glue::glue("Se observa que la competencia o situación problema se encuentra bien lograda al registrar el {fmt_pct(pct_max)} de los estudiantes en el nivel de desempeño más alto.")
+      } else if (pct_logro >= 0.7) {
+        texto_analisis <- glue::glue("Se observa que la competencia/situación problema se encuentra medianamente lograda, pues el {fmt_pct(pct_logro)} de los estudiantes obtuvo resultados en los niveles Satisfactorio y Óptimo.")
+      } else {
+        texto_analisis <- "Los resultados muestran una distribución heterogénea entre los niveles de logro y brecha."
+      }
+
+      cat("\n\n---\n\n")
+      cat(glue::glue("## {titulo} {{style='font-size: 0.6em; line-height: 1.1;'}}\n\n"))
+      
+      cat(":::: {.columns}\n\n")
+      cat("::: {.column width='65%'}\n")
+      cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 4em;"}\n')
+      
+      g <- ggplot(df, aes(x = level, y = prop)) +
+        geom_line(aes(group = 1), color = "#bdc3c7", linewidth = 1.2, linetype = "solid") + 
+        geom_segment(aes(xend=level, y=0, yend=prop), color=brand_main, linewidth=1.5) +
+        geom_point(size=5, color=brand_main) +
+        geom_text(aes(label=fmt_pct(prop)), vjust=-1.2, size=5, fontface="bold") +
+        scale_y_continuous(labels=fmt_pct, limits=c(0, max(df$prop)*1.3)) +
+        scale_x_discrete(labels = nivel_labels) +
+        labs(x=NULL, y=NULL) +
+        theme(
+            axis.text.x = element_text(size = 13, color = brand_text, lineheight = 1.1),
+            plot.margin = margin(20,20,40,20)
+        )
+      print(g)
+      cat('\n:::\n')
+      cat("\n:::\n")
+      
+      cat("::: {.column width='35%'}\n")
+      cat('::: {.div style="font-size: 25px; text-align: left; margin-top: 4em;"}\n')
+      cat('<div class="analysis-box">')
+        cat('<h4 style="margin-top:5px; color:#0a6d7c; border-bottom:1px solid #ccc;">Resumen</h4>')
+        cat(glue::glue('<div style="margin-top:15px;">Logro Acumulado (Satisf + Óptimo): <strong>{fmt_pct(pct_logro)}</strong></div>'))
+      cat('</div>')
+      
+      # Insertamos el texto también aquí por si se usan estos slides
+      cat('<div style="margin-top: 20px; padding: 10px; background-color: #f0f7f8; border-left: 4px solid #0a6d7c; font-size: 0.8em; line-height: 1.3;">')
+        cat(glue::glue('<em>"{texto_analisis}"</em>'))
+      cat('</div>')
+
+      cat('\n:::\n') 
+      cat("\n:::\n") 
+      cat("::::\n\n")
+  }
+}
+```
+
+```{r plot_heatmap, results='asis', echo=FALSE}
+#| fig.width: 17
+#| fig.height: 8.5
+
+if (nrow(final_items) > 0) {
+  
+  all_data <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    code   <- final_items$code[i]
+    raw_title <- final_items$final_title[i]
+    
+    item_label <- stringr::str_wrap(raw_title, width = 60)
+    
+    x <- dat[[col_id]]
+    
+    tibble(raw = x) %>%
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(stringr::str_detect(val, "\\bNR\\b") ~ "NR", TRUE ~ val),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        level = dplyr::if_else(is.na(num), "NR", as.character(num)),
+        level = factor(level, levels = c("0","1","2","3","4","NR"))
+      ) %>%
+      count(level, name = "n") %>%
+      mutate(
+        prop = n / sum(n),
+        item = item_label,
+        code_order = code
+      )
+  })
+  
+  all_data <- all_data %>%
+    mutate(item = factor(item, levels = unique(item)))
+  
+  cat("\n\n---\n\n")
+  cat("## Mapa de Calor: Distribución Detallada\n\n")
+  
+  g <- ggplot(all_data, aes(x = level, y = item, fill = prop)) +
+    geom_tile(color = "white", linewidth = 1) + 
+    
+    geom_text(aes(label = scales::percent(prop, accuracy = 1)), 
+              color = ifelse(all_data$prop > 0.5, "white", "#333333"), 
+              size = 5, fontface = "bold") + 
+    
+    scale_fill_gradient(low = "#e0f2f1", high = brand_main, labels = scales::percent) +
+    scale_x_discrete(position = "top", labels = nivel_labels) +
+    
+    labs(
+      x = NULL, y = NULL, fill = "Concentración",
+      caption = "Intensidad de color indica mayor porcentaje de estudiantes."
+    ) +
+    
+    theme_minimal(base_size = 18) + 
+    theme(
+      legend.position = "right",
+      axis.text.x = element_text(face = "bold", size = 14, color = brand_dark),
+      axis.text.y = element_text(size = 10, color = "#333333", margin = margin(r=10), lineheight = 1.1, hjust = 1),
+      panel.grid = element_blank()
+    )
+  
+  print(g)
+}
+```
+
+## Balance General {.center .middle background-color="\#0a4e58" color="white"}
+
+```{r plot_divergente, results='asis', echo=FALSE}
+#| fig.width: 13
+#| fig.height: 7
+
+if (nrow(final_items) > 0) {
+  
+  all_data <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    raw_title <- final_items$final_title[i]
+    item_label <- stringr::str_wrap(raw_title, width = 50)
+    
+    x <- dat[[col_id]]
+    tibble(raw = x) %>%
+      mutate(
+        val = toupper(stringr::str_trim(as.character(raw))),
+        clean_val = dplyr::case_when(stringr::str_detect(val, "\\bNR\\b") ~ "NR", TRUE ~ val),
+        num = suppressWarnings(readr::parse_number(clean_val)),
+        categoria = dplyr::case_when(
+          num %in% 0:2 ~ "Brecha (0-2)",
+          num %in% 3:4 ~ "Logro (3-4)",
+          TRUE ~ NA_character_ 
+        )
+      ) %>%
+      filter(!is.na(categoria)) %>%
+      count(categoria) %>%
+      mutate(item = item_label)
+  })
+  
+  all_data <- all_data %>%
+    group_by(item) %>%
+    mutate(prop = n / sum(n)) %>%
+    ungroup() %>%
+    mutate(item = factor(item, levels = unique(item)))
+
+  cat("\n\n---\n\n")
+  cat("## Balance General\n\n")
+  
+  g <- ggplot(all_data, aes(x = item, y = prop, fill = categoria)) +
+    geom_col(width = 0.7, alpha = 0.95) + 
+    geom_text(
+      aes(label = scales::percent(prop, accuracy = 1)), 
+      position = position_stack(vjust = 0.5), 
+      color = "white", size = 4.5, fontface = "bold"
+    ) +
+    coord_flip() +
+    scale_fill_manual(values = c("Brecha (0-2)" = "#d9534f", "Logro (3-4)"  = "#0a6d7c")) +
+    scale_y_continuous(labels = NULL, expand = c(0,0)) +
+    labs(x = NULL, y = NULL, fill = NULL) +
+    theme_minimal(base_size = 18) +
+    theme(
+      legend.position = "right",
+      legend.text = element_text(size = 14, face = "bold"),
+      panel.grid = element_blank(),
+      axis.text.y = element_text(size = 10, color = "#333333", margin = margin(r=10), lineheight = 0.9)
+    )
+  print(g)
+}
+```
+
+```{r resumen_ejecutivo, results='asis', echo=FALSE}
+if (exists("final_items") && nrow(final_items) > 0) {
+  
+  ranking <- purrr::map_dfr(1:nrow(final_items), function(i) {
+    col_id <- final_items$col_id[i]
+    titulo <- final_items$final_title[i]
+    x <- dat[[col_id]]
+    
+    vals_num <- suppressWarnings(readr::parse_number(as.character(x)))
+    vals <- vals_num[!is.na(vals_num) & vals_num %in% 0:4]
+    
+    if(length(vals) == 0) return(tibble(item=titulo, logro=0))
+    
+    pct_logro <- sum(vals >= 3) / length(vals)
+    tibble(item = titulo, logro = pct_logro)
+  }) %>%
+    arrange(desc(logro))
+  
+  top_3 <- head(ranking, 3)
+  bottom_3 <- tail(ranking, 3) %>% arrange(logro) 
+  promedio_total <- mean(ranking$logro, na.rm = TRUE)
+  
+  cat("##  \n\n")
+  cat("### Balance Global\n\n")
+  cat(glue::glue("> El promedio de logro (Niveles Satisfactorio y Óptimo) es del **{scales::percent(promedio_total, accuracy=1)}**."))
+  cat("---\n\n") 
+
+  cat(":::: {.columns}\n\n")
+  cat('::: {.column width="50%" style="font-size: 27px; text-align: left; margin-top: 2.2em;"}\n\n')
+  
+  cat("### Mayores Logros\n\n")
+  if(nrow(top_3) > 0) {
+    for(k in 1:nrow(top_3)){
+      cat(glue::glue("* **{stringr::str_trunc(top_3$item[k], 80)}** ({scales::percent(top_3$logro[k], accuracy=1)})."), "\n")
+    }
+  }
+  cat("\n:::\n\n")
+  
+  cat('::: {.column width="50%" style="font-size: 27px; text-align: left; margin-top: 2.2em;"}\n\n')
+  
+  cat("### Oportunidades de Mejora\n\n")
+  if(nrow(bottom_3) > 0) {
+    for(k in 1:nrow(bottom_3)){
+      cat(glue::glue("* **{stringr::str_trunc(bottom_3$item[k], 80)}** ({scales::percent(bottom_3$logro[k], accuracy=1)})."), "\n")
+    }
+  }
+  cat("\n:::\n\n")
+  cat("::::\n\n")
+}
+```
+
+```{=html}
+<script>
+  window.addEventListener("load", (event) => {
+    function checkLogo() {
+      const isTitleSlide = Reveal.getIndices().h === 0;
+      const logo = document.querySelector('.slide-logo');
+      if (logo) {
+        if (isTitleSlide) {
+          logo.style.display = 'none';
+          logo.style.visibility = 'hidden';
+        } else {
+          logo.style.display = 'block';
+          logo.style.visibility = 'visible';
+        }
+      }
+    }
+    checkLogo();
+    Reveal.on('ready', checkLogo);
+    Reveal.on('slidechanged', checkLogo);
+  });
+</script>
+```
+

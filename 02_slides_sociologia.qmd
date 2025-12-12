@@ -322,9 +322,9 @@ if (nrow(final_items) == 0) {
 
     cat('</div>')
     
-    cat('<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:20px;">')
-    cat('<strong>*Índice de Calidad:</strong> Porcentaje del puntaje ideal alcanzado.<br>')
-    cat('<strong>*Logro:</strong> Estudiantes en niveles Satisfactorio y Sobresaliente.')
+    cat('<div style="font-size:0.45em; color:#666; line-height:1.2; margin-top:26px;">')
+    cat('<strong>*Índice de Calidad:</strong> Medida de intensidad del desempeño. Representa la suma de puntajes obtenidos por la cohorte dividida por el puntaje máximo posible (Ideal).<br>')
+#    cat('<em><strong>*Logro:</strong> Estudiantes en niveles Satisfactorio y #Sobresaliente.</em>')
     cat('</div>')
 
     cat("\n:::\n") 
@@ -502,7 +502,7 @@ if (nrow(final_items) > 0) {
     
     theme_minimal(base_size = 18) +
     theme(
-      legend.position = "top",
+      legend.position = "right",
       legend.text = element_text(size = 14, face = "bold"),
       panel.grid = element_blank(),
       axis.text.y = element_text(size = 12, color = "#333333", margin = margin(r=10), lineheight = 0.9)
