@@ -243,7 +243,7 @@ tabla_rubrica_eval <- tibble::tibble(
 
 :::{.div style="font-size: 30px; text-align: left; margin-top: 3.0em; line-height: 1.35;"}
 - **La Evaluación de Perfil Intermedio (EPI)** es un **hito formativo institucional** orientado a **monitorear trayectorias formativas** al término del **ciclo básico**.
-- Su propósito central es **identificar el grado de desarrollo de competencias habilitantes** y distinguir entre:
+- Su propósito central es **identificar el grado de desarrollo de competencias declaradas en el perfil intermedio** y distinguir entre:
   - **Estudiantes que avanzan con autonomía**, y
   - **Estudiantes que requieren apoyo formativo**.
 - En el **Modelo Pedagógico institucional**, los **perfiles (ingreso, intermedio, egreso)** operan como **hitos evaluativos**, mientras los **ciclos formativos** concentran las **acciones de apoyo** derivadas de los resultados.
@@ -253,9 +253,10 @@ tabla_rubrica_eval <- tibble::tibble(
 ## Perfil intermedio: sentido formativo
 
 :::{.div style="font-size: 30px; text-align: left; margin-top: 2.6em; line-height: 1.35;"}
-- El **perfil intermedio** define las **competencias habilitantes** que deben estar desarrolladas al finalizar el **ciclo básico**.
-- **No** corresponde a una evaluación anticipada del **perfil de egreso**.
+- El **perfil intermedio** define las **competencias** que deben estar desarrolladas al finalizar el **ciclo básico**.
+- Es importante destacar que la ebvaluación de perfil intermedio **No** corresponde a una evaluación anticipada del **perfil de egreso**.
 - Es una evaluación **compleja, integradora y formativa**, cuyos resultados orientan:
+
   - **continuidad con autonomía**, o
   - **continuidad con apoyos formativos**, según el nivel evidenciado.
   
