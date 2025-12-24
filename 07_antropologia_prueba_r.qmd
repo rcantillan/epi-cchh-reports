@@ -1,5 +1,5 @@
 ---
-title: "![](assets/img/logo-uah-open.png){width=280px style='display:block; margin-bottom:40px; margin-left:0;'} Análisis EPI"
+title: "![](assets/img/logo-uah-open.png){width=280px style='display:block; margin-bottom:40px; margin-left:0;'} Análisis EPI 2025"
 subtitle: "Reporte de Resultados de Antropología"
 author: ""
 logo: assets/img/logo-uah-open.png
@@ -241,26 +241,22 @@ tabla_rubrica_eval <- tibble::tibble(
 
 ## Marco institucional y propósito del EPI
 
-:::{.div style="font-size: 30px; text-align: left; margin-top: 3.0em; line-height: 1.35;"}
-- **La Evaluación de Perfil Intermedio (EPI)** es un **hito formativo institucional** orientado a **monitorear trayectorias formativas** al término del **ciclo básico**.
-- Su propósito central es **identificar el grado de desarrollo de competencias declaradas en el perfil intermedio** y distinguir entre:
+:::{.div style="font-size: 25px; text-align: left; margin-top: 3.0em; line-height: 1.35;"}
+
+- En el Modelo Pedagógico institucional, los perfiles de ingreso, intermedio y egreso constituyen hitos evaluativos que estructuran las trayectorias formativas.
+
+- La Evaluación de Perfil Intermedio (EPI) es un hito formativo institucional que monitorea el desarrollo de competencias al término del ciclo básico.
+
+- Su propósito es evaluar el grado de desarrollo de las competencias del perfil intermedio, distinguiendo entre:
+
   - **Estudiantes que avanzan con autonomía**, y
   - **Estudiantes que requieren apoyo formativo**.
-- En el **Modelo Pedagógico institucional**, los **perfiles (ingreso, intermedio, egreso)** operan como **hitos evaluativos**, mientras los **ciclos formativos** concentran las **acciones de apoyo** derivadas de los resultados.
 
+- El perfil intermedio define las competencias esperadas al finalizar el ciclo básico y orienta la evaluación.
+
+- La EPI es una evaluación integradora, compleja y formativa, cuyos resultados informan decisiones pedagógicas sobre la continuidad con autonomía o la continuidad con apoyos formativos.
 :::
 
-## Perfil intermedio: sentido formativo
-
-:::{.div style="font-size: 30px; text-align: left; margin-top: 2.6em; line-height: 1.35;"}
-- El **perfil intermedio** define las **competencias** que deben estar desarrolladas al finalizar el **ciclo básico**.
-- Es importante destacar que la ebvaluación de perfil intermedio **No** corresponde a una evaluación anticipada del **perfil de egreso**.
-- Es una evaluación **compleja, integradora y formativa**, cuyos resultados orientan:
-
-  - **continuidad con autonomía**, o
-  - **continuidad con apoyos formativos**, según el nivel evidenciado.
-  
-:::
 
 ## Rúbrica general institucional
 
@@ -334,7 +330,7 @@ tabla_rubrica_inst2 %>%
 
 :::
 
-## Rúbrica específica de la evaluación
+## Rúbrica específica EPI del programa académico
 
 :::{.div style="font-size: 24px; text-align: left; margin-top: 4em;"}
 ```{r show_rubrica_especifica, echo=FALSE, message=FALSE, warning=FALSE}
@@ -400,12 +396,14 @@ if (!exists("tabla_rubrica_eval") || is.null(tabla_rubrica_eval) || nrow(tabla_r
 ## Criterio de lectura (orientado a decisiones)
 
 :::{.div style="font-size: 28px; text-align: left; margin-top: 2.6em; line-height: 1.35;"}
-- **Interpretación principal:** se realiza desde la **rúbrica institucional (referencial)**.
+- **Interpretación principal:** se realizan desde la **el marco de categorias analíticas de nivel institucional (referencial)**.
+
 - **Operacionalización:** se implementa mediante la **rúbrica específica aplicada** en esta evaluación.
-- Toda la lectura se estructura en torno a dos categorías analíticas (definiciones completas):
+- Toda la lectura se estructura en torno a dos categorías analíticas institucionales que uferon explicadas en las diapositivas anteriores:
   - **Estudiantes que avanzan con autonomía**
   - **Estudiantes que requieren apoyo formativo**
   
+
 :::
 
 ```{r plots_items, results='asis', echo=FALSE}
@@ -567,7 +565,7 @@ if (nrow(final_items) == 0) {
 ```
 
 
-```{r plot_heatmap, results='asis', echo=FALSE}
+```{r plot_heatmap_III, results='asis', echo=FALSE}
 #| fig.width: 15
 #| fig.height: 7.5
 
@@ -575,31 +573,45 @@ if (nrow(final_items) > 0) {
 
   keep_levels <- c("1","2","3","4")
 
-  heat_df <- purrr::map_dfr(1:nrow(final_items), function(i) {
+  heat_df <- purrr::map_dfr(seq_len(nrow(final_items)), function(i) {
 
     col_id <- final_items$col_id[i]
     item   <- stringr::str_wrap(final_items$final_title[i], width = 45)
     x <- dat[[col_id]]
 
-    tibble(raw = x) %>%
-      mutate(
-        val = toupper(str_trim(as.character(raw))),
-        num = suppressWarnings(readr::parse_number(val)),
-        level = if_else(is.na(num), NA_character_, as.character(num))
+    tibble::tibble(raw = x) %>%
+      dplyr::mutate(
+        val   = toupper(stringr::str_trim(as.character(raw))),
+        num   = suppressWarnings(readr::parse_number(val)),
+        level = dplyr::if_else(is.na(num), NA_character_, as.character(num))
       ) %>%
-      filter(level %in% keep_levels) %>%
-      count(level, name = "n") %>%
+      dplyr::filter(level %in% keep_levels) %>%
+      dplyr::count(level, name = "n") %>%
       tidyr::complete(level = keep_levels, fill = list(n = 0)) %>%
-      mutate(
-        prop = n / sum(n),
+      dplyr::mutate(
+        prop = if (sum(n) > 0) n / sum(n) else 0,
         item = item
       )
   })
 
+  # orden visual (como tu heatmap)
   heat_df$item <- factor(heat_df$item, levels = rev(unique(heat_df$item)))
+  heat_df$level <- factor(heat_df$level, levels = keep_levels)
+
+  # -------------------------------
+  # Normalización por columna (nivel):
+  # verde máximo = max empírico dentro de cada columna
+  # -------------------------------
+  heat_df <- heat_df %>%
+    dplyr::group_by(level) %>%
+    dplyr::mutate(
+      col_max = max(prop, na.rm = TRUE),
+      fill_val = dplyr::if_else(col_max > 0, prop / col_max, 0)
+    ) %>%
+    dplyr::ungroup()
 
   cat("\n\n---\n\n")
-  cat("## Mapa de Calor: Distribución Detallada\n\n")
+  cat("## Distribución de estudiantes por dimension evaluada\n\n")
 
   nivel_labels_heat <- c(
     "1" = "Insatis.\n(1)",
@@ -608,68 +620,162 @@ if (nrow(final_items) > 0) {
     "4" = "Óptimo\n(4)"
   )
 
-  # ✅ Re-escalado por cuantiles (mejor contraste visual)
-  qs <- as.numeric(stats::quantile(heat_df$prop, probs = c(0, .25, .50, .70, .85, 1), na.rm = TRUE))
-  # evitar duplicados si hay muchos empates
-  qs <- unique(qs)
-  vals <- scales::rescale(qs)
-  # si quedara muy corto por empates, fuerza un set mínimo
-  if (length(vals) < 3) vals <- scales::rescale(c(0, 0.5, 1))
+  # Paleta institucional (blanco -> verde UAH)
+  pal_inst <- c("#ffffff", brand_main)
 
-  # Colores semáforo (usa tu verde institucional)
-  pal <- c(
-    "#b71c1c",   # rojo fuerte
-    "#ef5350",   # rojo
-    "#f9a825",   # amarillo
-    "#81c784",   # verde claro
-    brand_main   # verde institucional
-  )
-
-  g <- ggplot(heat_df, aes(x = level, y = item, fill = prop)) +
-    geom_tile(color = "white", linewidth = 1.2) +
-    scale_fill_gradientn(
-      colours = pal,
-      values  = vals,
+  g <- ggplot2::ggplot(heat_df, ggplot2::aes(x = level, y = item, fill = fill_val)) +
+    ggplot2::geom_tile(color = "white", linewidth = 1.2) +
+    ggplot2::scale_fill_gradientn(
+      colours = pal_inst,
       limits  = c(0, 1),
       oob     = scales::squish,
-      labels  = scales::percent_format(accuracy = 1),
-      name    = "Proporción\nestudiantes"
+      guide   = ggplot2::guide_colorbar(
+        ticks = FALSE,
+        label = FALSE,
+        barheight = grid::unit(6, "cm")
+      ),
+      name = "Intensidad\n(máx. por fila)"
     ) +
-    geom_text(
-      aes(
+    ggplot2::geom_text(
+      ggplot2::aes(
         label = scales::percent(prop, accuracy = 1),
-        # texto oscuro cuando el fondo es claro (amarillo/verde), blanco cuando es rojo
-        color = prop >= 0.55
+        # texto oscuro cuando el fondo es claro
+        color = fill_val >= 0.55
       ),
       size = 7,
       fontface = "bold"
     ) +
-    scale_color_manual(values = c("TRUE" = "#0b1f1f", "FALSE" = "white"), guide = "none") +
-    # ✅ categorías abajo
-    scale_x_discrete(position = "bottom", labels = nivel_labels_heat) +
-    labs(x = NULL, y = NULL) +
-    theme_void(base_size = 24) +
-    theme(
-      axis.text.x = element_text(
+    ggplot2::scale_color_manual(values = c("TRUE" = "#0b1f1f", "FALSE" = "white"), guide = "none") +
+    ggplot2::scale_x_discrete(position = "bottom", labels = nivel_labels_heat) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme_void(base_size = 24) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
         size = 18, color = brand_text,
-        lineheight = 1.05, margin = margin(t = 15)
+        lineheight = 1.05, margin = ggplot2::margin(t = 15)
       ),
-      # ✅ eje Y pegado a la derecha
-      axis.text.y = element_text(
+      axis.text.y = ggplot2::element_text(
         size = 18, color = brand_text,
-        lineheight = 1.1, hjust = 1, margin = margin(r = 15)
+        lineheight = 1.1, hjust = 1, margin = ggplot2::margin(r = 15)
       ),
       legend.position = "right",
-      legend.title = element_text(size = 14, face = "bold"),
-      legend.text  = element_text(size = 14),
-      legend.key.width = unit(2, "cm"),
-      plot.margin = margin(10, 30, 10, 30)
+      legend.title = ggplot2::element_text(size = 14, face = "bold"),
+      legend.key.width = grid::unit(2, "cm"),
+      plot.margin = ggplot2::margin(10, 30, 10, 30)
     )
 
   print(g)
 }
 ```
 
+
+
+```{r plot_heatmap_II, results='asis', echo=FALSE}
+#| fig.width: 15
+#| fig.height: 7.5
+
+if (nrow(final_items) > 0) {
+
+  keep_levels <- c("1","2","3","4")
+
+  heat_df <- purrr::map_dfr(seq_len(nrow(final_items)), function(i) {
+
+    col_id <- final_items$col_id[i]
+    item   <- stringr::str_wrap(final_items$final_title[i], width = 45)
+    x <- dat[[col_id]]
+
+    tibble::tibble(raw = x) %>%
+      dplyr::mutate(
+        val   = toupper(stringr::str_trim(as.character(raw))),
+        num   = suppressWarnings(readr::parse_number(val)),
+        level = dplyr::if_else(is.na(num), NA_character_, as.character(num))
+      ) %>%
+      dplyr::filter(level %in% keep_levels) %>%
+      dplyr::count(level, name = "n") %>%
+      tidyr::complete(level = keep_levels, fill = list(n = 0)) %>%
+      dplyr::mutate(item = item)
+  })
+
+  # 1) Proporción REAL por columna (cada nivel suma 100% entre ítems)
+  heat_df <- heat_df %>%
+    dplyr::group_by(level) %>%
+    dplyr::mutate(
+      denom = sum(n),
+      denom = ifelse(denom == 0, 1, denom),
+      prop  = n / denom
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-denom)
+
+  # 2) Escala de color: máximo empírico POR COLUMNA (máx. de prop dentro de cada level)
+  heat_df <- heat_df %>%
+    dplyr::group_by(level) %>%
+    dplyr::mutate(
+      max_col  = max(prop, na.rm = TRUE),
+      fill_col = ifelse(max_col > 0, prop / max_col, 0)
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-max_col)
+
+  heat_df$item <- factor(heat_df$item, levels = rev(unique(heat_df$item)))
+
+  cat("\n\n---\n\n")
+  cat("## Distribución de estudiantes por nivel de logro\n\n")
+
+  nivel_labels_heat <- c(
+    "1" = "Insatis.\n(1)",
+    "2" = "En desarr.\n(2)",
+    "3" = "Satisf.\n(3)",
+    "4" = "Óptimo\n(4)"
+  )
+
+  # ✅ Paleta SOLO del tema: blanco → verde institucional
+  pal <- c("#ffffff", brand_main)
+
+  g <- ggplot2::ggplot(heat_df, ggplot2::aes(x = level, y = item, fill = fill_col)) +
+    ggplot2::geom_tile(color = "white", linewidth = 1.2) +
+    scale_fill_gradientn(
+  colours = pal,
+  limits  = c(0, 1),
+  oob     = scales::squish,
+  guide   = guide_colorbar(
+    ticks = FALSE,
+    label = FALSE,
+    barheight = unit(6, "cm")
+  ),
+  name = "Intensidad\n(máx. por columna)"
+) +
+    # ✅ Porcentajes reales en las casillas (prop)
+    ggplot2::geom_text(
+      ggplot2::aes(
+        label = scales::percent(prop, accuracy = 1),
+        color = fill_col >= 0.60
+      ),
+      size = 7,
+      fontface = "bold"
+    ) +
+    ggplot2::scale_color_manual(values = c("TRUE" = "#0b1f1f", "FALSE" = "white"), guide = "none") +
+    ggplot2::scale_x_discrete(position = "bottom", labels = nivel_labels_heat) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme_void(base_size = 24) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
+        size = 18, color = brand_text,
+        lineheight = 1.05, margin = ggplot2::margin(t = 15)
+      ),
+      axis.text.y = ggplot2::element_text(
+        size = 18, color = brand_text,
+        lineheight = 1.1, hjust = 1, margin = ggplot2::margin(r = 15)
+      ),
+      legend.position = "right",
+      legend.title = ggplot2::element_text(size = 14, face = "bold"),
+      legend.key.width = grid::unit(2, "cm"),
+      plot.margin = ggplot2::margin(10, 30, 10, 30)
+    )
+
+  print(g)
+}
+```
 
 ```{r balance_categorias, results='asis', echo=FALSE}
 #| fig.width: 15
@@ -678,7 +784,7 @@ if (nrow(final_items) > 0) {
 if (nrow(final_items) > 0) {
 
   cat("\n\n---\n\n")
-  cat("## Balance por categorías\n\n")
+  cat("## Balance por categorías institucionales\n\n")
 
   # 1) construir data (solo 1–4)
   balance_df <- purrr::map_dfr(seq_len(nrow(final_items)), function(i) {
@@ -775,7 +881,7 @@ if (exists("final_items") && nrow(final_items) > 0) {
     promedio_total <- mean(ranking$autonomia, na.rm = TRUE)
 
     cat("## \n\n")
-    cat("### Síntesis orientada a decisiones\n\n")
+    cat("### Síntesis de resultados\n\n")
     cat(glue::glue("> Proporción promedio de **{CAT_AUT}** = **{scales::percent(promedio_total, accuracy=1)}**."))
     cat("\n\n")
 
@@ -802,8 +908,8 @@ if (exists("final_items") && nrow(final_items) > 0) {
     cat("::::\n\n")
 
     cat("::: {.div style='font-size: 22px; text-align:left; margin-top: 1.2em; line-height:1.25;'}\n")
-    cat("**Cierre interpretativo:** Este resumen integra la comparación entre ambos grupos y orienta la priorización de apoyos del ciclo formativo. ")
-    cat("Para cada ítem, la composición interna permite decidir si el foco es **consolidación (nivel 2)** o **refuerzo de base (niveles 0–1)**.\n")
+    cat("Este síntesis integra la comparación entre ambos grupos y orienta la priorización de apoyos formativos. ")
+#    cat("Para cada ítem, la composición interna permite decidir si el foco es **consolidación (nivel 2)** o **refuerzo de base (niveles 0–1)**.\n")
     cat(":::\n")
   }
 }
