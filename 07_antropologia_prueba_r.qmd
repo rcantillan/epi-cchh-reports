@@ -16,6 +16,9 @@ format:
     theme:
       - default
       - styles/report.scss
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     slide-number: true
     auto-stretch: false
     df-print: paged
@@ -212,62 +215,98 @@ final_items <- res$map
 
 ```{r labels_rubrica, include=FALSE}
 # 1) Rúbrica Institucional (REFERENCIAL)
+# Actualizada con los encabezados institucionales y descripciones del borrador final
 tabla_rubrica_inst <- tibble::tibble(
-  Nivel = c("4 (Óptimo)", "3 (Satisfactorio)", "2 (Base)", "1 (Por Mejorar)", "0 (No Obs)"),
-  `% Referencia` = c("100%-85%", "84%-65%", "64%-50%", "49%-0%", "0 pts"),
+  `Categoría analítica institucional` = c(CAT_AUT, CAT_AUT, CAT_APO, CAT_APO, CAT_APO),
+  Nivel = c("4 (Óptimo)", "3 (Satisfactorio)", "2 (Base)", "1 (Por Mejorar)", "0 (No Observado)"),
+  `% Logro` = c("100%-85%", "84%-65%", "64%-50%", "49%-0%", "0 pts"),
   Descripción = c(
-    "Avanza con autonomía al ciclo de profundización. Cuenta con desempeños relevantes y demuestra un buen nivel de conocimientos teórico-disciplinares.",
-    "Avanza con autonomía. Demuestra un conocimiento apropiado teórico-disciplinar y manejo metodológico.",
-    "Avanza con apoyos adicionales. Demuestra conocimiento básico de contenidos esenciales, pero carece de profundidad.",
-    "Avanza con apoyos adicionales. No alcanza un mínimo de conocimiento de contenidos esperado.",
+    "Se evidencia con claridad un nivel sólido de conocimientos teórico-disciplinares de los contenidos, así como un sólido manejo metodológico/práctico de estos, sin necesitar apoyos específicos.",
+    "Se evidencia un nivel apropiado de conocimientos teórico-disciplinares y un manejo apropiado metodológico/práctico de estos.",
+    "Demuestra un conocimiento/manejo básico de los contenidos/habilidades esenciales, sin embargo, el nivel de profundidad de este manejo es mínimo. Sus aprendizajes requieren ser fortalecidos.",
+    "El desempeño muestra que se no alcanza un mínimo manejo de contenidos y habilidades esperadas. Sus aprendizajes requieren de acciones de apoyo para asegurar su continuidad.",
     "No presenta respuestas, lo que no permite evidenciar el logro de aprendizajes."
   )
 )
 
 # 2) Rúbrica Específica (OPERACIONALIZA)
+# Se elimina la columna 'Descripción' por indicación técnica y se ajustan encabezados
 tabla_rubrica_eval <- tibble::tibble(
+  `Categoría analítica institucional` = c(CAT_AUT, CAT_AUT, CAT_APO, CAT_APO, CAT_APO, CAT_APO),
   Nivel = c("4", "3", "2", "1", "0", "NR"),
-  Categoría = c("Óptimo", "Satisfactorio", "Aprendizajes en desarrollo", "Insatisfactorio", "No Observado", "No Responde"),
-  Descripción = c(
-    "Integra enfoques teóricos y contextualización adecuada; comprensión analítica completa.",
-    "Logro parcial con reconocimiento adecuado, pero con integración/contextualización aún parcial.",
-    "Evidencia aprendizajes en desarrollo; requiere andamiaje para consolidar relaciones y comprensión.",
-    "No identifica elementos fundamentales; impide relaciones o comprensiones mínimas.",
-    "No se observa el desempeño por ausencia de evidencia.",
-    "Respuesta no registrada."
-  )
+  Categoría = c("Óptimo", "Satisfactorio", "Aprendizajes en desarrollo", "Insatisfactorio", "No Observado", "No Responde")
 )
 ```
 
-## Marco institucional y propósito del EPI
+# I. INTRODUCCIÓN {.center .middle background-color="#0a4e58"}
 
-:::{.div style="font-size: 25px; text-align: left; margin-top: 3.0em; line-height: 1.35;"}
+## Marco institucional y propósito de la EPI
 
-- En el Modelo Pedagógico institucional, los perfiles de ingreso, intermedio y egreso constituyen hitos evaluativos que estructuran las trayectorias formativas.
+:::{.columns style="display: flex; justify-content: space-between; align-items: stretch; margin-top: 1em; gap: 15px;"}
 
-- La Evaluación de Perfil Intermedio (EPI) es un hito formativo institucional que monitorea el desarrollo de competencias al término del ciclo básico.
+:::{.column width="32%" style="background-color: #ffffff; border: 1px solid #e0e0e0; border-top: 5px solid #0a6d7c; padding: 25px 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;"}
+<i class="fa-solid fa-layer-group" style="color: #0a6d7c; font-size: 1.5em; margin-bottom: 15px;"></i>
+1.Modelo
 
-- Su propósito es evaluar el grado de desarrollo de las competencias del perfil intermedio, distinguiendo entre:
+[Hitos evaluativos que estructuran las **trayectorias formativas** (perfiles de ingreso, intermedio y egreso).]{style="font-size: 0.8em; color: #4b5661; line-height: 1.3;"}
+:::
 
-  - **Estudiantes que avanzan con autonomía**, y
-  - **Estudiantes que requieren apoyo formativo**.
+:::{.column width="32%" style="background-color: #ffffff; border: 1px solid #e0e0e0; border-top: 5px solid #0a6d7c; padding: 25px 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;"}
+<i class="fa-solid fa-graduation-cap" style="color: #0a6d7c; font-size: 1.5em; margin-bottom: 15px;"></i>
+2.Perfil
 
-- El perfil intermedio define las competencias esperadas al finalizar el ciclo básico y orienta la evaluación.
+[Definición de competencias para continuar la formación al término del ciclo básico.]{style="font-size: 0.8em; color: #4b5661; line-height: 1.3;"}
+:::
 
-- La EPI es una evaluación integradora, compleja y formativa, cuyos resultados informan decisiones pedagógicas sobre la continuidad con autonomía o la continuidad con apoyos formativos.
+:::{.column width="32%" style="background-color: #ffffff; border: 1px solid #e0e0e0; border-top: 5px solid #0a6d7c; padding: 25px 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-size: 40px; text-align: center;"}
+<i class="fa-solid fa-magnifying-glass-chart" style="color: #0a6d7c; font-size: 1.5em; margin-bottom: 15px;"></i>
+3.Evaluación 
+
+[Permite recoger evidencias del desempeño respecto del desarrollo de **aprendizajes clave**.]{style="font-size: 0.8em; color: #4b5661; line-height: 1.3;"}
+:::
+
 :::
 
 
+:::{.div style="border: 1px solid #0a6d7c; padding: 12px 20px; border-radius: 8px; font-size: 20px; margin-top: 1.5em; text-align: center; color: #4b5661; background-color: rgba(10, 109, 124, 0.03); max-width: 85%; margin-left: auto; margin-right: auto;"}
+La EPI es el hito evaluativo formativo que garantiza la transición entre el ciclo básico y el superior.
+:::
+
+
+## Propósito y Categorías de la EPI
+
+:::{.div style="font-size: 22px; color: #4b5661; margin-bottom: 2em; text-align: center;"}
+Los resultados de la EPI proporcionan información oportuna para planificar acciones de apoyo y fortalecimiento:
+:::
+
+:::{.columns style="display: flex; gap: 30px; justify-content: center; align-items: stretch;"}
+
+:::{.column width="45%" style="border: 1.5px solid #0a6d7c; padding: 30px; border-radius: 20px; background-color: #f0fdf4; display: flex; flex-direction: column; justify-content: center;"}
+#### <i class="fa-solid fa-circle-check" style="color: #0a6d7c; font-size: 0.8em;"></i> [Avanzan con autonomía]{style="color: #0a6d7c; font-size: 0.8em;"}
+[Su desempeño evidencia que pueden continuar su trayectoria de **manera autónoma**.]{style="font-size: 0.85em; color: #11222b; margin-top: 10px;"}
+:::
+
+:::{.column width="45%" style="border: 1.5px solid #c62828; padding: 40px; border-radius: 20px; background-color: #fef2f2; display: flex; flex-direction: column; justify-content: center;"}
+#### <i class="fa-solid fa-triangle-exclamation" style="color: #c62828; font-size: 0.8em;"></i> [Requieren apoyo formativo]{style="color: #c62828;font-size: 0.8em;"}
+[Evidencia la necesidad de **apoyos adicionales** para desarrollar aprendizajes prioritarios que aseguren su continuidad.]{style="font-size: 0.85em; color: #11222b; margin-top: 10px;"}
+:::
+
+:::
+
+:::{.div style="text-align: center; font-size: 18px; color: #4b5661; margin-top: 2.5em; font-style: italic; border-top: 1px solid #eee; padding-top: 15px;"}
+La interpretación de los resultados se realiza a partir de la rúbrica definida por cada programa académico.
+:::
+
 ## Rúbrica general institucional
 
-:::{.div style="font-size: 24px; text-align: left; margin-top: 4em;"}
+:::{.div style="font-size: 24px; text-align: left; margin-top: 2em;"}
 
 ```{r show_rubrica_inst, echo=FALSE, message=FALSE, warning=FALSE}
 
 tabla_rubrica_inst2 <- tabla_rubrica_inst %>%
-  # 1) Categoría analítica (2 grandes grupos)
+  # 1) Categoría analítica institucional (2 grandes grupos)
   dplyr::mutate(
-    `Categoría analítica` = dplyr::case_when(
+    `Categoría analítica institucional` = dplyr::case_when(
       stringr::str_detect(Nivel, "^4") ~ CAT_AUT,
       stringr::str_detect(Nivel, "^3") ~ CAT_AUT,
       TRUE ~ CAT_APO
@@ -284,17 +323,17 @@ tabla_rubrica_inst2 <- tabla_rubrica_inst %>%
   ) %>%
   # 3) Orden pedagógico correcto dentro de cada categoría
   dplyr::arrange(
-    factor(`Categoría analítica`, levels = c(CAT_AUT, CAT_APO)),
+    factor(`Categoría analítica institucional`, levels = c(CAT_AUT, CAT_APO)),
     dplyr::desc(nivel_ord)
   ) %>%
-  # 4) Mostrar la categoría solo una vez por bloque
+  # 4) Mostrar la categoría institucional solo una vez por bloque
   dplyr::mutate(
-    `Categoría analítica` = dplyr::if_else(
-      duplicated(`Categoría analítica`), "", `Categoría analítica`
+    `Categoría analítica institucional` = dplyr::if_else(
+      duplicated(`Categoría analítica institucional`), "", `Categoría analítica institucional`
     )
   ) %>%
-  # 5) Dejar SOLO las columnas finales (elimina nivel_ord)
-  dplyr::select(`Categoría analítica`, Nivel, `% Referencia`, Descripción)
+  # 5) Seleccionar columnas finales (incluye % Logro)
+  dplyr::select(`Categoría analítica institucional`, Nivel, `% Logro`, Descripción)
 
 tabla_rubrica_inst2 %>%
   kableExtra::kbl(
@@ -309,7 +348,7 @@ tabla_rubrica_inst2 %>%
     position = "center"
   ) %>%
   kableExtra::row_spec(0, bold = TRUE, color = "white", background = brand_main) %>%
-  # ✅ Anchos: dale espacio real a "Descripción"
+  # ✅ Ajuste de anchos para legibilidad institucional
   kableExtra::column_spec(
     1, width = "22%", bold = TRUE,
     extra_css = "vertical-align: top; padding: 10px;"
@@ -335,7 +374,7 @@ tabla_rubrica_inst2 %>%
 :::{.div style="font-size: 24px; text-align: left; margin-top: 4em;"}
 ```{r show_rubrica_especifica, echo=FALSE, message=FALSE, warning=FALSE}
 
-# Asegura que exista el objeto
+# Asegura que exista el objeto y esté actualizado
 if (!exists("tabla_rubrica_eval") || is.null(tabla_rubrica_eval) || nrow(tabla_rubrica_eval) == 0) {
   cat("**No se encontró `tabla_rubrica_eval` o está vacía.**\n")
 } else {
@@ -351,60 +390,48 @@ if (!exists("tabla_rubrica_eval") || is.null(tabla_rubrica_eval) || nrow(tabla_r
         TRUE ~ -2
       ),
 
-      # Categoría analítica (dos bloques)
-      `Categoría analítica` = dplyr::case_when(
+      # Categoría analítica institucional
+      `Categoría analítica institucional` = dplyr::case_when(
         Nivel %in% c("4","3") ~ CAT_AUT,
         TRUE ~ CAT_APO
       )
     ) %>%
-    # Orden: primero autonomía (4,3), luego apoyo (2,1,0,NR)
+    # Orden pedagógico: primero autonomía (4,3), luego apoyo (2,1,0,NR)
     dplyr::arrange(
-      factor(`Categoría analítica`, levels = c(CAT_AUT, CAT_APO)),
+      factor(`Categoría analítica institucional`, levels = c(CAT_AUT, CAT_APO)),
       dplyr::desc(nivel_ord)
     ) %>%
-    # Mostrar el texto del bloque solo en la primera fila
+    # Mostrar el texto de la categoría solo en la primera fila del bloque
     dplyr::mutate(
-      `Categoría analítica` = dplyr::if_else(
-        duplicated(`Categoría analítica`), "", `Categoría analítica`
+      `Categoría analítica institucional` = dplyr::if_else(
+        duplicated(`Categoría analítica institucional`), "", `Categoría analítica institucional`
       )
     ) %>%
-    # Orden final de columnas (sin dejar columnas auxiliares)
-    dplyr::select(`Categoría analítica`, Nivel, Categoría, Descripción)
+    # Orden final de columnas (se elimina Descripción por indicación experta)
+    dplyr::select(`Categoría analítica institucional`, Nivel, Categoría)
 
   tabla_rubrica_eval2 %>%
-    kableExtra::kbl(format = "html", escape = FALSE, align = "llll") %>%
+    kableExtra::kbl(format = "html", escape = FALSE, align = "lll") %>%
     kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed"),
       full_width = TRUE,
-      font_size = 20,
+      font_size = 22,
       position = "center"
     ) %>%
     kableExtra::row_spec(0, bold = TRUE, color = "white", background = brand_main) %>%
-    kableExtra::column_spec(1, width = "22%", bold = TRUE,
-                            extra_css = "vertical-align: top; padding: 10px;") %>%
-    kableExtra::column_spec(2, width = "10%", bold = TRUE, color = brand_main,
-                            extra_css = "vertical-align: top; padding: 10px;") %>%
-    kableExtra::column_spec(3, width = "22%", bold = TRUE,
-                            extra_css = "vertical-align: top; padding: 10px;") %>%
-    kableExtra::column_spec(4, width = "46%",
-                            extra_css = "vertical-align: top; text-align: left; line-height: 1.25; padding: 10px; color: #4b5661;")
+    # Ajuste de anchos para 3 columnas
+    kableExtra::column_spec(1, width = "30%", bold = TRUE,
+                            extra_css = "vertical-align: top; padding: 12px;") %>%
+    kableExtra::column_spec(2, width = "20%", bold = TRUE, color = brand_main,
+                            extra_css = "vertical-align: top; padding: 12px;") %>%
+    kableExtra::column_spec(3, width = "50%", bold = TRUE,
+                            extra_css = "vertical-align: top; padding: 12px;")
 }
 ```
 
 :::
 
-## Criterio de lectura (orientado a decisiones)
-
-:::{.div style="font-size: 28px; text-align: left; margin-top: 2.6em; line-height: 1.35;"}
-- **Interpretación principal:** se realizan desde la **el marco de categorias analíticas de nivel institucional (referencial)**.
-
-- **Operacionalización:** se implementa mediante la **rúbrica específica aplicada** en esta evaluación.
-- Toda la lectura se estructura en torno a dos categorías analíticas institucionales que uferon explicadas en las diapositivas anteriores:
-  - **Estudiantes que avanzan con autonomía**
-  - **Estudiantes que requieren apoyo formativo**
-  
-
-:::
+# II. RESULTADOS {.center .middle background-color="#0a4e58"}
 
 ```{r plots_items, results='asis', echo=FALSE}
 #| fig.width: 11
@@ -634,7 +661,7 @@ if (nrow(final_items) > 0) {
         label = FALSE,
         barheight = grid::unit(6, "cm")
       ),
-      name = "Intensidad\n(máx. por fila)"
+      name = "Intensidad"
     ) +
     ggplot2::geom_text(
       ggplot2::aes(
@@ -659,7 +686,7 @@ if (nrow(final_items) > 0) {
         lineheight = 1.1, hjust = 1, margin = ggplot2::margin(r = 15)
       ),
       legend.position = "right",
-      legend.title = ggplot2::element_text(size = 14, face = "bold"),
+      legend.title = ggplot2::element_text(size = 12),
       legend.key.width = grid::unit(2, "cm"),
       plot.margin = ggplot2::margin(10, 30, 10, 30)
     )
@@ -743,7 +770,7 @@ if (nrow(final_items) > 0) {
     label = FALSE,
     barheight = unit(6, "cm")
   ),
-  name = "Intensidad\n(máx. por columna)"
+  name = "Intensidad"
 ) +
     # ✅ Porcentajes reales en las casillas (prop)
     ggplot2::geom_text(
@@ -768,7 +795,7 @@ if (nrow(final_items) > 0) {
         lineheight = 1.1, hjust = 1, margin = ggplot2::margin(r = 15)
       ),
       legend.position = "right",
-      legend.title = ggplot2::element_text(size = 14, face = "bold"),
+      legend.title = ggplot2::element_text(size = 12),
       legend.key.width = grid::unit(2, "cm"),
       plot.margin = ggplot2::margin(10, 30, 10, 30)
     )
@@ -853,6 +880,7 @@ if (nrow(final_items) > 0) {
 }
 ```
 
+
 ```{r resumen_ejecutivo, results='asis', echo=FALSE}
 if (exists("final_items") && nrow(final_items) > 0) {
 
@@ -880,15 +908,15 @@ if (exists("final_items") && nrow(final_items) > 0) {
     bottom_3 <- tail(ranking, 3) %>% dplyr::arrange(autonomia)
     promedio_total <- mean(ranking$autonomia, na.rm = TRUE)
 
-    cat("## \n\n")
-    cat("### Síntesis de resultados\n\n")
+    cat("\n\n---\n\n")
+    cat("### Síntesis de resultados por dimensiones\n\n")
     cat(glue::glue("> Proporción promedio de **{CAT_AUT}** = **{scales::percent(promedio_total, accuracy=1)}**."))
     cat("\n\n")
 
     cat(":::: {.columns}\n\n")
 
     cat('::: {.column width="50%" style="font-size: 28px; text-align: left; margin-top: 2.0em;"}\n\n')
-    cat(glue::glue("### Fortalezas (mayor proporción de {CAT_AUT})\n\n"))
+    cat(glue::glue("### Mayor proporción de estudiantes que {tolower(CAT_AUT)}\n\n"))
     for (k in 1:nrow(top_3)) {
       cat(glue::glue(
         "* **{stringr::str_trunc(top_3$item[k], 85)}** — {scales::percent(top_3$autonomia[k], accuracy=1)}\n"
@@ -897,7 +925,7 @@ if (exists("final_items") && nrow(final_items) > 0) {
     cat("\n:::\n\n")
 
     cat('::: {.column width="50%" style="font-size: 28px; text-align: left; margin-top: 2.0em;"}\n\n')
-    cat(glue::glue("### Prioridades de apoyo (menor proporción de {CAT_AUT})\n\n"))
+    cat(glue::glue("### Menor proporción de estudiantes que {tolower(CAT_AUT)}\n\n"))
     for (k in 1:nrow(bottom_3)) {
       cat(glue::glue(
         "* **{stringr::str_trunc(bottom_3$item[k], 85)}** — {scales::percent(bottom_3$autonomia[k], accuracy=1)}\n"
@@ -908,8 +936,7 @@ if (exists("final_items") && nrow(final_items) > 0) {
     cat("::::\n\n")
 
     cat("::: {.div style='font-size: 22px; text-align:left; margin-top: 1.2em; line-height:1.25;'}\n")
-    cat("Este síntesis integra la comparación entre ambos grupos y orienta la priorización de apoyos formativos. ")
-#    cat("Para cada ítem, la composición interna permite decidir si el foco es **consolidación (nivel 2)** o **refuerzo de base (niveles 0–1)**.\n")
+    cat("Este síntesis integra la comparación entre ambos grupos y orienta la priorización de apoyos formativos.")
     cat(":::\n")
   }
 }
